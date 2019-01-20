@@ -1,0 +1,18 @@
+.post-header
+  if theme.post_menu_button === "light"
+    label.navi-button.light(for="navi") MENU
+  else
+    label.navi-button(for="navi") MENU
+  img.background(src=theme.post_background)
+  .post-title
+    h1.title #{page.title ? page.title : theme.title_plancehold}
+    ul.meta
+      li
+        i.icon.icon-author
+        | #{config.author}
+      li
+        i.icon.icon-clock
+        | #{parseInt(page.content ? page.content.length/900 : 0)} Minutes
+      li
+        i.icon.icon-calendar
+        | #{time(page.date, 'LL')}
