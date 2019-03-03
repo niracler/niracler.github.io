@@ -1,250 +1,259 @@
 ---
-title: pythonweb全栈攻略
-date: 2019-03-03 10:53:01
+date: '2019-03-03 10:53:01'
 tags: 翻译
+title: pythonweb全栈攻略
 ---
+
+
 
 目录
----
+----
+-   [目录](#目录)
+-   [系列文章索引](#系列文章索引)
+-   [博客文章教程](#博客文章教程)
+-   [译者的话](#译者的话)
+-   [参考](#参考)
 
 系列文章索引
----------
+------------
 
-- 简介
-  - 学习编程
-    - Python语言
-    - 为何使用Python？
-    - Python 2还是3？
-    - 企业Python
-  - Python社区
-    - 使用Python的公司
-    - 最好的Python资源
-    - 必须观看Python视频
-    - 播客
-- 开发环境
-  - 文本编辑器和IDE
-    - VIM
-    - Emacs的
-    - Sublime Text
-    - PyCharm
-    - Jupyter Notebook
-  - Shells
-    - Bourne-again shell（Bash）
-    - Zsh
-    - PowerShell
-  - 终端
-    - TMUX
-    - Screen
-  - 环境配置
-    - 应用程序依赖性
-    - 虚拟环境（virtualenvs）
-    - Localhost隧道
-  - 版本控制
-    - Git
-    - Mercurial
-- 数据
-  - 关系型数据库
-    - PostgreSQL
-    - MySQL
-    - SQLite
-  - 对象关系映射器(ORM)
-    - SQLAlchemy
-    - Peewee
-    - Django ORM
-    - Pony ORM
-  - NoSQL
-    - Redis
-    - MongoDB
-    - Apache Cassandra
-    - Neo4j
-  - 数据分析
-    - pandas
-    - SciPy＆Numpy
-  - 数据可视化
-    - Bokeh
-    - d3.js
-    - Matplotlib
-  - 标记语言
-    - Markdown
-    - reStructuredText的
-- 网站开发
-  - Web框架
-    - Django
-    - Flask
-    - Bottle
-    - Pyramid
-    - TurboGears
-    - Falcon
-    - Morepath
-    - Sanic
-    - 其他Web框架
-  - 模板引擎
-    - Jinja2
-    - Mako
-    - Django模板
-  - 网页设计
-    - HTML
-    - CSS
-    - 响应式设计
-    - Minification
-  - CSS框架
-    - Bootstrap
-    - Foundation
-  - JavaScript
-    - React
-    - Vue.js
-    - Angular
-  - 任务队列
-    - Celery
-    - Redis队列（RQ）
-    - Dramatiq
-  - 静态站点生成器
-    - Pelican
-    - LEKTOR
-    - MkDocs
-  - 测试
-    - 单元测试
-    - 集成测试
-    - 调试
-    - 代码指标
-  - 网络
-    - HTTPS
-    - WebSockets
-    - WebRTC
-  - Web APIs
-    - 微服务
-    - Webhooks
-    - 机器人
-  - API创建
-    - API Frameworks
-    - Django REST Frameworks
-  - API集成
-    - Twilio
-    - Stripe
-    - Slack
-    - Okta
-  - Web应用程序安全性
-    - SQL注入
-    - 跨站请求伪造
-- Web应用程序部署
-  > 还有一本专门介绍Python Web应用程序部署的书。
+-   简介
+    -   学习编程
+        -   Python语言
+        -   为何使用Python？
+        -   Python 2还是3？
+        -   企业Python
+    -   Python社区
+        -   使用Python的公司
+        -   最好的Python资源
+        -   必须观看Python视频
+        -   播客
+-   开发环境
+    -   文本编辑器和IDE
+        -   VIM
+        -   Emacs的
+        -   Sublime Text
+        -   PyCharm
+        -   Jupyter Notebook
+    -   Shells
+        -   Bourne-again shell（Bash）
+        -   Zsh
+        -   PowerShell
+    -   终端
+        -   TMUX
+        -   Screen
+    -   环境配置
+        -   应用程序依赖性
+        -   虚拟环境（virtualenvs）
+        -   Localhost隧道
+    -   版本控制
+        -   Git
+        -   Mercurial
+-   数据
+    -   关系型数据库
+        -   PostgreSQL
+        -   MySQL
+        -   SQLite
+    -   对象关系映射器(ORM)
+        -   SQLAlchemy
+        -   Peewee
+        -   Django ORM
+        -   Pony ORM
+    -   NoSQL
+        -   Redis
+        -   MongoDB
+        -   Apache Cassandra
+        -   Neo4j
+    -   数据分析
+        -   pandas
+        -   SciPy＆Numpy
+    -   数据可视化
+        -   Bokeh
+        -   d3.js
+        -   Matplotlib
+    -   标记语言
+        -   Markdown
+        -   reStructuredText的
+-   网站开发
+    -   Web框架
+        -   Django
+        -   Flask
+        -   Bottle
+        -   Pyramid
+        -   TurboGears
+        -   Falcon
+        -   Morepath
+        -   Sanic
+        -   其他Web框架
+    -   模板引擎
+        -   Jinja2
+        -   Mako
+        -   Django模板
+    -   网页设计
+        -   HTML
+        -   CSS
+        -   响应式设计
+        -   Minification
+    -   CSS框架
+        -   Bootstrap
+        -   Foundation
+    -   JavaScript
+        -   React
+        -   Vue.js
+        -   Angular
+    -   任务队列
+        -   Celery
+        -   Redis队列（RQ）
+        -   Dramatiq
+    -   静态站点生成器
+        -   Pelican
+        -   LEKTOR
+        -   MkDocs
+    -   测试
+        -   单元测试
+        -   集成测试
+        -   调试
+        -   代码指标
+    -   网络
+        -   HTTPS
+        -   WebSockets
+        -   WebRTC
+    -   Web APIs
+        -   微服务
+        -   Webhooks
+        -   机器人
+    -   API创建
+        -   API Frameworks
+        -   Django REST Frameworks
+    -   API集成
+        -   Twilio
+        -   Stripe
+        -   Slack
+        -   Okta
+    -   Web应用程序安全性
+        -   SQL注入
+        -   跨站请求伪造
+-   Web应用程序部署 \> 还有一本专门介绍Python Web应用程序部署的书。
 
-  - 托管
-    - 服务器
-    - 静态内容
-    - 内容交付网络（CDNs）
-  - 虚拟专用服务器（VPSs）
-    - Linode
-    - DigitalOcean
-    - Lightsail
-  - 平台即服务
-    - Heroku
-    - PythonAnywhere
-    - AWS CodeStar
-  - 操作系统
-    - Ubuntu Linux
-    - macOS
-    - FreeBSD的
-    - Windows
-  - Web服务器
-    - Apache HTTP Server
-    - Nginx
-    - Caddy
-  - WSGI服务器
-    - Green Unicorn
-    - uWSGI
-    - mod_wsgi
-  - 持续集成
-    - Jenkins
-    - GoCD
-  - 配置管理
-    - Ansible
-    - Salt
-  - 容器
-    Docker
-    Kubernetes
-  - 无服务器架构
-    - AWS Lambda
-    - Azure Functions
-    - Google Cloud Functions
--  DevOps
-  - 监测
-    - 普罗米修斯
-    - 翻车
-    - 哨兵
-    - 侦察
-  - Web App性能
-    - 记录
-    - 高速缓存
-    - 网络分析
-  - Meta
-    - 更改日志
-    - 关于作者
-    - 什么“满堆”意味着什么
-    - 页面状态
-    - 未来发展方向
+    -   托管
+        -   服务器
+        -   静态内容
+        -   内容交付网络（CDNs）
+    -   虚拟专用服务器（VPSs）
+        -   Linode
+        -   DigitalOcean
+        -   Lightsail
+    -   平台即服务
+        -   Heroku
+        -   PythonAnywhere
+        -   AWS CodeStar
+    -   操作系统
+        -   Ubuntu Linux
+        -   macOS
+        -   FreeBSD的
+        -   Windows
+    -   Web服务器
+        -   Apache HTTP Server
+        -   Nginx
+        -   Caddy
+    -   WSGI服务器
+        -   Green Unicorn
+        -   uWSGI
+        -   mod\_wsgi
+    -   持续集成
+        -   Jenkins
+        -   GoCD
+    -   配置管理
+        -   Ansible
+        -   Salt
+    -   容器 Docker Kubernetes
+    -   无服务器架构
+        -   AWS Lambda
+        -   Azure Functions
+        -   Google Cloud Functions
+
+-   DevOps
+-   监测
+    -   普罗米修斯
+    -   翻车
+    -   哨兵
+    -   侦察
+-   Web App性能
+    -   记录
+    -   高速缓存
+    -   网络分析
+-   Meta
+    -   更改日志
+    -   关于作者
+    -   什么"满堆"意味着什么
+    -   页面状态
+    -   未来发展方向
 
 博客文章教程
------
+------------
 
-- Ansible视频课程简介发布！
-- 将Okta身份验证添加到现有的Flask Web App
-- 全栈Python的新教程
-- 如何在DigitalOcean上配置Ubuntu 18.04 LTS Linux服务器
-- 如何使用Okta向Flask应用程序添加用户身份验证
-- 在Ubuntu 18.04 LTS上配置Python 3，Flask和Gunicorn
-- 在macOS上的Docker容器中运行Bottle应用程序
-- 如何向开发人员解释您的产品
-- 如何使用Mapbox将地图添加到Django Web App项目
-- 完整的堆栈Python在PyCon US 2018
-- 在AWS Lambda上监控Python 3.6函数
-- 在macOS上开发Docker容器中的Flask应用程序
-- ReportLab和未来社区项目启动
-- 使用Rollbar监视Django项目
-- 完整堆栈Python 5年
-- GitPython和New Git教程
-- GitPython的第一步
-- DevOps，谢谢维护者并为开源做贡献
-- DevOps，持续交付......和你
-- 本周的PyDev，Django 2.0和Twilio Voices
-- PyCon US 2018 CFP，Python Bytes和Pelican
-- 如何监控Python Web应用程序
-- 如何在Linode上配置Ubuntu 16.04 Linux服务器
-- 使用Bokeh，Bottle和Python创建条形图视觉效果3
-- 如何将托管监视添加到Flask Web应用程序
-- 如何使用Pelican和Jinja2创建您的第一个静态站点
-- 响应条形图与散景，烧瓶和Python 3
-- 如何成为一名成功的自学软件开发人员
-- 如何创建您的第一个Python 3.6 AWS Lambda函数
-- AWS Lambda和Python 2.7入门
-- 如何为您和您的团队选择合适的DevOps工具
-- 在macOS Sierra上创建SSH密钥
-- 在Ubuntu Linux 16.04 LTS上创建SSH密钥
-- 如何用Python打电话
-- 使用Bottle Web App拨打出站电话
-- Python for Entrepreneurs
-- 在Linux Mint 17.3上设置Python 3，Django和Gunicorn
-- 在Ubuntu 16.04上配置Python 3，Pyramid和Gunicorn
-- 使用Python和Bottle回复SMS文本消息
-- 如何使用Python构建您的第一个Slack Bot
-- 使用Python和Flask响应SMS文本消息
-- 如何在Ubuntu 16.04上安装和使用MySQL
-- 在Ubuntu 16.04上使用Python 3和psycopg设置PostgreSQL
-- 如何在Ubuntu 16.04上使用Redis和Python 3以及redis-py
-- 如何使用Python发送彩信图片信息
-- 在Ubuntu 16.04 LTS上配置Python 3，Bottle和Gunicorn以进行开发
-- 如何使用Python发送SMS文本消息
-- 如何在Ubuntu 16.04 LTS上设置Python 3，Flask和Green Unicorn
-- 在Ubuntu 16.04 LTS上设置Python 3，Django和Gunicorn
-- 完整堆栈Python博客
-- 书籍和视频
-- Ansible简介
-- Python for Entrepreneurs
-- 部署Flask Web Apps
+-   Ansible视频课程简介发布！
+-   将Okta身份验证添加到现有的Flask Web App
+-   全栈Python的新教程
+-   如何在DigitalOcean上配置Ubuntu 18.04 LTS Linux服务器
+-   如何使用Okta向Flask应用程序添加用户身份验证
+-   在Ubuntu 18.04 LTS上配置Python 3，Flask和Gunicorn
+-   在macOS上的Docker容器中运行Bottle应用程序
+-   如何向开发人员解释您的产品
+-   如何使用Mapbox将地图添加到Django Web App项目
+-   完整的堆栈Python在PyCon US 2018
+-   在AWS Lambda上监控Python 3.6函数
+-   在macOS上开发Docker容器中的Flask应用程序
+-   ReportLab和未来社区项目启动
+-   使用Rollbar监视Django项目
+-   完整堆栈Python 5年
+-   GitPython和New Git教程
+-   GitPython的第一步
+-   DevOps，谢谢维护者并为开源做贡献
+-   DevOps，持续交付......和你
+-   本周的PyDev，Django 2.0和Twilio Voices
+-   PyCon US 2018 CFP，Python Bytes和Pelican
+-   如何监控Python Web应用程序
+-   如何在Linode上配置Ubuntu 16.04 Linux服务器
+-   使用Bokeh，Bottle和Python创建条形图视觉效果3
+-   如何将托管监视添加到Flask Web应用程序
+-   如何使用Pelican和Jinja2创建您的第一个静态站点
+-   响应条形图与散景，烧瓶和Python 3
+-   如何成为一名成功的自学软件开发人员
+-   如何创建您的第一个Python 3.6 AWS Lambda函数
+-   AWS Lambda和Python 2.7入门
+-   如何为您和您的团队选择合适的DevOps工具
+-   在macOS Sierra上创建SSH密钥
+-   在Ubuntu Linux 16.04 LTS上创建SSH密钥
+-   如何用Python打电话
+-   使用Bottle Web App拨打出站电话
+-   Python for Entrepreneurs
+-   在Linux Mint 17.3上设置Python 3，Django和Gunicorn
+-   在Ubuntu 16.04上配置Python 3，Pyramid和Gunicorn
+-   使用Python和Bottle回复SMS文本消息
+-   如何使用Python构建您的第一个Slack Bot
+-   使用Python和Flask响应SMS文本消息
+-   如何在Ubuntu 16.04上安装和使用MySQL
+-   在Ubuntu 16.04上使用Python 3和psycopg设置PostgreSQL
+-   如何在Ubuntu 16.04上使用Redis和Python 3以及redis-py
+-   如何使用Python发送彩信图片信息
+-   在Ubuntu 16.04 LTS上配置Python 3，Bottle和Gunicorn以进行开发
+-   如何使用Python发送SMS文本消息
+-   如何在Ubuntu 16.04 LTS上设置Python 3，Flask和Green Unicorn
+-   在Ubuntu 16.04 LTS上设置Python 3，Django和Gunicorn
+-   完整堆栈Python博客
+-   书籍和视频
+-   Ansible简介
+-   Python for Entrepreneurs
+-   部署Flask Web Apps
 
-## 译者的话
+译者的话
+--------
 
 我英语能力并不好，我只是经过各google翻译然后再自己修正，然后写成这篇文章。这仅仅只是翻译了目录，内容嘛后面慢慢再更新。
 
-## 参考
-[Full Stack Python](https://www.fullstackpython.com/table-of-contents.html)
+参考
+----
+
+[Full Stack
+Python](https://www.fullstackpython.com/table-of-contents.html)
