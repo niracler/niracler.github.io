@@ -1,18 +1,8 @@
 ---
 date: '2019-03-03 10:53:01'
-tags: 翻译
+tags: [翻译, python]
 title: pythonweb全栈攻略
 ---
-
-
-
-目录
-----
--   [目录](#目录)
--   [系列文章索引](#系列文章索引)
--   [博客文章教程](#博客文章教程)
--   [译者的话](#译者的话)
--   [参考](#参考)
 
 系列文章索引
 ------------
@@ -255,5 +245,4 @@ title: pythonweb全栈攻略
 参考
 ----
 
-[Full Stack
-Python](https://www.fullstackpython.com/table-of-contents.html)
+[Full Stack Python](https://www.fullstackpython.com/table-of-contents.html)
