@@ -322,8 +322,8 @@ codeblock:
 # Wechat Subscriber
 wechat_subscriber:
   enabled: true
-  qcode: /path/to/your/wechatqcode e.g. /uploads/wechat-qcode.jpg
-  description: e.g. subscribe to my blog by scanning my public wechat account
+  qcode: /images/qrcode.jpg
+  description:
 
 # Reward
 # If true, reward would be displayed in every article by default.
@@ -604,8 +604,8 @@ gitalk:
   enable: true
   github_id: niracler # Github repo owner
   repo:  niracler.github.io # Repository name to store issues.
-  client_id: ed86f0b4b42efdc154c1  # Github Application Client ID
-  client_secret: 6f3cd21313d6b5654a33bf29ba31f4c01a227e97  # Github Application Client Secret
+  client_id: a7d2dfffe416f5fadd94  # Github Application Client ID
+  client_secret: ca454dbb409b3cdb9ff4bbb88ecad83ad9c14d9a  # Github Application Client Secret
   admin_user:  niracler # GitHub repo owner and collaborators, only these guys can initialize github issues
   distraction_free_mode: true # Facebook-like distraction free mode
 
