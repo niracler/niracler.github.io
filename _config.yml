@@ -3,7 +3,7 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
+title: Niracler'Blog
 subtitle:
 description:
 keywords:
@@ -13,7 +13,7 @@ timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://github.com/Niracler/niracler.github.io
+url: www.niracler.com
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:

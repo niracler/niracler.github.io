@@ -17,7 +17,7 @@ title: Python全栈攻略
         -   使用Python的公司
         -   最好的Python资源
         -   必须观看Python视频
-        -   播客
+        -   [播客](https://www.niracler.com/2019/03/04/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%8E%A8%E8%8D%90/)
 -   开发环境
     -   文本编辑器和IDE
         -   VIM
