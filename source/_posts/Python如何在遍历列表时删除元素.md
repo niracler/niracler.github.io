@@ -64,7 +64,7 @@ class Solution:
 
 ### 输出结果
 
-![](../images/Screenshot_20190306_201335.png)
+![](/images/Screenshot_20190306_201335.png)
 
 ### 分析
 
@@ -88,7 +88,7 @@ class Solution:
 
 ### 输出结果
 
-![](../images/Screenshot_20190306_203338.png)
+![](/images/Screenshot_20190306_203338.png)
 
 ### 分析
 因为拷贝List的行为需要耗费资源。
@@ -102,22 +102,24 @@ class Solution:
 ```python
 class Solution:
     def removeDuplicates(self, nums: List[int]) -> int:
-        if len(nums)==0:
-            return 0
-        cur = 0
-        for i in range(1, len(nums)):
-            if nums[i] != nums[cur]:
-                cur += 1
-                nums[cur] = nums[i]
-        return cur+1
+        if len(nums) <= 1:
+            return len(nums)
+
+        i = 0
+
+        for j in range(1, len(nums)):
+            if nums[i] != nums[j]:
+                i += 1
+                nums[i] = nums[j]
+        return j + 1
 ```
 
 ### 输出结果
 
-![](../images/)
+![](/images/Screenshot_20190306_213648.png)
 
 ### 分析
-用两个指针，一个指针用于扫描遍历整个列表，另一个指针始终指向下一个数字要写入列表的位置。效果相当于在遍历列表的时候，将不同的数字重新写入到原数组。
+这类题想明白了其实解题很简单，重复的需要去掉，无非就是遍历数组，发现重复，就把后面的往前移，把重复值覆盖掉。具体说，可以维护2个指针，慢指针开始指向数组第一个元素，快指针指向第二个元素，然后快指针不断判断自己当前元素和前一个元素是否相同，相同则快指针后移，不相同则将当前值赋值给慢指针的后一个元素，慢指针后移。最后慢指针指向的元素及前面所有元素都是不重复的。
 
 参考
 ---
