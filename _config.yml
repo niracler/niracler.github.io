@@ -81,3 +81,5 @@ deploy:
   type: git
   repo: https://github.com/Niracler/niracler.github.io.git
   branch: master
+
+use_font_lato: false
