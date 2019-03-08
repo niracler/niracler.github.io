@@ -1,7 +1,7 @@
 ---
 title: 关于python的播客推荐
 date: 2019-03-04 08:40:44
-tags: [翻译,Python,fullstackpython]
+tags: [翻译,python,fullstackpython]
 ---
 
 # 最好的Python播客
@@ -9,6 +9,8 @@ tags: [翻译,Python,fullstackpython]
 > 请注意， 是播客而不是博客
 
 该文章包括活跃的Python相关和软件工程相关的高质量播客介绍。
+
+<!-- more -->
 
 ## Python相关的播客
 

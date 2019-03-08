@@ -1,6 +1,6 @@
 ---
 date: '2019-03-03 10:53:01'
-tags: [翻译, Python, fullstackpython]
+tags: [翻译, python, fullstackpython]
 title: Python全栈攻略
 ---
 
@@ -18,6 +18,8 @@ title: Python全栈攻略
         -   最好的Python资源
         -   必须观看Python视频
         -   [播客](https://www.niracler.com/2019/03/04/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E5%8D%9A%E5%AE%A2%E6%8E%A8%E8%8D%90/)
+
+<!-- more -->
 -   开发环境
     -   文本编辑器和IDE
         -   VIM
