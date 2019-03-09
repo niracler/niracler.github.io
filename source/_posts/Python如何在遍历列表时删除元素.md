@@ -95,6 +95,33 @@ class Solution:
 ### 分析
 因为拷贝List的行为需要耗费资源。
 
+此语法是切片分配。 一片[：]表示整个列表。 nums [：] =和nums =之间的区别在于后者不替换原始列表中的元素。 当有两个对列表的引用时，这是可观察的
+
+```python
+>>> a = list(range(10))
+>>> b = a
+>>> a[:] = [0, 0, 0] # changes what a and b both refer to
+>>> b
+[0, 0, 0]
+To see the difference just remove the [:] from the above sequence.
+```
+
+```Python
+>>> a = list(range(10))
+>>> b = a
+>>> a = [0, 0, 0] # a now refers to a different list than b
+>>> b
+[0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+```
+
+要按字面意思取得问题的标题，如果list是变量名而不是内置，它将用省略号替换序列的长度
+
+```Python
+>>> list = [1,2,3,4]
+>>> list[:] = [...]
+>>> list
+[Ellipsis]
+```
 
 我的第三个优化的解法
 ------------
