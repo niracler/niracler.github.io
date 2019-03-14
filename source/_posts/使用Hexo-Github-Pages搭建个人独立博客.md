@@ -121,8 +121,8 @@ $ git clone https://github.com/(用户名)/(仓库名).git:克隆到本地
 
 ```bash
 $ cd ..
-$ git clone https://github.com/ZhanZongHan/(仓库名).git
-$ cp -r (仓库名)/.git .git
+$ git clone https://github.com/(用户名)/(仓库名).git
+$ cp -r (仓库名)/.git blog/.git
 ```
 
 ### 安装主题
@@ -187,7 +187,7 @@ $ hexo clean && hexo g && hexo d #等于一次性执行了，清空、刷新、�
 
 ### 总结
 
-对于日常修改博客的时候，应该首先用```git add . ```, ```git commit -m “…”``` , ```git push origin hexo```　将内容保存至github中，然后才用```hexo g -d```部署博客
+对于日常修改博客的时候，应该首先用 ```git add . ``` , ```git commit -m “…”``` , ```git push origin hexo```　将内容保存至github中，然后才用 ```hexo g -d``` 部署博客
 
 #### Hexo常用的几个命令：
 

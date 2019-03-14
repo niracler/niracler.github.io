@@ -191,7 +191,7 @@ social:
   #YouTube: https://youtube.com/yourname || youtube
   #Instagram: https://instagram.com/yourname || instagram
   #Skype: skype:yourname?call|chat || skype
-  Skype: skype:yourname?call|chat || skype
+  Telegram: https://t.me/niracler_channel || Telegram
 
 social_icons:
   enable: true
