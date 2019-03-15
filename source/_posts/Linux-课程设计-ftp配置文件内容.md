@@ -1,7 +1,8 @@
 ---
 title: Linux | 课程设计 ftp配置文件内容
 date: 2018-03-08 09:06:40
-tags: [linux，]
+tags:
+  - linux
 ---
 
 ## 这两个地方是要改

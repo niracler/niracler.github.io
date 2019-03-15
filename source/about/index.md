@@ -39,7 +39,7 @@ date: 2019-03-03 19:53:46
 # 个人信息
 
  - 男/1997
- - 本科/萌鹿大学计算机系
+ - 本科/东莞理工学院软件工程专业
  - 工作年限：在校生
  - 技术博客：https://www.niracler.com
  - Github：https://github.com/niracler
