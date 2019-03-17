@@ -122,12 +122,11 @@ web
 
 ### 容器
 
--   [Docker ------
-    從入門到實踐](https://legacy.gitbook.com/book/philipzheng/docker_practice/details)
+-   [Docker 從入門到實踐](https://legacy.gitbook.com/book/philipzheng/docker_practice/details)
 -   [Docker原理圖解及全環境安裝](https://legacy.gitbook.com/book/joshhu/docker_theory_install/details)
--   [自己学Docker:10.Docker.v1.12升级到v1.13.0
-    正式版](https://blog.csdn.net/mungo/article/details/54632686)
+-   [自己学Docker:10.Docker.v1.12升级到v1.13.0正式版](https://blog.csdn.net/mungo/article/details/54632686)
     关于docker的版本升级可以看这里
+-   [优雅地解决docker容器中mysql的编码问题](https://stackoverflow.com/questions/46004648/how-to-setup-mysql-with-utf-8-using-docker-compose)
 
 开发环境
 --------
