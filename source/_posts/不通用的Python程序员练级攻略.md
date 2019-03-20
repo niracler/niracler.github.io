@@ -140,6 +140,7 @@ web
 
 -   [Git教程-廖雪峰的官方网站](https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000)\
 -   [GitHub团队项目合作流程](https://www.cnblogs.com/schaepher/p/4933873.html)
+-   [Git 克隆时不带.git文件夹](https://stackoverflow.com/questions/11497457/git-clone-without-git-directory)
 
 ### 画图
 

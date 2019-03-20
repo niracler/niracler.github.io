@@ -191,7 +191,8 @@ social:
   #YouTube: https://youtube.com/yourname || youtube
   #Instagram: https://instagram.com/yourname || instagram
   #Skype: skype:yourname?call|chat || skype
-  Telegram: https://t.me/niracler_channel || Telegram
+  Telegram: https://t.me/niracler_channel ||
+  简书: https://www.jianshu.com/u/4e3cc9bb3aa1 ||
 
 social_icons:
   enable: true
