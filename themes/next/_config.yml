@@ -213,7 +213,8 @@ links_layout: block
 links:
   Allen Tan: https://allenxz.github.io/
   tomlao的博客: https://tomlao.github.io/
-  wt的播客: https://wt-git-repository.github.io/
+  wt的博客: https://wt-git-repository.github.io/
+  星尘的博客: https://www.antonio.net.cn/
 
 # Sidebar Avatar
 avatar:
@@ -607,11 +608,11 @@ gitment:
 gitalk:
   enable: true
   github_id: niracler # Github repo owner
-  repo:  niracler.github.io # Repository name to store issues.
-  client_id: a7d2dfffe416f5fadd94  # Github Application Client ID
-  client_secret: ca454dbb409b3cdb9ff4bbb88ecad83ad9c14d9a  # Github Application Client Secret
+  repo: niracler.github.io # Repository name to store issues.
+  client_id: 21f1902685aba7dd8b32  # Github Application Client ID
+  client_secret: bc8166050714675956f53eb42aae9d960ad21478  # Github Application Client Secret
   admin_user:  niracler # GitHub repo owner and collaborators, only these guys can initialize github issues
-  distraction_free_mode: true # Facebook-like distraction free mode
+  distraction_free_mode: false # Facebook-like distraction free mode
 
 # Baidu Share
 # Available values: button | slide
