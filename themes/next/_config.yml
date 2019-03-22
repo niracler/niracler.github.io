@@ -614,6 +614,7 @@ gitalk:
   client_secret: bc8166050714675956f53eb42aae9d960ad21478  # Github Application Client Secret
   admin_user:  niracler # GitHub repo owner and collaborators, only these guys can initialize github issues
   distraction_free_mode: false # Facebook-like distraction free mode
+  distractionFreeMode: false
 
 # Baidu Share
 # Available values: button | slide

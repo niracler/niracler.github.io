@@ -25,7 +25,7 @@ $sudo su
 $docker ps -aq
 ```
 
-停止 ```docker ps -aq``` 所列出的容器, (才能够删除其中的images)
+停止 docker ps -aq 所列出的容器, (才能够删除其中的images)  
 
 ```bash
 $docker stop $(docker ps -aq)
