@@ -127,6 +127,17 @@ web
 -   [自己学Docker:10.Docker.v1.12升级到v1.13.0正式版](https://blog.csdn.net/mungo/article/details/54632686)
     关于docker的版本升级可以看这里
 -   [优雅地解决docker容器中mysql的编码问题](https://stackoverflow.com/questions/46004648/how-to-setup-mysql-with-utf-8-using-docker-compose)
+-   [使用docker搭建hadoop分布式集群](https://blog.csdn.net/xu470438000/article/details/50512442)  
+-   [CentOS更换阿里云YUM源](https://www.jianshu.com/p/38c9e98ec481)   
+-   [docker-hadoop](https://github.com/big-data-europe/docker-hadoop)  
+-   [debian系linux，更换apt-get官方源为国内源](https://blog.csdn.net/yjk13703623757/article/details/78943345)  
+-   [如何使用Apt-Get在Debian 8上安装Java](https://www.howtoing.com/how-to-install-java-with-apt-get-on-debian-8)  
+-   [debian8无痛安装JDK8](https://www.jianshu.com/p/1cf26c0c9e9b)
+-   [hadoop安装](https://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.7.7/hadoop-2.7.7.tar.gz)
+-   [HBase Python API](https://www.cnblogs.com/fanghao/p/8542170.html)
+-   [基于 docker 搭建 hadoop 跨主机集群](https://hacpai.com/article/1508232710946)
+-   [Docker常用命令](https://segmentfault.com/a/1190000012063374)
+-   [使用Docker Swarm模式搭建Swarm集群](https://www.jianshu.com/p/df744c4e375e)
 
 开发环境
 --------
