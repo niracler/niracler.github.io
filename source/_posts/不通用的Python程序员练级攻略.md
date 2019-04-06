@@ -118,6 +118,15 @@ web
 
 ### server
 
+[virsh的使用与实例步骤安装虚拟机](https://blog.csdn.net/panfengyun12345/article/details/16878873)
+
+```bash
+virt-install --virt-type kvm --name CentOS-7-x86_64_4 --ram 1024 \
+    --cdrom=/mnt/sda6/driver/CentOS-7-x86_64-Minimal-1810.iso \
+    --disk path=/mnt/sda5/vm-disk/CentOS-7-x86_64_4.raw,device=disk,bus=virtio \
+    --network bridge:br0 --graphics vnc,listen=0.0.0.0,port=5904 --noautoconsole
+```
+
 ### 文件服务器
 
 ### 容器

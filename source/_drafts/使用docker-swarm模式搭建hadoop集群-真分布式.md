@@ -23,6 +23,8 @@ tags:
   stardust-pc  			  
 
 
+
+
 ### 建立 Swarm 网络
 
 >在 master 上运行以下命令，建立以 master 为主节点的 swarm 网络。注意，ip 改为你自己网络中 master 的 ip。
