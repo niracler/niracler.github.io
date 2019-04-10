@@ -16,19 +16,36 @@ date: 2019-03-29 10:10:43
 
 
 ```bash
-git clone https://github.com/big-data-europe/docker-hadoop.git
-cd docker-hadoop/
+$git clone https://github.com/Niracler/bigdata-exercise.git
+$cd bigdata-exercise/docker-hadoop/
 ```
 
 启动
 
 ```bash
-$docker-compose -f docker-compose-nginx.yml up -d
+$sudo su
+$docker-compose -f docker-compose-local.yml up -d
 ```
 
-访问http://localhost:8080/ 效果
+访问http://localhost:50070/ 效果
 
 ![](/images/Screenshot_20190329_103435.png)
+
+进入容器
+
+```bash
+$docker exec -it namenode bash
+```
+
+上传文件测试
+
+```bash
+$touch test
+$hdfs dfs -put test  /
+$hdfs dfs -ls /
+```
+
+![](/images/Screenshot_20190410_104008.png)
 
 然后？就没有然后了，下面是dockerfile等文件的细节
 
