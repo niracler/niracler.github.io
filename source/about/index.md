@@ -97,6 +97,9 @@ date: 2019-03-03 19:53:46
  - [WXYZ](http://github.com/yourname/projectname)：项目的简要说明，Star和Fork数多的可以注明 -->
 
 ## 技术文章
+
+- [使用docker搭建hadoop伪分布式](https://www.niracler.com/2019/03/29/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAhadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F/)
+
 <!-- （挑选你写作或翻译的技术文章，好的文章可以从侧面证实你的表达和沟通能力，也帮助招聘方更了解你）
 
 - [一个产品经理眼中的云计算：前生今世和未来](http://get.jobdeer.com/706.get)
@@ -111,7 +114,41 @@ date: 2019-03-03 19:53:46
 # 技能清单
 <!-- （我一般主张将技能清单写入到工作经历里边去。不过很难完整，所以有这么一段也不错） -->
 
-以下均为我熟练使用的技能  
+<!-- 以下均为我熟练使用的技能   -->
+
+Web开发：
+- 了解Python后端开发的相关知识，熟练使用Django，使用restful api搭建前后分离的web项目，了解html、js、css
+
+数据挖掘：
+- 了解numpy、pandas、scipy等科学计算库， 以及scikit-learn等机器学习库
+- 了解聚类、分类、回归等机器学习算法
+
+数据库：
+- 了解MySQL、Redis等数据库开发，并有相对丰富的使用开发经验
+- 了解MySQL的增删改查语句、关联查询、索引、存储过程、事务操作，以及MySQL的基本优化知识
+
+大数据处理：
+- 有搭建分布式集群的经验
+- 处理过上T级别的数据量，有分布式数据的处理经验（Hadoop/Hbase/Hive）
+
+数据采集：
+- 了解scrapy爬虫框架，掌握简单的爬虫开发知识
+
+算法：
+- 熟悉常用算法，如快排、二叉树、堆排序、希尔排序等常用排序
+
+其他：
+- 掌握常用版本控制工具Git，了解git-flow、gitlab-flow
+- 熟悉docker的常见使用，如docker-compose及Dockerfile的编写、docker的swarm集群搭建
+- 熟悉Linux平台，及常用shell命令
+- 熟悉Linux操作系统的使用，掌握linux常用命令
+
+
+
+
+
+
+
 
 <!--
 - Web开发：PHP/Hack/Node

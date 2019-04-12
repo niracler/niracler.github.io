@@ -212,7 +212,7 @@ var vm = new Vue({
 </div>
 ```
 
-### vue指令之v-for和v-show
+### vue指令之v-if和v-show
 
 一般来说,v-if有更高的切换消耗而v-show有更高的初始渲染消耗.因此,如果需要频繁切换,应使用v-show, 而运行时不大可能改变的,用v-if更好
 
