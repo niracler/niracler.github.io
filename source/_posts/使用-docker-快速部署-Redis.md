@@ -16,9 +16,9 @@ date: 2019-05-11 15:29:02
 $docker run --name my-redis -d redis
 ```
 
-- ```-d``` 是让容器在后台启动  
-- ```--name my-redis``` 为这容器命名
-- ```redis``` 镜像名
+- -d 是让容器在后台启动  
+- --name my-redis 为这容器命名
+- redis 镜像名
 
 <!--more-->
 
@@ -28,8 +28,8 @@ $docker run --name my-redis -d redis
 $docker run --name my-redis -v ./data:/data -d redis redis-server --appendonly yes
 ```
 
-- ```-v ./data:/data``` 将持久化的数据映射出容器外
-- ```redis-server --appendonly yes``` 容器的执行命令，这里就是 redis 的持久化启动命令
+- -v ./data:/data 将持久化的数据映射出容器外
+- redis-server --appendonly yes 容器的执行命令，这里就是 redis 的持久化启动命令
 
 ### 映射 redis 的 6379 端口
 

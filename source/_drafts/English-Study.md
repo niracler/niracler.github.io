@@ -49,3 +49,27 @@ tags:
 
 6. Suggest as a desirable or necessary course of action
    > - the treatment is likely to be indicated in severely depressed patients
+
+### nuisance
+
+1. A person, thing, or circumstance causing inconvenience or annoyance
+    > - I hope you 're not going to make a nuisance of yourself
+
+### peak
+
+Verb
+
+Noun
+
+### preventing
+
+Verb
+
+1. Keep (something) from happening or arising
+   > - action must be taken to prevent further accident
+
+### prohibiting
+
+Verb
+
+### sensitive

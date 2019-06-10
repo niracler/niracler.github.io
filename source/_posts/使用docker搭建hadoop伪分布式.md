@@ -13,8 +13,6 @@ date: 2019-03-29 10:10:43
 
 将这个项目克隆下来，我的Dockerfile都是基于[这个项目](https://github.com/big-data-europe/docker-hadoop)改写的：
 
-
-
 ```bash
 $git clone https://github.com/Niracler/bigdata-exercise.git
 $cd bigdata-exercise/docker-hadoop/

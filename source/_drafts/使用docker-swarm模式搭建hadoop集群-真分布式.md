@@ -14,13 +14,15 @@ tags:
 2. 物理机（或虚拟机）：两台或两台以上，本文使用三台
 3. 网络：物理机需在同一子网中（最好给它分配固定ip），验证方式：互相ping是否能够ping通
 4. 均安装了docker 17.X 版本（要求支持swarm）
+
 本文环境介绍
-1. 物理机(hostname)				
-	niracler-pc			  
-	centos7-31		
-  centos7-32	 
-  share-pc
-  stardust-pc  			  
+
+1. 物理机(hostname)  	
+	niracler-pc  
+	centos7-31  
+  centos7-32  
+  share-pc  
+  stardust-pc    			  
 
 
 
