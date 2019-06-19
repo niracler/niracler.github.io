@@ -22,7 +22,7 @@ date: 2019-03-03 19:53:46
  - Github：https://github.com/niracler
  - 简书: https://www.jianshu.com/u/4e3cc9bb3aa1
  - 期望职位：Python程序员，数据分析师
- - 期望薪资：税前月薪2k~5k，特别喜欢的公司可例外
+ - 期望薪资(实习)：税前月薪2k~5k，特别喜欢的公司可例外
  - 期望城市：深圳，东莞等
 
 ---
@@ -76,6 +76,7 @@ Web开发：
 - 熟悉docker的常见使用，如docker-compose及Dockerfile的编写、docker的swarm集群搭建
 - 熟悉Linux平台，及常用shell命令
 - 熟悉Linux操作系统的使用，掌握linux常用命令
+- 能够熟练使用Google英文搜索
 
 ---
 
