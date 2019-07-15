@@ -22,7 +22,7 @@ date: 2019-03-03 19:53:46
  - Github：https://github.com/niracler
  - 简书: https://www.jianshu.com/u/4e3cc9bb3aa1
  - 期望职位：Python程序员，数据分析师
- - 期望薪资(实习)：税前月薪2k~5k，特别喜欢的公司可例外
+ - 期望薪资(实习)：税前月薪5k~10k，特别喜欢的公司可例外
  - 期望城市：深圳，东莞等
 
 ---
@@ -34,6 +34,7 @@ date: 2019-03-03 19:53:46
 - [数聚 (专为个人定制的信息流)](https://www.jianshu.com/p/e21fe34ced30)
 - [对各大新闻网站中热点话题的检测与跟踪系统](https://www.jianshu.com/p/c5d96840dfd4)
 - 基于数据挖掘的学生学习特征分析系统
+- [基于文本及用户信息及社交网络的性别分类](https://www.jianshu.com/p/fd2bdf5b0c43)
 
 ### 技术文章
 
