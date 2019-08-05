@@ -5,10 +5,20 @@
 ![](source/images/header.png)
 
 
+## 安装npm并换中国源
 
-## 安装
+```
+sudo pacman -S npm
+
+npm install cnpm --save
+```
+
+## 安装hexo
 
 ```bash
+
+cnpm install hexo-cli -g
+
 cnpm install hexo --save
 
 cnpm install hexo-server
