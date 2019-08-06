@@ -32,6 +32,8 @@ cnpm install hexo-wordcount --save #字数统计
 
 ```bash
 hexo new [name] #新建文章
+
+$ hexo new draft <title> #建立文章草稿
 ```
 
 ## 部署
