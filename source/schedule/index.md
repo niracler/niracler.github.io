@@ -44,8 +44,6 @@ tags: 日程表
 
 ## 原则
 
-1. Five hundred pages English book one week.
-2. No fast food, sugar, carbonated soft drinks.
-3. Anime , comic and game only weekend afternoon.
-4. Sleeping at 23:30
-5. One blog per week
+1. Sleeping at 23:30
+
+I think I should no more daily tasks but weekly tasks, which benefit me to focus.And try to continue one thing for a month before adding another rule
