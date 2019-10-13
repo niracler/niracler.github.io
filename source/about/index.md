@@ -16,7 +16,7 @@ date: 2019-03-03 19:53:46
 ## 个人信息
 
  - 男/1997
- - 本科/东莞理工学院软件工程专业
+ - 本科/东莞理工学院软件工程(卓越计划班)
  - 工作年限：在校生
  - 技术博客：https://www.niracler.com
  - Github：https://github.com/niracler
@@ -27,18 +27,38 @@ date: 2019-03-03 19:53:46
 
 ---
 
-## 工作经历
+## 项目经历
 
-### 东莞理工学院
+### 2019年8月10日 - 至今  对各大新闻网站中热点话题的检测与跟踪系统
 
-- [数聚 (专为个人定制的信息流)](https://www.jianshu.com/p/e21fe34ced30)
-- [对各大新闻网站中热点话题的检测与跟踪系统](https://www.jianshu.com/p/c5d96840dfd4)
-- 基于数据挖掘的学生学习特征分析系统
-- [基于文本及用户信息及社交网络的性别分类](https://www.jianshu.com/p/fd2bdf5b0c43)
+- 简介：可以帮助人们把分散的信息有效地汇集并组织起来，从整体上了解一个事件的全部细节以及与该事件与其它事件之间的关系的系统。
+- 职责：全栈工程师（独立开发）
+- 源码：https://github.com/game-news
+- DEMO：https://gamenews.niracler.com
+- 技术栈： Django/vue/Flask/MongoDB/SQLAlchemy/RESTful/Scrapy/Celery/rabbitmq/nginx/docker
+- 介绍链接：[对各大新闻网站中热点话题的检测与跟踪系统](https://www.jianshu.com/p/c5d96840dfd4)
 
-### 技术文章
+### 2019年5月 - 7月 基于文本及用户信息及社交网络的性别分类
 
-- [使用docker搭建hadoop伪分布式](https://www.niracler.com/2019/03/29/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAhadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F/)
+- 简介：旨在研究中文微博用户的性别分类问题，即根据微博提供的中文文本信息对注册用户的性别 进行识别。
+- 职责： 作者，微博数据爬取->数据清洗->特征工程->用不同模型进行训练
+- 技术栈：numpy/pandas/matplotlib/sklearn/tensorflow/keras
+- 介绍链接：[基于文本及用户信息及社交网络的性别分类](https://www.jianshu.com/p/fd2bdf5b0c43)
+
+### 2018年5月1日 - 至今 东莞理工学院 基于数据挖掘的学生学习特征分析系统
+
+- 简介：学生事务管理作为高效管理工作的组成部分，在于促进学生的发展，帮助学生在学习和自我成长方面取得进步。通过对师生政治观点、思想动态、心理健康、学习状况、关注热点、生活需求等方面数据进行实时分析计算，研判师生思想动态，为校园网络文化工作顺利开展提供有力保障，同时有助于提升高校的人才培养质量。
+- 职责：团队负责人，负责项目工作的调度，以及分析方案的设计
+- 源码：保密
+- 技术栈：numpy、pandas、scipy等科学计算库， 以及scikit-learn等机器学习库
+
+### 2018年2月 - 5月 数聚 (专为个人定制的信息流)
+
+- 简介：能为用户将每天关注的的消息整合起来，以供一次性阅读
+- 职责：数据存储与爬取
+- 源码：https://github.com/OneSmallTeam/scraper
+- 技术栈：scrapy
+- 介绍链接：[数聚 (专为个人定制的信息流)](https://www.jianshu.com/p/e21fe34ced30)
 
 ---
 
@@ -46,26 +66,41 @@ date: 2019-03-03 19:53:46
 
 Web开发：
 
-- 了解Python后端开发的相关知识，熟练使用Django，使用restful api搭建前后分离的web项目，了解html、js、css
+- 熟悉 Python 后端开发的相关知识
+- 熟悉 Django web 开发框架，熟悉 MVC 模型，熟悉中间件、Admin 站点管理、图片上传、分页，邮件传输。使用restful api搭建前后分离的web项目
+- 了解Flask的后端api搭建
+- 了解html、js、css，以及前端框架Vue的基础的用法
+
+数据采集：
+
+- 熟练使用scrapy爬虫框架对采集目标进行数据收集，跟踪网页链接构建分类信息字段分析目标网址，使用 **Xpath, re** 提取信息。通过抓包工具获取 Ajax 链接并解析 json 数据。
+- 以及scrapyt-redis分布式爬虫的基本使用,
+- 熟练使用re、requests、beautifulSoup等库
+- 熟练使用爬虫伪装中的代理IP、UserAgent
+
+数据库：
+
+- 熟练使用MongoDB、MySQL、Redis等数据库开发，并有相对丰富的使用开发经验
+- 熟练使用MySQL的增删改查语句、关联查询、索引、存储过程、事务操作，以及MySQL的基本优化知识
+- 熟练使用MongoDB数据库增删改查
+
+运维：
+
+- 掌握常用版本控制工具Git，了解git-flow、gitlab-flow
+- 熟悉docker的常见使用，如docker-compose及Dockerfile的编写、docker的swarm集群搭建
+- 熟悉Linux平台，及常用shell命令
+- 熟悉Linux操作系统的使用，熟练掌握常用命令和调优监控手段
+- 熟悉使用Nginx 反向代理与负载均衡
 
 数据挖掘：
 
 - 了解numpy、pandas、scipy等科学计算库， 以及scikit-learn等机器学习库
 - 了解聚类、分类、回归等机器学习算法
 
-数据库：
-
-- 了解MySQL、Redis等数据库开发，并有相对丰富的使用开发经验
-- 了解MySQL的增删改查语句、关联查询、索引、存储过程、事务操作，以及MySQL的基本优化知识
-
 大数据处理：
 
 - 有搭建分布式集群的经验
 - 处理过上T级别的数据量，有分布式数据的处理经验（Hadoop/Hbase/Hive）
-
-数据采集：
-
-- 了解scrapy爬虫框架，掌握简单的爬虫开发知识
 
 算法：
 
@@ -73,13 +108,20 @@ Web开发：
 
 其他：
 
-- 掌握常用版本控制工具Git，了解git-flow、gitlab-flow
-- 熟悉docker的常见使用，如docker-compose及Dockerfile的编写、docker的swarm集群搭建
-- 熟悉Linux平台，及常用shell命令
-- 熟悉Linux操作系统的使用，掌握linux常用命令
-- 能够熟练使用Google英文搜索
+- 能够熟练使用Google英文搜索，阅读相关英文文档
 
 ---
+
+## 获奖经历
+
+- 2019年第十届蓝桥杯广东省赛区C/C++程序设二等奖
+- 2018年度软件工程系”微三云杯”程序设计竞赛(算法类)三等奖（C/C++）
+
+## 自我评价
+
+- 参加过多个项目的开发，熟悉常见的业务处理和开发流程，能够快速地融入团队
+- 经常潜水于各大开源社区，拥有丰富的代码量、较强的自学能力和开阔的眼界
+- 每周看一本任意类型的书，例如科幻，历史，反乌托邦，，，
 
 ## 致谢
 
