@@ -323,5 +323,3 @@ print('Hello, %d %s %.2f' % (666, 'Python', 9.99999))
 print('{k} is {v}'.format(k='python', v='easy'))
 print('{0} is {1}'.format('python', 'easy'))
 ```
-
-### 
