@@ -203,4 +203,152 @@ pass是空语句，是为了保持程序结构的完整性。pass不做任何事
 
 abs()
 
+返回数字的绝对值
+
 map()
+
+根据函数对指定序列做映射，map()函数接收两个参数,一个是函数，一个是可迭代对象,map将传入的函数依次作用到序列的每个元素，并把结果作为新的list返回。Py2是返回list，而Py3是返回迭代器
+
+filter()
+
+该函数hi接收一个函数和一个list(可迭代对象)，这个函数的作用是对每个元素进行判断，返回True 或者 False。能根据判断结果过滤掉不符合条件的元素，返回由符合条件的元素组成的新list
+
+```python
+res = list(filter(lambda x : x % 2 == 0 , [6,84,15,34,3,8,4,36,84,8]))
+print(res)
+# [6, 84, 34, 8, 4, 36, 84, 8]
+```
+
+map()与filter()
+
+参数以及返回值的类型都一样，filter是做筛选的，而map是对可迭代对象做操作的
+
+isinstance()与type()
+
+isinstance函数判断一个对象是否是一个已知的类型，类似与type，而区别是type不会认为子类是一个父类类型，不考虑继承关系，而isinstacne考虑继承关系，所以推荐使用isintance??
+
+zip() 拉链函数
+
+将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的迭代器，如果各个迭代器的元素个数不一致，则返回列表长度与最短对象相同
+
+```python
+print(list(zip([0,1,3], [5,6,7], ['a','b'])))
+
+# [(0, 5, 'a'), (1, 6, 'b')]
+```
+
+reduce()
+
+```python
+>>> from functools import reduce
+>>> print(reduce(lambda x,y: x+y, [1,2,3,4,5,6]))
+21
+```
+
+### 54 如何安装第三方模块，以及用过哪些第三方模块
+
+1. pip安装
+2. 源码安装
+
+用过的第三方模块，太多了，我不想列举
+
+### 55 常用模块都有哪些
+
+re, os, json, time, 爬虫里面的requests/beautifulsoup4
+
+### 56 re的match和search的区别
+
+- match 尝试从字符串的起始位置匹配一个模式，如果不是起始位置匹配成功的话，match就返回None
+- search 是扫描整个字符串并返回第一个成功的匹配
+
+### 57 什么是正则的贪婪匹配
+
+匹配一个字符串没有节制，能匹配多少就去匹配多少，知道没有匹配的为止。
+
+### 58 def func(a,b=[])这种写法有什么坑
+
+例子：
+
+```python
+def func(a, b = []):
+    b.append(1)
+    print(a, b)
+
+func(2)
+func(2)
+func(2)
+
+# 2[1]
+# 2[1,1]
+# 2[1,1,1]
+
+```
+
+那个默认参数经过多次执行还是第一次实例化的那个地址
+
+### 59 下面这两种操作有什么区别
+
+```python
+a = [1, 2, 3, 4, 5]
+b = a
+c = a[:]
+```
+
+一个是指针指向原来数组的那片内存空间，一个是拷贝，重新申请一片内存空间再拷贝进去
+
+### 60 如何在函数中设置一个全局变量
+
+使用 global 语句啊
+
+### 61 logging 模块的作用，以及应用场景
+
+logging模块定义的函数和类为应用程序和库的开发实现了一个灵活的事件日志系统
+
+作用 可以了解程序运行情况是否正常，在程序出现故障时快速定位出错地方以及故障分析
+
+### 62 请用代码解答实现stack
+
+- Stack()创建一个新的空栈
+- push()添加一个新元素item到栈顶
+- pop()弹出栈顶元素
+- is_empty()判断栈顶是否为空
+- size()返回栈顶元素个数
+
+```python
+class Stack():
+    def __init__(self):
+        self.items = []
+    def push(self, item):
+        self.items.append(item)
+    def pop(self):
+        return self.items.pop()
+    def peek(self):
+        return self.items[len(self.items)-1]
+    def is_empty(self):
+        return not self.items
+    def size(self):
+        return len(self.items)
+
+>>> stack = Stack()
+>>> stack.push('H')
+>>> stack.push('E')
+>>> stack.push('L')
+>>> stack.pop()
+'L'
+>>> stack.peek()
+'E'
+>>> stack.is_empty()
+False
+>>> stack.size()
+2
+```
+
+### 63 简述生成器，迭代器，可迭代对象，以及应用场景
+
+迭代器
+
+生成器
+
+可迭代对象
+
+装饰器

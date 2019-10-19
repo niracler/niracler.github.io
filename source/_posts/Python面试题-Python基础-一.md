@@ -277,7 +277,14 @@ Python 字典(Dictionary) fromkeys() 函数用于创建一个新字典,以序列
 
 ### 30 一行代码实现删除列表中重复的值
 
-这个真的挺有难度的，等等
+~~这个真的挺有难度的，等等~~
+
+没有比这更简单的了
+
+```python
+a = [64,3,5,4,8,4,34,83,45,48,3,3,513,8]
+list(set(a))
+```
 
 ### 31 如何实现"1,2,3"变成['1','2','3']
 
@@ -301,8 +308,20 @@ Python 字典(Dictionary) fromkeys() 函数用于创建一个新字典,以序列
 
 ### 35 常用字符串格式化哪几种
 
+字符串格式化的方法主要有两种
+
+1. 占位符 %
+
 ```python
-"".format()
-"".join()
-"" % 
+print('Hello, %s' % 'Python')
+print('Hello, %d %s %.2f' % (666, 'Python', 9.99999))
 ```
+
+2. format
+
+```python
+print('{k} is {v}'.format(k='python', v='easy'))
+print('{0} is {1}'.format('python', 'easy'))
+```
+
+### 
