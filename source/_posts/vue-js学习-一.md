@@ -7,9 +7,8 @@ tags:
 
 
 # vue-exercise
+
 不定期的vue学习动态
-
-
 第一天
 ----
 
@@ -31,7 +30,7 @@ tags:
 
 ```vue
 <p v-cloak> {{ msg }} </p>
-<h4 v-text='msg'></h4>        
+<h4 v-text='msg'></h4>
 ```
 
 2. 如何定义一个基本的Vue代码结构
@@ -68,7 +67,6 @@ tags:
 2. 截取字符串
 3. 定时循环截取
 
-
 ### v-model
 
 [代码范例](day01/05.v-model.html)
@@ -83,52 +81,52 @@ tags:
 
 1. HTML代码结构  
 
-```html
-<input type="text" v-model="n1">
+    ```html
+    <input type="text" v-model="n1">
 
-<select v-model="opt">
-    <option value="+">+</option>
-    <option value="-">-</option>
-    <option value="*">*</option>
-    <option value="/">/</option>
-</select>
+    <select v-model="opt">
+        <option value="+">+</option>
+        <option value="-">-</option>
+        <option value="*">*</option>
+        <option value="/">/</option>
+    </select>
 
-<input type="text" v-model="n2">
-<input type="button" value="=" @click="calc">
-<input type="text" v-model="result">
-```
+    <input type="text" v-model="n2">
+    <input type="button" value="=" @click="calc">
+    <input type="text" v-model="result">
+    ```
 
 2. vue实例结构
 
-```vue
-var vm = new Vue({
-    el: "#app",
-    data: {
-        n1:0,
-        n2:0,
-        result:0,
-        opt: "-",
-    },
-    methods: {
-        calc() {
-            switch (this.opt) {
-                case '+':
-                    this.result = parseInt(this.n1) + parseInt(this.n2);
-                    break;
-                case '-':
-                    this.result = parseInt(this.n1) - parseInt(this.n2);
-                    break;
-                case '*':
-                    this.result = parseInt(this.n1) * parseInt(this.n2);
-                    break;
-                case '/':
-                    this.result = parseInt(this.n1) /  parseInt(this.n2);
-                    break;
+    ```vue
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            n1:0,
+            n2:0,
+            result:0,
+            opt: "-",
+        },
+        methods: {
+            calc() {
+                switch (this.opt) {
+                    case '+':
+                        this.result = parseInt(this.n1) + parseInt(this.n2);
+                        break;
+                    case '-':
+                        this.result = parseInt(this.n1) - parseInt(this.n2);
+                        break;
+                    case '*':
+                        this.result = parseInt(this.n1) * parseInt(this.n2);
+                        break;
+                    case '/':
+                        this.result = parseInt(this.n1) /  parseInt(this.n2);
+                        break;
+                }
             }
-        }
-    },
-})
-```
+        },
+    })
+    ```
 
 ### vue里面使用样式
 

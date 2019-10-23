@@ -15,17 +15,21 @@ date: 2019-03-03 19:53:46
 
 ## 个人信息
 
- - 男/1997
- - 本科/东莞理工学院软件工程(卓越计划班)
- - 工作年限：在校生
- - 技术博客：https://www.niracler.com
- - Github：https://github.com/niracler
- - 简书: https://www.jianshu.com/u/4e3cc9bb3aa1
- - 期望职位：Python程序员，数据分析师
- - 期望薪资(实习)：税前月薪5k~10k，特别喜欢的公司可例外
- - 期望城市：深圳，东莞等
+- 男/1997
+- 本科/东莞理工学院软件工程(卓越计划班)
+- 工作年限：在校生
+- 技术博客：https://www.niracler.com
+- Github：https://github.com/niracler
+- 简书: https://www.jianshu.com/u/4e3cc9bb3aa1
+- 期望职位：Python程序员，数据分析师
+- 期望薪资(实习)：税前月薪5k~10k，特别喜欢的公司可例外
+- 期望城市：深圳，东莞等
 
 ---
+
+## 摘要
+
+本人本科学历，软件工程专业，熟练使用 Django web 开发框架，熟悉 MVC 模型，熟悉中间件、Admin 站点管理、图片上传、分页，邮件传输。使用restful api搭建前后分离的web项目，熟悉运用MongoDB、MySQL、Redis等数据库开发，并有相对丰富的使用开发经验及Nginx 反向代理与负载均衡， docker的常见使用，如docker-compose及Dockerfile的编写、docker的swarm集群搭建，另外还掌握常用需求/架构设计工具使用。
 
 ## 项目经历
 

@@ -1,5 +1,5 @@
 ---
-title: Python面试题|Python基础(一)
+title: 面试题|Python基础(一)
 tags:
   - python
   - 面试题
