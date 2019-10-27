@@ -191,14 +191,157 @@ E()
 "Leave E"
 ```
 
-### 14 是否使用过 functool 中的函数,其作用是什么
-
-用于修复装饰器
+### 14 装饰器的写法套路
 
 ```python
+def test(func):
+    """
+    检查今年是否是2019的装饰器
+    """
+    def wrapper(*args, **kwargs):
+        print('上文') # 你要执行的函数的上文
+        func(*args, **kwargs)# 你要执行的函数
+        print('下文') # 你要执行的函数的下文
+    return wrapper
+
+@test
+def test1():
+    print('函数正在执行')
+```
+
+### 15 带定长参数的装饰器的写法
+
+```python
+def new_func(func):
+    """
+    检查今年是否是2019的装饰器
+    """
+    def wrapper(username, passwd):
+        print(username) # 你要执行的函数的上文
+        func()# 你要执行的函数
+        print(passwd) # 你要执行的函数的下文
+    return wrapper
+
+@new_func
+def test():
+    print('函数正在执行')
+```
+
+### 16 带不定长参数的装饰器的写法
+
+```python
+def new_func(func):
+    """
+    检查今年是否是2019的装饰器
+    """
+    def wrapper(*args, **kwargs):
+        print('上文') # 你要执行的函数的上文
+        func(*args, **kwargs)# 你要执行的函数
+        print('下文') # 你要执行的函数的下文
+    return wrapper
+
+@new_func
+def test():
+    print('函数正在执行')
+```
+
+但，假如你调用test的时候真的放进了参数那就出错了。
+
+### 17 请写一个判断时间的装饰器
+
+所谓装饰器，就是在函数里面定义一个函数，然后返回这个函数
+
+```python
+import datetime
+
+class TimeException(Exception):
+    """
+    关于时间异常的类
+    """
+    def __init__(self, execption_info):
+        super().__init__()
+        self.info = execption_info
+    def __str__(self):
+        return self.info
+
+def timecheck(func):
+    """
+    检查今年是否是2019的装饰器
+    """
+    def wrapper(*args, **kwargs):
+        if datetime.datetime.now().year == 2018:
+            func(*args, **kwargs)
+        else:
+            raise TimeException("函数已过时")
+    return wrapper
+
+@timecheck
+def test(name):
+    print("Hello {}, 2018 Happy".format(name))
+
+if __name__ == '__main__':
+    test("niracler")
+```
+
+### 18 是否使用过 functool 中的函数,其作用是什么
+
+可以用于修复装饰器
+
+```python
+import functools
+
+def deco(func):
+    @functools.wraps(func) # 加在最内层函数正上方
+    def wrapper(*args, **kwargs):
+        return func(*args, **kwargs)
+    return wrapper
+
+@deco
+def index():
+    '''哈哈哈'''
+    print('from index')
 
 ```
 
-### 15 列举面向对象中带双下划线的特殊方法，如__init__, __new__
+修复前
 
-### 16 如何判断是函数还是方法
+```python
+>>> index.__name__
+'index'
+>>> index.__doc__
+'哈哈哈'
+```
+
+修复后
+
+```python
+>>> index.__name__
+'wrapper'
+>>> index.__doc__
+```
+
+### 19 列举面向对象中带双下划线的特殊方法，如__init__, __new__
+
+- ```__new__``` 生成实例
+- ```__init__``` 生成实例的属性
+- ```__call__``` 实例对象加()会执行 ```def __call__:...``` 方法里面的内容
+- ```__del__``` 析构方法，当对象在内存中被释放时，自动触发执行。当 del obj 或者应用程序运行完毕时，执行该方法里面的内容。
+- ```__enter__ 和 __exit__``` 出现with语句，对象的```__enter__```被触发
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+- ```____```
+
+### 20 如何判断是函数还是方法
