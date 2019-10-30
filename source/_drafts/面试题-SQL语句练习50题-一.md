@@ -228,6 +228,10 @@ AND s_id not in (SELECT s_id FROM score WHERE c_id='02');
 
 ### 11 
 
+```sql
+
+```
+
 ## 参考文章
 
 1. [sql语句练习50题(Mysql版)](https://blog.csdn.net/fashion2014/article/details/78826299/)

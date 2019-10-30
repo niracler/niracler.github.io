@@ -369,4 +369,182 @@ obj.func(obj) # lcg
 - 方法，无需传入self参数
 - 函数，必须手动传入self参数
 
-### 21 
+### 21 静态方法和类方法的区别
+
+尽管 classmethod 和 staticmethod 非常相似，但在用法上依然有一些明显的区别。classmethod必须有一个指向类对象的引用作为第一个参数，而staticmethod可以没有任何参数
+
+```python
+class Num:
+    def one():
+        """
+        普通方法, 能用num调用而不能用实例化对象调用
+        """
+        print('1')
+    def two(self):
+        """
+        实例方法，能用实例化对象调用而不能用Num调用
+        """
+        print('2')
+    @staticmethod
+    def three():
+        """
+        静态方法，能用Num和实例化对象调用
+        """
+        print('3')
+    @classmethod
+    def four(cls):
+        """
+        类方法，第一个参数cls长什么样不重要，都是指Num类本身，调用时将Num类作为对象隐式地传入方法
+        """
+        cls.three()
+        print('4')
+```
+
+```python
+>>> Num.one()
+1
+>>> Num.two()
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+TypeError: two() missing 1 required positional argument: 'self'
+>>> Num.three()
+3
+>>> Num.four()
+3
+4
+```
+
+### 22 1,2,3,4,5能组成多少个互不相同且无重复的三位数
+
+我们可以使用pytho内置的排列组合函数
+
+- product 笛卡尔积(有放回抽样排列)
+- permutations 排列(不放回抽样排列)
+- combinations 组合，没有重复(不放回抽样组合)
+- combinations_with_replacement 组合，有重复(有放回抽样组合)
+
+```python
+import itertools
+print(len(list(itertools.permutations('12345', 3))))
+
+# 60
+```
+
+### 23 什么是反射，以及应用场景
+
+反射的核心本质就是以字符串的形式去导入整个模块，利用字符串的形式去执行函数。
+
+Django中的CBV就是基于反射实现的
+
+### 24 metaclass作用,及其应用场景
+
+metaclass用来指定类是由谁创建的
+
+类的metaclass默认是type。我们也可以指定类的metaclass值。
+
+```python
+class MyType(type):
+    def __init__(self, *args, **kwargs):
+        super(MyType, self).__init__(*args, **kwargs)
+    def __call__(self, *args, **kwargs):
+        obj = self.__new__(self, *args, **kwargs)
+        obj.__init__(*args, **kwargs)
+        return obj
+
+class Foo(object, metaclass=MyType):
+    def __init__(self):
+        print('XXX')
+```
+
+```python
+>>> obj = Foo()
+XXX
+>>> print(obj)
+<__main__.Foo object at 0x7f9bc9c6a890>
+```
+
+### 25 什么是面向对象MRO
+
+MRO就是方法解析顺序
+
+### 26 isinstance作用以及应用场景
+
+isinstance(对象) 判断这个对象是否是这个类或者这个类的子类的实例化
+
+应用场景：rest framework 认证流程
+
+### 27 Python是静态类型还是动态类型，是强类型还是弱类型
+
+- 动态强类型语言(不少人误以为是)
+- 动态还是静态指的是编译期还是运行期确定类型
+- 强类型指的是不会发生隐式类型转换
+
+### 28 什么是鸭子类型
+
+- 关注点在对象的行为，而不是类型(duck typing)
+- 比如 file, StringIO, socket 对象都支持 read/write 方法 (file like object)
+- 再比如定义了 ```__iter__``` 魔术方法的对象可以用 for 迭代
+
+### 29 什么是 monkey patch， 哪些地方用到了，自己如何实现
+
+Monkey patch就是在运行时对已有的代码进行修改，达到hot patch的目的。Eventlet中大量使用了该技巧，以替换标准库中的组件，比如socket。首先来看一下最简单的monkey patch的实现。
+
+```python
+class Foo:
+    def bar(self):
+        print('Foo.bar')
+  
+def bar():
+    print('Modified bar')
+
+foo = Foo()
+foo.bar = bar
+foo.bar()
+```
+
+### 30 什么是自省
+
+- 运行时判断一个对象的类型的能力
+- Python一切皆对象，用type，id，isinstance获取对象类型信息
+
+### 31 什么是列表和字典推导
+
+例如
+
+```python
+[i for i in range(10) if i % 2 == 0]
+```
+
+一种快速生成list/dict/set的方式。用来替代map/filter等
+
+### 32 Python可变/不可变对象
+
+- 哪些是可变对象？哪些是不可变对象？
+- 不可变对象 bool/int/float/tuple/str/frozenset
+- 可变对象 list/set/dict
+
+### 33 Python ```args```, ```**kwargs```
+
+函数中 *args, **kwargs 含义是什么？
+
+- 用来处理可变参数
+- *args 被打包成tuple
+- **kwargs 被打包成dict
+
+```python
+def print_all(a, *args, **kwargs):
+    print(a)
+    if args:
+            print(args)
+    if kwargs:
+            print(kwargs)
+```
+
+```python
+>>> print_all('hello', 'world', name='sdvsdv')
+hello
+('world',)
+{'name': 'sdvsdv'}
+```
+
+### 34 
