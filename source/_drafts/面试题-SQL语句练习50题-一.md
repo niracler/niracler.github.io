@@ -226,7 +226,7 @@ WHERE s_id in (SELECT s_id FROM score WHERE c_id='01')
 AND s_id not in (SELECT s_id FROM score WHERE c_id='02');
 ```
 
-### 11 
+### 11
 
 ```sql
 

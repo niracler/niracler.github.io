@@ -547,4 +547,60 @@ hello
 {'name': 'sdvsdv'}
 ```
 
-### 34 
+### 34 什么是 Cpython GIL
+
+GIL, Global Interperter Lock
+
+- Cpython解析器的内存管理并不是线程安全的
+- 保护多线程情况下对Python对象的访问
+- Cpython使用简单的锁机制避免多个线程同时执行字节码
+
+### 35 GIL的影响
+
+- 同一时间只能有一个线程执行字节码
+- CPU密集型程序难以利用多核优势
+- IO期间会释放GIL，对IO密集型程序影响不大
+
+### 36 如何规避GIL的影响
+
+区分CPU密集型和IO密集型程序
+
+- CPU密集可以使用多进程+进程池
+- IO密集使用多线程/协程
+- cython扩展
+
+### 37 服务器端性能优化措施
+
+Web应用一般语言不会成为瓶颈
+
+- 数据结构与算法优化
+- 数据库层：索引优化，慢查询消除，批量操作减少IO，NoSQL
+- 网络IO：批量操作，pipline操作减少IO
+- 缓存：使用内存数据库 redis/memcached
+- 异步：asyncio， celery
+- 并发：gevent/多线程
+
+### 38 什么是生成器
+
+Generator
+
+- 生成器就是可以生成值的函数
+- 当一个函数里有了yield关键字就成了生成器
+- 生成器可以挂起执行并保持当前执行的状态
+  
+```python
+def simple_gen():
+    yield 'hello'
+    yield 'world'
+
+gen = simple_gen()
+```
+
+```python
+>>> print(next(gen))
+hello
+>>> print(next(gen))
+world
+```
+
+### 39 
