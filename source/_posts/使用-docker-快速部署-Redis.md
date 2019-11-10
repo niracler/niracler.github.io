@@ -39,6 +39,8 @@ $docker run --name my-redis -v ./data:/data -d redis redis-server --appendonly y
 $docker run --name my-redis -p 6379:6379 -v $(pwd)/data:/data -d redis redis-server --appendonly yes
 ```
 
+
+
 ## 测试是否安装成功
 
 > 注意，客户端也要安装 redis 才能使用 redis-cli 命令

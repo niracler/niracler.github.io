@@ -3,7 +3,9 @@ title: 面试题|Python基础(三)
 tags:
   - python
   - 面试题
+date: 2019-11-10 08:55:55
 ---
+
 
 ### 1 评价一下自己
 
@@ -602,5 +604,3 @@ hello
 >>> print(next(gen))
 world
 ```
-
-### 39 
