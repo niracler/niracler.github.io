@@ -120,11 +120,15 @@ $docker exec -it  容器名或ID /bin/bash
 - -t: 为容器重新分配一个伪输入终端，通常与 -i 同时使用；
 
 ### 查看容器日志
+
 查看容器日志
+
 ```bash
 $docker logs <id/container_name>
 ```
+
 实时查看日志输出
+
 ```bash
 $docker logs -f <id/container_name> (类似 tail -f) (带上时间戳-t）
 ```
