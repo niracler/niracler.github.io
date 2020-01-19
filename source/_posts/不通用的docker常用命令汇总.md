@@ -21,6 +21,7 @@ $sudo su
 ### 删除所有容器与镜像
 
 列出所有容器ID,查看所有运行或者不运行容器
+
 ```bash
 $docker ps -aq
 ```
@@ -36,6 +37,7 @@ $docker stop $(docker ps -aq)
 ```bash
 $docker rm $(docker ps -aq)
 ```
+
 查看当前有些什么镜像
 
 ```bash
@@ -49,6 +51,7 @@ $docker rmi $(docker images -q)
 ```
 
 ### 删除镜像
+
 通过image的id来指定删除谁
 
 ```bash
@@ -62,11 +65,13 @@ $docker rmi $(docker images | grep "^<none>" | awk "{print $3}")
 ```
 
 强制删除全部image的话
+
 ```bash
 $docker rmi -f $(docker images -q)
 ```
 
 删除所有不使用的镜像
+
 ```bash
 $docker image prune -f -a
 ```
@@ -85,17 +90,15 @@ $docker container prune
 
 ```bash
 $docker cp tomcat：/webapps/js/text.js /home/admin
-$docker cp 容器名:  容器路径       宿主机路径         
+$docker cp 容器名:  容器路径       宿主机路径
 ```
 
 从宿主机到容器复制
 
 ```bash
 $docker cp /home/admin/text.js tomcat：/webapps/js
-$docker cp 宿主路径中文件      容器名  容器路径   
+$docker cp 宿主路径中文件      容器名  容器路径
 ```
-
-
 
 ### 停止、启动、杀死、重启一个容器
 
@@ -135,5 +138,5 @@ $docker logs -f <id/container_name> (类似 tail -f) (带上时间戳-t）
 
 ## 参考文章
 
-[Docker删除容器与镜像](https://blog.csdn.net/qq_32447301/article/details/79387649)  
-[Docker 命令大全](http://www.runoob.com/docker/docker-command-manual.html)
+- [Docker删除容器与镜像](https://blog.csdn.net/qq_32447301/article/details/79387649)  
+- [Docker 命令大全](http://www.runoob.com/docker/docker-command-manual.html)

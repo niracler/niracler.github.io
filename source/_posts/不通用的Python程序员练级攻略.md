@@ -8,7 +8,6 @@ tags:
 > 本文章记录的是笔者在立志成为 python 程序员的目标制定及技术点亮过程，主要有我看过的觉得可以的资源，以及我自己的总结，
 > 还夹带着一些无聊的日常
 
-
 ![技术栈。jpg](https://upload-images.jianshu.io/upload_images/4781155-2c23e3e36cbf3c27.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
 保持更新的技术栈[思维导图](https://www.processon.com/view/link/5c04f065e4b0059238d440d1)
