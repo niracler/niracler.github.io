@@ -84,6 +84,14 @@ $docker image prune -f -a
 $docker container prune
 ```
 
+### 删除卷
+
+删除没有用到的卷
+
+```bash
+$docker volume prune
+```
+
 ### 容器与宿主机之间的文件传输
 
 从容器到宿主机复制

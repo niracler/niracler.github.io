@@ -34,11 +34,15 @@ date: 2019-03-03 19:53:46
 
 参与校内的心理测评系统的搭建，下面详细说明
 
+- 根据相关领导的需求，与前端工程师的配合进行校内心理测评平台的搭建
+- 负责后端接口（django）以及数据库（mysql）的设计与开发
+- 另外也负责实现分布式缓存（redis分布式session+分布式锁）用AB测试模拟并发
+
 ## 项目经历
 
 ### 2019年8月10日 - 至今  基于事件追踪的游戏新闻资讯网站
 
-开发环境：Vscode+Nginx+Git+Docker+Postgres+jupyter
+开发环境：Vscode+Nginx+Git+Docker+jupyter+Redis
 
 技术架构：Gin+Django+Vue+RESTful+Scrapy+JWT+Gorm+tfidf+word2vec
 
@@ -62,7 +66,7 @@ date: 2019-03-03 19:53:46
 
 ### 2019年10月 - 2019年12月 在线音乐平台
 
-开发环境：Vscode+Nginx+Git+Docker+Mysql
+开发环境：Vscode+Nginx+Git+Docker+Mysql+Redis
 
 技术架构：Gin+JWT+RESTful+Gorm
 
@@ -84,7 +88,7 @@ date: 2019-03-03 19:53:46
 
 开发环境：
 
-技术架构：Gin+Django+Vue+RESTful+Scrapy+JWT+Gorm+Oauth2
+技术架构：Django+RESTful+JWT+OAuth2+Websocket
 
 项目描述：用于收集学生的心理测评信息的系统
 
