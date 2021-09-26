@@ -2,7 +2,7 @@
 
 - `This text will be italic
 This willalso be italicThis
-    text will be bold
+    text will be bold.   
     This will also be bold 
     you can combine the`
 
