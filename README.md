@@ -1,11 +1,5 @@
 # Niracler的博客
 
-- `This text will be italic
-This willalso be italicThis
-    text will be bold.   
-    This will also be bold 
-    you can combine the`
-
 > 基于hexo的next主题
 
 ![](source/images/header.png)
