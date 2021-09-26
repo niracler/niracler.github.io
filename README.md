@@ -1,8 +1,8 @@
 # Niracler的博客
 
-- This text will be italicThis will
-    also be italicThis 
-    text will be bold
+- This text will be italicThis will  
+    also be italicThis  
+    text will be bold  
     This will also be bold 
     you can combine the
 
