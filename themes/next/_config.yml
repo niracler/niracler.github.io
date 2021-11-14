@@ -635,7 +635,7 @@ gitalk:
   github_id: niracler # GitHub repo owner
   repo: niracler.github.io # Repository name to store issues
   client_id: d2492e40e7428634adb4 # GitHub Application Client ID
-  client_secret: 9a9c088a73eac548059694f5e074f5ba1fcad3bd# GitHub Application Client Secret
+  client_secret: 9a9c088a73eac548059694f5e074f5ba1fcad3bd # GitHub Application Client Secret
   admin_user: niracler # GitHub repo owner and collaborators, only these guys can initialize gitHub issues
   distraction_free_mode: true # Facebook-like distraction free mode
   # Gitalk's display language depends on user's browser or system environment
