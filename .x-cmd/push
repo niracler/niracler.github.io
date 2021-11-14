@@ -1,3 +1,0 @@
-ssh-add ~/.ssh/id_rsa_niracler
-git push
-ssh-add ~/.ssh/id_rsa
