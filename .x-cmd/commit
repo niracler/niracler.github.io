@@ -6,5 +6,5 @@ echo "$0"
 
 git commit -m "$1"
 
-git config --global user.email padparadsayc@gmail.com
+git config --global user.email lth@x-cmd.com
 git config --global user.name padpar
