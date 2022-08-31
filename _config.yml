@@ -105,7 +105,7 @@ theme: next
 deploy:
   type: git
   repo: git@github.com:niracler/niracler.github.io.git
-  branch: master
+  branch: main
 
 # RSS
 # https://github.com/hexojs/hexo-generator-feed
