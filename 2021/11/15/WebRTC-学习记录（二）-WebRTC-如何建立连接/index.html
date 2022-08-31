@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.niracler.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="WebRTC 是一个宝库，他在数据传输方面也是做到极致了。 为什么是WebRTC？需要解决的问题是什么？我们关注的是什么？在了解了 croc 的情况下，我们这边看一下该类服务还能够优化到什么地步。  我们面对到的一个事实是“Relay 服务器实在太耗流量了！” 我们这里先引入一个知识：”NAT 是可以穿透的”。 TURN是STUN协议的中转扩展，croc工具自己有中转功能，没有去实现类似STUN的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebRTC 学习记录（二）| WebRTC 如何建立连接">
+<meta property="og:url" content="https://www.niracler.com/2021/11/15/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89-WebRTC-%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5/index.html">
+<meta property="og:site_name" content="Niracler&#39;Blog">
+<meta property="og:description" content="WebRTC 是一个宝库，他在数据传输方面也是做到极致了。 为什么是WebRTC？需要解决的问题是什么？我们关注的是什么？在了解了 croc 的情况下，我们这边看一下该类服务还能够优化到什么地步。  我们面对到的一个事实是“Relay 服务器实在太耗流量了！” 我们这里先引入一个知识：”NAT 是可以穿透的”。 TURN是STUN协议的中转扩展，croc工具自己有中转功能，没有去实现类似STUN的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://z3.ax1x.com/2021/11/15/IgGpCT.md.png">
+<meta property="og:image" content="https://z3.ax1x.com/2021/11/15/IgGAbR.png">
+<meta property="article:published_time" content="2021-11-15T01:23:00.000Z">
+<meta property="article:modified_time" content="2022-04-29T08:02:02.436Z">
+<meta property="article:author" content="niracler">
+<meta property="article:tag" content="WebRTC">
+<meta property="article:tag" content="学习记录">
+<meta property="article:tag" content="网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://z3.ax1x.com/2021/11/15/IgGpCT.md.png">
+
+<link rel="canonical" href="https://www.niracler.com/2021/11/15/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89-WebRTC-%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>WebRTC 学习记录（二）| WebRTC 如何建立连接 | Niracler'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Niracler'Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Niracler'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">What are you doing?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/niracler" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.niracler.com/2021/11/15/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89-WebRTC-%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="niracler">
+      <meta itemprop="description" content="What are you doing?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Niracler'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WebRTC 学习记录（二）| WebRTC 如何建立连接
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-15 09:23:00" itemprop="dateCreated datePublished" datetime="2021-11-15T09:23:00+08:00">2021-11-15</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-29 16:02:02" itemprop="dateModified" datetime="2022-04-29T16:02:02+08:00">2022-04-29</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>WebRTC 是一个宝库，他在数据传输方面也是做到极致了。</p>
+<h2 id="为什么是WebRTC？需要解决的问题是什么？我们关注的是什么？"><a href="#为什么是WebRTC？需要解决的问题是什么？我们关注的是什么？" class="headerlink" title="为什么是WebRTC？需要解决的问题是什么？我们关注的是什么？"></a>为什么是WebRTC？需要解决的问题是什么？我们关注的是什么？</h2><p>在了解了 croc 的情况下，我们这边看一下该类服务还能够优化到什么地步。</p>
+<ol>
+<li>我们面对到的一个事实是“Relay 服务器实在太耗流量了！”</li>
+<li>我们这里先引入一个知识：”NAT 是可以穿透的”。</li>
+<li>TURN是STUN协议的中转扩展，croc工具自己有中转功能，没有去实现类似STUN的功能。其实 croc 那边也尝试过，但其实到现在都还没支持。[3]<br> <a target="_blank" rel="noopener" href="https://imgtu.com/i/IgGpCT"><img src="https://z3.ax1x.com/2021/11/15/IgGpCT.md.png" alt="IgGpCT.md.png"></a></li>
+</ol>
+<span id="more"></span>
+
+<h2 id="什么是ICE-Candidate-Interactive-Connectivity-Establishment-Candidate-，以及候选者的类型"><a href="#什么是ICE-Candidate-Interactive-Connectivity-Establishment-Candidate-，以及候选者的类型" class="headerlink" title="什么是ICE Candidate (Interactive Connectivity Establishment Candidate)，以及候选者的类型"></a>什么是ICE Candidate (Interactive Connectivity Establishment Candidate)，以及候选者的类型</h2><p> <strong>ICE是交互式连接建立的意思</strong>，它是一种用于NAT（网络地址转换器）的技术，用于建立VOIP、点对点、即时通信和其他类型的交互式媒体的通信。通常情况下，ICE Candidate 的信息是关于数据将被交换的IP地址和端口。</p>
+<p>端到端创建连接的关键是Candidate的收集。 ICE Candidate 表示 WebRTC 与远端通信时使用的协议、IP 地址和端口，一般由以下字段组成[4]：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  IP: xxx.xxx.xxx.xxx,      <span class="comment">// 本地 IP 地址</span></span><br><span class="line">  port: number,             <span class="comment">// 本地端口号</span></span><br><span class="line">  type: host/srflx/relay,   <span class="comment">// 候选者类型，包括 host、srflx 和 relay</span></span><br><span class="line">  priority: number,         <span class="comment">// 优先级</span></span><br><span class="line">  protocol: UDP/TCP,        <span class="comment">// 传输协议</span></span><br><span class="line">  usernameFragment: string. <span class="comment">// 访问服务的用户名</span></span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>WebRTC将Candidates分为三种类型。</p>
+<ul>
+<li><strong>host 类型 (Host Candidate)</strong>: 即本地内网的IP和端口。IPv6也是属于这一种。这个地址来源于本地的物理网卡或逻辑网卡上的地址，对于具有公网地址或者同一内网的端可以用。host 类型的 Candidate 是最容易收集的。</li>
+<li><strong>srflx 类型 (Server Reflexive Candidate)</strong>: 这是本地机器上NAT映射后的外部网络的IP和端口。是通过信令方式向 STUN 服务器发送 binding request 找到NAT映射后的地址。</li>
+<li><strong>relay 类型 (Relayed Candidate)</strong>: 即中继服务器的IP和端口。这个地址是端发送 Allocate 请求到 TURN 服务器 ，由 TURN server 用于中继的地址和端口</li>
+</ul>
+<p>host 类型优先级最高，srflx 次之，relay 最低</p>
+<blockquote>
+<p>补充:<br>    1. 其实还有一个 prflx 类型的 Candidate，也是NAT映射后的外部网络的IP和端口，不过获得的方式稍有不同。 [5]<br>    2. 也有 tcp 专门的 Candidate Type [6]</p>
+</blockquote>
+<h2 id="4-3-STUN-x2F-TURN和信令服务器之间的区别"><a href="#4-3-STUN-x2F-TURN和信令服务器之间的区别" class="headerlink" title="4.3 STUN&#x2F;TURN和信令服务器之间的区别"></a>4.3 STUN&#x2F;TURN和信令服务器之间的区别</h2><p>WebRTC 中我们会遇到三种类型的服务器，分别是：STUN服务器、TURN服务器和信令服务器 [7]</p>
+<p><strong>STUN服务器</strong> :</p>
+<ul>
+<li><strong>用于帮助通信双方发现有关其公网 IP 的信息并打开防火墙端口</strong>。这要解决的主要问题是，很多设备都在小型专用网络中的 NAT 路由器后面；NAT 基本上允许传出请求及其响应，但会阻止任何其他“未经请求的”传入请求。</li>
+<li><strong>STUN 服务器充当向其发出请求的临时中间人，它在 NAT 设备上打开一个端口以允许响应返回</strong>，这意味着现在有一个已知的开放端口可供其他对等方使用。这就被称为NAT打洞技术。</li>
+<li><strong>是否能打洞成功需要看NAT的类型</strong>。(关于NAT类型的讨论，详情见下一章：#I40ONU)</li>
+</ul>
+<p><strong>TURN服务器</strong> :</p>
+<ul>
+<li><strong>TURN 服务器是公共可访问位置的中继，以防无法进行 P2P 连接。</strong> 仍然存在打孔不成功的情况，例如由于更严格的防火墙。在这些情况下，两个对等方根本无法直接进行P2P通信。</li>
+<li><strong>它们的所有流量都通过 TURN 服务器进行中继(非常占用带宽)</strong> 。</li>
+<li><strong>一般是通信双方都可以不受限制地连接的第三方服务器</strong>，并且只是将数据从一个对等点转发到另一个。TURN 服务器的一种流行实现是coTURN。</li>
+</ul>
+<p><strong>信令服务器</strong> :</p>
+<ul>
+<li>WebRTC 规范对信令服务器没有任何说明，因为每个应用程序的信令机制都是非常独特的，并且可以采用多种不同的形式。</li>
+</ul>
+<p>我们可以简单理解为：<strong>STUN 是 NAT 打洞的，而 TURN 是做流量转发的，TURN 这种流量会经过relay服务器</strong></p>
+<blockquote>
+<p>这里需要说明一点，relay 服务是通过 TURN 协议实现的。所以我们经常说的 relay 服务器或 TURN 服务器它们是同一个意思，都是指中继服务器。上一章的 croc 的中继服务器其实就相当于这里的TURN服务器。</p>
+</blockquote>
+<h2 id="整个WebTRTC建立连接的流程的复杂图示"><a href="#整个WebTRTC建立连接的流程的复杂图示" class="headerlink" title="整个WebTRTC建立连接的流程的复杂图示"></a>整个WebTRTC建立连接的流程的复杂图示</h2><p>概念讲完了，我们上图:[1]</p>
+<p><a target="_blank" rel="noopener" href="https://imgtu.com/i/IgGAbR"><img src="https://z3.ax1x.com/2021/11/15/IgGAbR.png" alt="IgGAbR.png"></a></p>
+<p>ICE Candidate???</p>
+<blockquote>
+<p>补充:<br>    - Offer: 在双方通讯时，呼叫方发送的 SDP 消息称为 Offer。<br>    - Answer: 在双方通讯时，被呼叫方发送的 SDP 消息称为 Answer。</p>
+</blockquote>
+<h2 id="TURN的使用频率是多少，其用途是什么"><a href="#TURN的使用频率是多少，其用途是什么" class="headerlink" title="TURN的使用频率是多少，其用途是什么"></a>TURN的使用频率是多少，其用途是什么</h2><p>我就这个问题在 Twitter 上问过 WebRTC 的 golang 社区 Pion [1]。总的来说就是 <strong>需要考虑各种因素，你要监控你使用场景的流量</strong> ：</p>
+<ul>
+<li>不同的 NAT 类型的覆盖率。</li>
+<li>IPv6 的普及率。</li>
+<li>地区差异（运营商选择的路由器）。</li>
+<li>具体业务场景，是否只有数据或者是媒体和数据。</li>
+<li>服务器还是浏览器客户端。</li>
+</ul>
+<p>但是，说这么多都没有，你需要部署一个 TURN 和并监控它的流量。。。</p>
+<blockquote>
+<p>网上流传的一个说法是: <em>“80% to 90% of devices are able to connect over WebRTC without TURN servers”</em>，我找了半天硬是没有找到出处或者对应的论文。。。</p>
+</blockquote>
+<h2 id="我应该做什么来建立-WebRTC-服务？-TODO"><a href="#我应该做什么来建立-WebRTC-服务？-TODO" class="headerlink" title="我应该做什么来建立 WebRTC 服务？(TODO)"></a>我应该做什么来建立 WebRTC 服务？(TODO)</h2><p>见 golang 以及 typescript</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li>[1] MDN Web Docs: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Connectivity#the_entire_exchange_in_a_complicated_diagram">WebRTC connectivity 流程图</a></li>
+<li>[2] Twitter回复内容：<a target="_blank" rel="noopener" href="https://twitter.com/niracler/status/1413123595157446657">https://twitter.com/niracler/status/1413123595157446657</a></li>
+<li>[3] croc 作者在尝试引入 WebRTC 的情况下的: <a target="_blank" rel="noopener" href="https://github.com/schollz/croc/issues/108#issuecomment-689715146">测试以及回复</a></li>
+<li>[4] 极客时间:从0打造音视频系统的教程: <a target="_blank" rel="noopener" href="https://time.geekbang.org/column/article/112325">09 | 让我们揭开WebRTC建立连接的神秘面纱</a></li>
+<li>Hacker News 上对于 WebRTC 的讨论: <a target="_blank" rel="noopener" href="https://news.ycombinator.com/item?id=25933016">WebRTC is now a W3C and IETF standard (web.dev)</a></li>
+<li>[5] MDN Web Docs: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate/type#syntax">RTCIceCandidate.type</a></li>
+<li>[6] MDN Web Docs: <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/RTCIceCandidate/tcpType">RTCIceCandidate.tcpType</a></li>
+<li>[7] STUN&#x2F;TURN和信令服务器之间的区别来源: <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/54388401/difference-between-stun-turncoturn-servers-and-signaling-servers-written-with">Difference between STUN&#x2F;TURN(coTURN) servers and Signaling servers (written with socket.io&#x2F;websocket) in WebRTC?</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/WebRTC/" rel="tag"><i class="fa fa-tag"></i> WebRTC</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="tag"><i class="fa fa-tag"></i> 学习记录</a>
+              <a href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2021/11/14/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89-%E4%BB%8E-corc-%E8%BF%99%E4%B8%AA-%E4%BB%93%E5%BA%93%E8%AE%B2%E8%B5%B7/" rel="prev" title="WebRTC 学习记录（一）| 从 corc 这个仓库讲起">
+      <i class="fa fa-chevron-left"></i> WebRTC 学习记录（一）| 从 corc 这个仓库讲起
+    </a></div>
+      <div class="post-nav-item"></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E6%98%AFWebRTC%EF%BC%9F%E9%9C%80%E8%A6%81%E8%A7%A3%E5%86%B3%E7%9A%84%E9%97%AE%E9%A2%98%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E6%88%91%E4%BB%AC%E5%85%B3%E6%B3%A8%E7%9A%84%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-text">为什么是WebRTC？需要解决的问题是什么？我们关注的是什么？</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BB%80%E4%B9%88%E6%98%AFICE-Candidate-Interactive-Connectivity-Establishment-Candidate-%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%80%99%E9%80%89%E8%80%85%E7%9A%84%E7%B1%BB%E5%9E%8B"><span class="nav-text">什么是ICE Candidate (Interactive Connectivity Establishment Candidate)，以及候选者的类型</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-STUN-x2F-TURN%E5%92%8C%E4%BF%A1%E4%BB%A4%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B9%8B%E9%97%B4%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">4.3 STUN&#x2F;TURN和信令服务器之间的区别</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B4%E4%B8%AAWebTRTC%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5%E7%9A%84%E6%B5%81%E7%A8%8B%E7%9A%84%E5%A4%8D%E6%9D%82%E5%9B%BE%E7%A4%BA"><span class="nav-text">整个WebTRTC建立连接的流程的复杂图示</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TURN%E7%9A%84%E4%BD%BF%E7%94%A8%E9%A2%91%E7%8E%87%E6%98%AF%E5%A4%9A%E5%B0%91%EF%BC%8C%E5%85%B6%E7%94%A8%E9%80%94%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">TURN的使用频率是多少，其用途是什么</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%88%91%E5%BA%94%E8%AF%A5%E5%81%9A%E4%BB%80%E4%B9%88%E6%9D%A5%E5%BB%BA%E7%AB%8B-WebRTC-%E6%9C%8D%E5%8A%A1%EF%BC%9F-TODO"><span class="nav-text">我应该做什么来建立 WebRTC 服务？(TODO)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">参考资料</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="niracler"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">niracler</p>
+  <div class="site-description" itemprop="description">What are you doing?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/niracler" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;niracler" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:niracler@gmail.com" title="E-Mail → mailto:niracler@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/niracler" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;niracler" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://t.me/niracler_channel" title="Telegram → https:&#x2F;&#x2F;t.me&#x2F;niracler_channel" rel="noopener" target="_blank"><i class=" fa-fw"></i>Telegram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/4e3cc9bb3aa1" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;4e3cc9bb3aa1" rel="noopener" target="_blank"><i class=" fa-fw"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fas fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zhouyimian.github.io/" title="https:&#x2F;&#x2F;zhouyimian.github.io&#x2F;" rel="noopener" target="_blank">周同学的博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17146846号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niracler</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'd2492e40e7428634adb4',
+      clientSecret: '9a9c088a73eac548059694f5e074f5ba1fcad3bd',
+      repo        : 'niracler.github.io',
+      owner       : 'niracler',
+      admin       : ['niracler'],
+      id          : '0742d02afd9920c9b6b81eaead26077b',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

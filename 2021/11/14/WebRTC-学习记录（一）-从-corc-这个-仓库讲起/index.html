@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.niracler.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="文件传输以及 croc 代码分析若是让我们做一个文件传输服务器， 我们应该怎么做？ 文件传输的四种网络场景我根据终端计算机所在的网络环境(是否有公网IP)划分了常见的4种场景:">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WebRTC 学习记录（一）| 从 corc 这个仓库讲起">
+<meta property="og:url" content="https://www.niracler.com/2021/11/14/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89-%E4%BB%8E-corc-%E8%BF%99%E4%B8%AA-%E4%BB%93%E5%BA%93%E8%AE%B2%E8%B5%B7/index.html">
+<meta property="og:site_name" content="Niracler&#39;Blog">
+<meta property="og:description" content="文件传输以及 croc 代码分析若是让我们做一个文件传输服务器， 我们应该怎么做？ 文件传输的四种网络场景我根据终端计算机所在的网络环境(是否有公网IP)划分了常见的4种场景:">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://raw.githubusercontent.com/schollz/croc/master/src/install/customization.gif">
+<meta property="article:published_time" content="2021-11-14T03:29:55.000Z">
+<meta property="article:modified_time" content="2022-04-29T08:02:02.436Z">
+<meta property="article:author" content="niracler">
+<meta property="article:tag" content="WebRTC">
+<meta property="article:tag" content="学习记录">
+<meta property="article:tag" content="网络">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/schollz/croc/master/src/install/customization.gif">
+
+<link rel="canonical" href="https://www.niracler.com/2021/11/14/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89-%E4%BB%8E-corc-%E8%BF%99%E4%B8%AA-%E4%BB%93%E5%BA%93%E8%AE%B2%E8%B5%B7/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>WebRTC 学习记录（一）| 从 corc 这个仓库讲起 | Niracler'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Niracler'Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Niracler'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">What are you doing?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/niracler" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.niracler.com/2021/11/14/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89-%E4%BB%8E-corc-%E8%BF%99%E4%B8%AA-%E4%BB%93%E5%BA%93%E8%AE%B2%E8%B5%B7/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="niracler">
+      <meta itemprop="description" content="What are you doing?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Niracler'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WebRTC 学习记录（一）| 从 corc 这个仓库讲起
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2021-11-14 11:29:55" itemprop="dateCreated datePublished" datetime="2021-11-14T11:29:55+08:00">2021-11-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-29 16:02:02" itemprop="dateModified" datetime="2022-04-29T16:02:02+08:00">2022-04-29</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="文件传输以及-croc-代码分析"><a href="#文件传输以及-croc-代码分析" class="headerlink" title="文件传输以及 croc 代码分析"></a>文件传输以及 croc 代码分析</h2><p>若是让我们做一个文件传输服务器， 我们应该怎么做？</p>
+<h3 id="文件传输的四种网络场景"><a href="#文件传输的四种网络场景" class="headerlink" title="文件传输的四种网络场景"></a>文件传输的四种网络场景</h3><p>我根据终端计算机所在的网络环境(是否有公网IP)划分了常见的4种场景:</p>
+<span id="more"></span>
+
+<table>
+<thead>
+<tr>
+<th>场景</th>
+<th>请求发起方</th>
+<th>经过NAT</th>
+<th>中继服务器</th>
+<th>例子</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>AB处于同一局域网</strong></td>
+<td>直接可以互通发起请求</td>
+<td>NO</td>
+<td>NO</td>
+<td>scp\rsync\ftp</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>A(B)拥有公网IP</strong></td>
+<td>需要B(A)主动发起请求</td>
+<td>YES</td>
+<td>NO</td>
+<td>scp\rsync\ftp</td>
+<td></td>
+</tr>
+<tr>
+<td><strong>AB均拥有公网IP</strong></td>
+<td>直接可以互通发起请求</td>
+<td>NO</td>
+<td>NO</td>
+<td>scp\rsync\ftp</td>
+<td>IPv6其实可以理解为这种情况</td>
+</tr>
+<tr>
+<td><strong>AB处于不同局域网</strong></td>
+<td>双方都需要先跟中继服务器 C 建立连接</td>
+<td>YES</td>
+<td>YES</td>
+<td>微信\QQ\钉钉</td>
+<td></td>
+</tr>
+</tbody></table>
+<p><strong>总结：一般由没有公网IP的计算机主动发起请求</strong></p>
+<p>关键概念(若是不理解，届时我可以画图示意一下， <strong>TODO</strong> ):</p>
+<ul>
+<li><strong>NAT</strong> : 可以简单理解为 <strong>端口映射</strong> ，会将我们计算机的 iAddr:iPort 映射为 eAddr:ePort。(例如：192.168.1.5:45678→54.8.23.45:678234)</li>
+<li><strong>中继服务器(relay server)</strong> : AB计算机都可以访问的一个服务器。常见类型有STUN&#x2F;TURN等。</li>
+</ul>
+<h3 id="作为服务提供方，在文件传输中我们关注的点是什么？"><a href="#作为服务提供方，在文件传输中我们关注的点是什么？" class="headerlink" title="作为服务提供方，在文件传输中我们关注的点是什么？"></a>作为服务提供方，在文件传输中我们关注的点是什么？</h3><p>在达到“允许<strong>任何两台计算机</strong>传输数据”的需求的前提下：</p>
+<ol>
+<li><strong>带宽占用</strong> : 我们使用多少流量？我们需要节省网络中的流量。带宽、流量怎么减。作为服务提供方，我们最关注的就是成本，而流量跟带宽就是成本的关键(究竟占多少还有待考究，<strong>TODO</strong>)。</li>
+<li><strong>连接占用时长</strong> : 这里指的速度不单单是文件传输的速度，而是你这次连接所占有我的服务器的时长，快吗？越早断开越好。</li>
+<li><strong>安全</strong> : 安全的重要性是毋庸置疑的。</li>
+<li>断点续传: 这是也一个必备项，但不是我们最关注的。</li>
+<li>秒传: 其实这不属于文件传输的范畴，这更多是属于文件存储服务的范畴。</li>
+</ol>
+<h3 id="让我展示一下使用croc的例子"><a href="#让我展示一下使用croc的例子" class="headerlink" title="让我展示一下使用croc的例子"></a>让我展示一下使用croc的例子</h3><p><img src="https://raw.githubusercontent.com/schollz/croc/master/src/install/customization.gif" alt="https://s3-us-west-2.amazonaws.com/secure.notion-static.com/21011c3a-27e8-46cf-872c-d3c60b35a146/Untitled.png"></p>
+<p>[1](这种 gif 的方案？ **TODO**)</p>
+<h3 id="croc-功能实现-发送方功能实现"><a href="#croc-功能实现-发送方功能实现" class="headerlink" title="croc 功能实现: 发送方功能实现"></a><code>croc</code> 功能实现: 发送方功能实现</h3><p>抛开上面的成本、速度以及安全先不谈，我们先保证它能够符合我们的使用场景（见3.1）。中继服务器如何工作？以及它如何切换传输方案？</p>
+<ul>
+<li><p><strong>主流程</strong> :</p>
+<ol>
+<li><p>A在局域网中广播信息，同时AC建立连接</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// from src/croc/croc.go#L358</span></span><br><span class="line"><span class="comment">// Send will send the specified file</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Client)</span> <span class="title">Send</span><span class="params">(options TransferOptions)</span> <span class="params">(err error)</span></span> &#123;</span><br><span class="line">    err = c.sendCollectFiles(options)</span><br><span class="line"></span><br><span class="line">    <span class="comment">// ... handle default args</span></span><br><span class="line">    <span class="keyword">if</span> !c.Options.DisableLocal &#123;</span><br><span class="line">    <span class="comment">//... broadcast on local network</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> !c.Options.OnlyLocal &#123;</span><br><span class="line">        <span class="comment">// connect to relay server</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p><strong>局域网广播</strong> 部分:</p>
+<ol>
+<li><p>建立本地中继服务器，同时在 IPv6 以及 IPv4 网段进行广播</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// from src/croc/croc.go#381</span></span><br><span class="line">c.setupLocalRelay()</span><br><span class="line"><span class="comment">// broadcast on ipv4</span></span><br><span class="line"><span class="keyword">go</span> c.broadcastOnLocalNetwork(<span class="literal">false</span>)</span><br><span class="line"><span class="comment">// broadcast on ipv6</span></span><br><span class="line"><span class="keyword">go</span> c.broadcastOnLocalNetwork(<span class="literal">true</span>)</span><br><span class="line"><span class="keyword">go</span> c.transferOverLocalRelay(options, errchan)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>transferOverLocalRelay实现 ：与中继服务器交换密钥建立连接，并监听中继服务器信息，若收到 <code>handshake</code> 则成功建立连接，开始发送文件。</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">conn, banner, ipaddr, err := tcp.ConnectToTCPServer(<span class="string">&quot;localhost:&quot;</span>+c.Options.RelayPorts[<span class="number">0</span>], c.Options.RelayPassword, c.Options.SharedSecret[:<span class="number">3</span>])</span><br><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">    data, _ := conn.Receive()</span><br><span class="line">    <span class="keyword">if</span> bytes.Equal(data, []<span class="keyword">byte</span>(<span class="string">&quot;handshake&quot;</span>)) &#123;</span><br><span class="line">     <span class="keyword">break</span></span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> bytes.Equal(data, []<span class="keyword">byte</span>&#123;<span class="number">1</span>&#125;) &#123;</span><br><span class="line">     log.Debug(<span class="string">&quot;got ping&quot;</span>)</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line"> log.Debugf(<span class="string">&quot;instead of handshake got: %s&quot;</span>, data)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">c.conn[<span class="number">0</span>] = conn</span><br><span class="line">log.Debug(<span class="string">&quot;exchanged header message&quot;</span>)</span><br><span class="line">c.Options.RelayAddress = <span class="string">&quot;localhost&quot;</span></span><br><span class="line">c.Options.RelayPorts = strings.Split(banner, <span class="string">&quot;,&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> c.Options.NoMultiplexing &#123;</span><br><span class="line">    log.Debug(<span class="string">&quot;no multiplexing&quot;</span>)</span><br><span class="line">    c.Options.RelayPorts = []<span class="keyword">string</span>&#123;c.Options.RelayPorts[<span class="number">0</span>]&#125;</span><br><span class="line">&#125;</span><br><span class="line">c.ExternalIP = ipaddr</span><br><span class="line">errchan &lt;- c.transfer(options)</span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p><strong>AC服务器通信</strong> 部分:</p>
+<ol>
+<li><p>与中继服务器交换密钥建立连接, 并通过中继服务器获取到自己的路由器的NAT所映射的该服务器的公网IP<code>ipaddr</code>:</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> i, address := <span class="keyword">range</span> []<span class="keyword">string</span>&#123;c.Options.RelayAddress6, c.Options.RelayAddress&#125; &#123;</span><br><span class="line">    <span class="comment">// ... handle error</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// connect to relay server</span></span><br><span class="line">    conn, banner, ipaddr, err = tcp.ConnectToTCPServer(address, c.Options.RelayPassword, c.Options.SharedSecret[:<span class="number">3</span>], durations[i])</span><br><span class="line">    <span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line"> c.Options.RelayAddress = address</span><br><span class="line"> <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>监听中继服务器消息，若收到 <code>ips?</code> 则将本地IP发送至中继服务器, 若收到 <code>handshake</code> 则成功建立连接，开始发送文件。</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> &#123;</span><br><span class="line">    data, errConn := conn.Receive() <span class="comment">//... handle error</span></span><br><span class="line">    <span class="keyword">if</span> bytes.Equal(data, []<span class="keyword">byte</span>(<span class="string">&quot;ips?&quot;</span>)) &#123;</span><br><span class="line">        <span class="comment">// recipient wants to try to connect to local ips</span></span><br><span class="line">        <span class="keyword">var</span> ips []<span class="keyword">string</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">// only get local ips if the local is enabled</span></span><br><span class="line">        <span class="keyword">if</span> !c.Options.DisableLocal &#123;</span><br><span class="line">            <span class="comment">// get list of local ips</span></span><br><span class="line">            ips, err = utils.GetLocalIPs() <span class="comment">//... handle error</span></span><br><span class="line">            <span class="comment">// prepend the port that is being listened to</span></span><br><span class="line">            ips = <span class="built_in">append</span>([]<span class="keyword">string</span>&#123;c.Options.RelayPorts[<span class="number">0</span>]&#125;, ips...)</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        bips, _ := json.Marshal(ips)</span><br><span class="line">        <span class="keyword">if</span> err := conn.Send(bips); err != <span class="literal">nil</span> &#123;</span><br><span class="line">            log.Errorf(<span class="string">&quot;error sending: %v&quot;</span>, err)</span><br><span class="line">        &#125;</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> bytes.Equal(data, []<span class="keyword">byte</span>(<span class="string">&quot;handshake&quot;</span>)) &#123;</span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="comment">// else ... Determine if the connection is maintained or failed</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">c.conn[<span class="number">0</span>] = conn</span><br><span class="line">c.Options.RelayPorts = strings.Split(banner, <span class="string">&quot;,&quot;</span>)</span><br><span class="line"><span class="keyword">if</span> c.Options.NoMultiplexing &#123;</span><br><span class="line">    log.Debug(<span class="string">&quot;no multiplexing&quot;</span>)</span><br><span class="line">    c.Options.RelayPorts = []<span class="keyword">string</span>&#123;c.Options.RelayPorts[<span class="number">0</span>]&#125;</span><br><span class="line">&#125;</span><br><span class="line">c.ExternalIP = ipaddr</span><br><span class="line">log.Debug(<span class="string">&quot;exchanged header message&quot;</span>)</span><br><span class="line">errchan &lt;- c.transfer(options)</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ul>
+<h3 id="croc功能实现-接收方功能实现"><a href="#croc功能实现-接收方功能实现" class="headerlink" title="croc功能实现: 接收方功能实现"></a><code>croc</code>功能实现: 接收方功能实现</h3><ul>
+<li><p>第二步:B与C建立连接，通过密钥找到A服务器的信息。<br>同时: B尝试在局域网中寻找A服务器的信息</p>
+</li>
+<li><p><strong>主流程</strong> :</p>
+<ol>
+<li><p>总的来说就是找中继服务器的IP，究竟是用局域网的，还是用公网上的, <strong>优先局域网</strong>，然后发送 <code>handshake</code> 建立连接，接受文件。</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/croc/croc.go#L497</span></span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(c *Client)</span> <span class="title">Receive</span><span class="params">()</span> <span class="params">(err error)</span></span> &#123;</span><br><span class="line">    <span class="comment">// recipient will look for peers first</span></span><br><span class="line">    <span class="comment">// and continue if it doesn&#x27;t find any within 100 ms</span></span><br><span class="line">    <span class="comment">// ...handle default args</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> !c.Options.DisableLocal &amp;&amp; !isIPset &#123;</span><br><span class="line">        <span class="comment">//... discover from local network</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// connect to relay server</span></span><br><span class="line">    c.conn[<span class="number">0</span>], banner, ipaddr, err = tcp.ConnectToTCPServer(address, c.Options.RelayPassword, c.Options.SharedSecret[:<span class="number">3</span>], durations[i])</span><br><span class="line">    <span class="keyword">if</span> err == <span class="literal">nil</span> &#123;</span><br><span class="line">   c.Options.RelayAddress = address</span><br><span class="line">   <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> !usingLocal &amp;&amp; !c.Options.DisableLocal &amp;&amp; !isIPset &#123;</span><br><span class="line">   <span class="comment">// ask the sender for their local ips and port</span></span><br><span class="line">   <span class="comment">// and try to connect to them</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    err := c.conn[<span class="number">0</span>].Send([]<span class="keyword">byte</span>(<span class="string">&quot;handshake&quot;</span>))</span><br><span class="line">    <span class="comment">//... handle error</span></span><br><span class="line">    err = c.transfer(TransferOptions&#123;&#125;)</span><br><span class="line">    <span class="comment">//... handle error</span></span><br><span class="line">    <span class="keyword">return</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p><strong>局域网发现</strong> 部分:</p>
+<ol>
+<li><p>在局域网内通过抓包尝试获取发送端服务器IP</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// src/croc/croc.go#L522</span></span><br><span class="line"><span class="comment">// attempt to discover peers</span></span><br><span class="line"><span class="keyword">go</span> <span class="function"><span class="keyword">func</span><span class="params">()</span></span> &#123;</span><br><span class="line">    <span class="keyword">defer</span> wgDiscovery.Done()</span><br><span class="line">    ipv4discoveries, err1 := peerdiscovery.Discover(peerdiscovery.Settings&#123;</span><br><span class="line"> <span class="comment">//...</span></span><br><span class="line">    &#125;)</span><br><span class="line">    <span class="keyword">if</span> err1 == <span class="literal">nil</span> &amp;&amp; <span class="built_in">len</span>(ipv4discoveries) &gt; <span class="number">0</span> &#123;</span><br><span class="line"> <span class="comment">//...</span></span><br><span class="line"> discoveries = <span class="built_in">append</span>(discoveries, ipv4discoveries...)</span><br><span class="line"> <span class="comment">//...</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;()</span><br><span class="line"><span class="comment">// ...IPv6 same as above</span></span><br><span class="line">wgDiscovery.Wait()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+</li>
+<li><p>若是局域网发现成功，则将 usingLocal 设置为 true，就不使用公网的中继服务器了</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> err == <span class="literal">nil</span> &amp;&amp; <span class="built_in">len</span>(discoveries) &gt; <span class="number">0</span> &#123;</span><br><span class="line">    log.Debugf(<span class="string">&quot;all discoveries: %+v&quot;</span>, discoveries)</span><br><span class="line">    <span class="keyword">for</span> i := <span class="number">0</span>; i &lt; <span class="built_in">len</span>(discoveries); i++ &#123;</span><br><span class="line">     log.Debugf(<span class="string">&quot;discovery %d has payload: %+v&quot;</span>, i, discoveries[i])</span><br><span class="line">     <span class="keyword">if</span> !bytes.HasPrefix(discoveries[i].Payload, []<span class="keyword">byte</span>(<span class="string">&quot;croc&quot;</span>)) &#123;</span><br><span class="line">        log.Debug(<span class="string">&quot;skipping discovery&quot;</span>)</span><br><span class="line">         <span class="keyword">continue</span></span><br><span class="line"> &#125;</span><br><span class="line"> log.Debug(<span class="string">&quot;switching to local&quot;</span>)</span><br><span class="line"> portToUse := <span class="keyword">string</span>(bytes.TrimPrefix(discoveries[<span class="number">0</span>].Payload, []<span class="keyword">byte</span>(<span class="string">&quot;croc&quot;</span>)))</span><br><span class="line"> <span class="keyword">if</span> portToUse == <span class="string">&quot;&quot;</span> &#123;</span><br><span class="line">       portToUse = <span class="string">&quot;9009&quot;</span></span><br><span class="line"> &#125;</span><br><span class="line"> address := net.JoinHostPort(discoveries[<span class="number">0</span>].Address, portToUse)</span><br><span class="line"> <span class="keyword">if</span> tcp.PingServer(address) == <span class="literal">nil</span> &#123;</span><br><span class="line">     log.Debugf(<span class="string">&quot;succesfully pinged &#x27;%s&#x27;&quot;</span>, address)</span><br><span class="line">     c.Options.RelayAddress = address</span><br><span class="line">     c.ExternalIPConnected = c.Options.RelayAddress</span><br><span class="line">     c.Options.RelayAddress6 = <span class="string">&quot;&quot;</span></span><br><span class="line">     usingLocal = <span class="literal">true</span></span><br><span class="line">     <span class="keyword">break</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+<li><p><strong>BC服务器通信</strong> 部分:</p>
+<ol>
+<li><p>询问A服务器IP</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ask the sender for their local ips and port</span></span><br><span class="line"><span class="comment">// and try to connect to them</span></span><br><span class="line">c.conn[<span class="number">0</span>].Send([]<span class="keyword">byte</span>(<span class="string">&quot;ips?&quot;</span>))</span><br><span class="line">data, err = c.conn[<span class="number">0</span>].Receive()</span><br><span class="line"><span class="comment">//...get ips</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">len</span>(ips) &gt; <span class="number">1</span> &#123;</span><br><span class="line">    port := ips[<span class="number">0</span>]</span><br><span class="line">    ips = ips[<span class="number">1</span>:]</span><br><span class="line">    <span class="keyword">for</span> _, ip := <span class="keyword">range</span> ips &#123;</span><br><span class="line">     ipv4Addr, ipv4Net, errNet := net.ParseCIDR(fmt.Sprintf(<span class="string">&quot;%s/24&quot;</span>, ip))</span><br><span class="line">   log.Debugf(<span class="string">&quot;ipv4Add4: %+v, ipv4Net: %+v, err: %+v&quot;</span>, ipv4Addr, ipv4Net, errNet)</span><br><span class="line">   localIps, _ := utils.GetLocalIPs()</span><br><span class="line">   haveLocalIP := <span class="literal">false</span></span><br><span class="line">   <span class="keyword">for</span> _, localIP := <span class="keyword">range</span> localIps &#123;</span><br><span class="line">       localIPparsed := net.ParseIP(localIP)</span><br><span class="line">       <span class="keyword">if</span> ipv4Net.Contains(localIPparsed) &#123;</span><br><span class="line">        haveLocalIP = <span class="literal">true</span></span><br><span class="line">        <span class="keyword">break</span></span><br><span class="line">       &#125;</span><br><span class="line">   &#125;</span><br><span class="line">   <span class="keyword">if</span> !haveLocalIP &#123;</span><br><span class="line">     log.Debugf(<span class="string">&quot;%s is not a local IP, skipping&quot;</span>, ip)</span><br><span class="line">     <span class="keyword">continue</span></span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> serverTry := fmt.Sprintf(<span class="string">&quot;%s:%s&quot;</span>, ip, port)</span><br><span class="line"> conn, banner2, externalIP, errConn := tcp.ConnectToTCPServer(serverTry, c.Options.RelayPassword, c.Options.SharedSecret[:<span class="number">3</span>], <span class="number">250</span>*time.Millisecond)</span><br><span class="line"> <span class="keyword">if</span> errConn != <span class="literal">nil</span> &#123;</span><br><span class="line">     log.Debugf(<span class="string">&quot;could not connect to &quot;</span> + serverTry)</span><br><span class="line">     <span class="keyword">continue</span></span><br><span class="line"> &#125;</span><br><span class="line"> log.Debugf(<span class="string">&quot;local connection established to %s&quot;</span>, serverTry)</span><br><span class="line"> log.Debugf(<span class="string">&quot;banner: %s&quot;</span>, banner2)</span><br><span class="line"> <span class="comment">// reset to the local port</span></span><br><span class="line"> banner = banner2</span><br><span class="line"> c.Options.RelayAddress = serverTry</span><br><span class="line"> c.ExternalIP = externalIP</span><br><span class="line"> c.conn[<span class="number">0</span>].Close()</span><br><span class="line"> c.conn[<span class="number">0</span>] = <span class="literal">nil</span></span><br><span class="line"> c.conn[<span class="number">0</span>] = conn</span><br><span class="line"> <span class="keyword">break</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure></li>
+</ol>
+</li>
+</ul>
+<h3 id="croc-功能实现-小总结"><a href="#croc-功能实现-小总结" class="headerlink" title="croc 功能实现: 小总结"></a><code>croc</code> 功能实现: 小总结</h3><ul>
+<li><p>它使用的默认的中继服务器。 <strong>而在局域网可用的情况下，用的是发送方自己开启的中继服务器。</strong></p>
+  <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">--relay值中继的地址（默认：<span class="string">&quot;142.93.177.120:9009&quot;</span>） [<span class="variable">$CROC_RELAY</span>]</span><br><span class="line">--relay6值中继的IPv6地址（默认为：<span class="string">&quot;[2604:a880:800:c1::14c:1]:9009&quot;</span>） [<span class="variable">$CROC_RELAY6</span>]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><strong><code>croc</code> 降低带宽占用</strong> : 识别内网以及IPv6, 在B获取到A的信息之后，若AB是在同一个局域网或者是用IPv6地址，则AB直接建立文件传输连接而不经过C，反则需要经过C中转。</p>
+<ul>
+<li><strong>优先内网</strong> : 支持局域网发现，符合网络条件是可以不经过的中转的<br><a target="_blank" rel="noopener" href="https://github.com/schollz/croc/blob/d922808fd8bfc97571bdc4ddd6d115d979bc9ba7/src/croc/croc.go#L302">https://github.com/schollz/croc/blob/d922808fd8bfc97571bdc4ddd6d115d979bc9ba7/src/croc/croc.go#L302</a><a target="_blank" rel="noopener" href="https://github.com/schollz/croc/blob/d922808fd8bfc97571bdc4ddd6d115d979bc9ba7/src/croc/croc.go#L497">https://github.com/schollz/croc/blob/d922808fd8bfc97571bdc4ddd6d115d979bc9ba7/src/croc/croc.go#L497</a></li>
+<li><strong>为什么要优先IPv6?</strong>: IPv4 在大多数情况下需要使用 NAT 转换，在 <code>croc</code> 的设计上是需要使用中转服务器做流量转发的。所以它需要避开IPv4。(至于IPv6的覆盖率，我在后续章节会提到 #I40ONU)</li>
+</ul>
+</li>
+<li><p><strong><code>croc</code> 提升速度</strong> : 如何实现全双工的实时通信层</p>
+<ul>
+<li><strong>传输文件的常见方式是首先将数据上传到服务器，然后，一旦上传，就将链接分享给去下载的人。</strong> 这种方法很简单，但速度很慢–文件的传输速度是上传和下载速度的谐波平均值的一半，这使得它比直接上传或下载都要慢。(例如，如果你以5MB&#x2F;s的速度上传文件，然后在完成上传后，以8MB&#x2F;s的速度下载，那么有效的传输速率是1&#x2F;2 * 2&#x2F;(1&#x2F;5+1&#x2F;8) &#x3D; 3.1MB&#x2F;s - 这比任何一种都慢。)</li>
+<li><strong>更好的方法是使用在两台计算机之间建立一个全双工的实时通信层</strong> ，使 “上传” 和 “下载” 在两台计算机之间同时发生。这有效地提高了传输率，因为它不是连续的，只受限于两种传输模式（上传或下载）中较慢的一种。关键是一边在上传的同时，另外一边可以下载。[2]</li>
+</ul>
+</li>
+<li><p><strong><code>croc</code> 保证安全</strong> : 提供<strong>端到端加密</strong>（使用PAKE，我还没看懂, TODO）</p>
+</li>
+</ul>
+<h3 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h3><ul>
+<li>[1] croc 仓库链接: <a target="_blank" rel="noopener" href="https://github.com/schollz/croc">https://github.com/schollz/croc</a></li>
+<li>[2] croc 设计思路: <a target="_blank" rel="noopener" href="https://schollz.com/blog/croc6/">https://schollz.com/blog/croc6/</a></li>
+<li>croc 项目的灵感来源: <a target="_blank" rel="noopener" href="https://github.com/magic-wormhole/magic-wormhole">https://github.com/magic-wormhole/magic-wormhole</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/WebRTC/" rel="tag"><i class="fa fa-tag"></i> WebRTC</a>
+              <a href="/tags/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/" rel="tag"><i class="fa fa-tag"></i> 学习记录</a>
+              <a href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/11/10/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%B8%89/" rel="prev" title="面试题|Python基础(三)">
+      <i class="fa fa-chevron-left"></i> 面试题|Python基础(三)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2021/11/15/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89-WebRTC-%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5/" rel="next" title="WebRTC 学习记录（二）| WebRTC 如何建立连接">
+      WebRTC 学习记录（二）| WebRTC 如何建立连接 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93%E4%BB%A5%E5%8F%8A-croc-%E4%BB%A3%E7%A0%81%E5%88%86%E6%9E%90"><span class="nav-text">文件传输以及 croc 代码分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93%E7%9A%84%E5%9B%9B%E7%A7%8D%E7%BD%91%E7%BB%9C%E5%9C%BA%E6%99%AF"><span class="nav-text">文件传输的四种网络场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%9C%E4%B8%BA%E6%9C%8D%E5%8A%A1%E6%8F%90%E4%BE%9B%E6%96%B9%EF%BC%8C%E5%9C%A8%E6%96%87%E4%BB%B6%E4%BC%A0%E8%BE%93%E4%B8%AD%E6%88%91%E4%BB%AC%E5%85%B3%E6%B3%A8%E7%9A%84%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-text">作为服务提供方，在文件传输中我们关注的点是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A9%E6%88%91%E5%B1%95%E7%A4%BA%E4%B8%80%E4%B8%8B%E4%BD%BF%E7%94%A8croc%E7%9A%84%E4%BE%8B%E5%AD%90"><span class="nav-text">让我展示一下使用croc的例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#croc-%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-%E5%8F%91%E9%80%81%E6%96%B9%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="nav-text">croc 功能实现: 发送方功能实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#croc%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-%E6%8E%A5%E6%94%B6%E6%96%B9%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0"><span class="nav-text">croc功能实现: 接收方功能实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#croc-%E5%8A%9F%E8%83%BD%E5%AE%9E%E7%8E%B0-%E5%B0%8F%E6%80%BB%E7%BB%93"><span class="nav-text">croc 功能实现: 小总结</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="nav-text">参考资料</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="niracler"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">niracler</p>
+  <div class="site-description" itemprop="description">What are you doing?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/niracler" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;niracler" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:niracler@gmail.com" title="E-Mail → mailto:niracler@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/niracler" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;niracler" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://t.me/niracler_channel" title="Telegram → https:&#x2F;&#x2F;t.me&#x2F;niracler_channel" rel="noopener" target="_blank"><i class=" fa-fw"></i>Telegram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/4e3cc9bb3aa1" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;4e3cc9bb3aa1" rel="noopener" target="_blank"><i class=" fa-fw"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fas fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zhouyimian.github.io/" title="https:&#x2F;&#x2F;zhouyimian.github.io&#x2F;" rel="noopener" target="_blank">周同学的博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17146846号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niracler</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'd2492e40e7428634adb4',
+      clientSecret: '9a9c088a73eac548059694f5e074f5ba1fcad3bd',
+      repo        : 'niracler.github.io',
+      owner       : 'niracler',
+      admin       : ['niracler'],
+      id          : 'bb432b2325e4eb5fae460de2435c806b',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

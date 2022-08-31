@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.niracler.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="先是关于几点注意 本人是在阿里云服务器上搭建的教学资源服务器，若有不适合的地方，请酌情修改，或直接来问我。 我这里的所有命令都是没有sudo的，因为我就是root用户。有需要自己加。 zsh 和 fish 安装与使用，工欲善其事,必先利其器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux | 基于Linux的教学资源服务器构建">
+<meta property="og:url" content="https://www.niracler.com/2018/03/08/Linux-%E5%9F%BA%E4%BA%8ELinux%E7%9A%84%E6%95%99%E5%AD%A6%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%84%E5%BB%BA/index.html">
+<meta property="og:site_name" content="Niracler&#39;Blog">
+<meta property="og:description" content="先是关于几点注意 本人是在阿里云服务器上搭建的教学资源服务器，若有不适合的地方，请酌情修改，或直接来问我。 我这里的所有命令都是没有sudo的，因为我就是root用户。有需要自己加。 zsh 和 fish 安装与使用，工欲善其事,必先利其器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4781155-89214869b66827aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4781155-261b0b46cf6fd1ee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4781155-7266590cb2c88b49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4781155-a551097a9b53090f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="og:image" content="http://upload-images.jianshu.io/upload_images/4781155-e1132b897ec96c89.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2018-03-08T01:05:55.000Z">
+<meta property="article:modified_time" content="2022-04-29T08:02:02.436Z">
+<meta property="article:author" content="niracler">
+<meta property="article:tag" content="linux">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://upload-images.jianshu.io/upload_images/4781155-89214869b66827aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+<link rel="canonical" href="https://www.niracler.com/2018/03/08/Linux-%E5%9F%BA%E4%BA%8ELinux%E7%9A%84%E6%95%99%E5%AD%A6%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%84%E5%BB%BA/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>Linux | 基于Linux的教学资源服务器构建 | Niracler'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Niracler'Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Niracler'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">What are you doing?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/niracler" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.niracler.com/2018/03/08/Linux-%E5%9F%BA%E4%BA%8ELinux%E7%9A%84%E6%95%99%E5%AD%A6%E8%B5%84%E6%BA%90%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%9E%84%E5%BB%BA/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="niracler">
+      <meta itemprop="description" content="What are you doing?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Niracler'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux | 基于Linux的教学资源服务器构建
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2018-03-08 09:05:55" itemprop="dateCreated datePublished" datetime="2018-03-08T09:05:55+08:00">2018-03-08</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-29 16:02:02" itemprop="dateModified" datetime="2022-04-29T16:02:02+08:00">2022-04-29</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="先是关于几点注意"><a href="#先是关于几点注意" class="headerlink" title="先是关于几点注意"></a>先是关于几点注意</h3><ul>
+<li>本人是在阿里云服务器上搭建的教学资源服务器，若有不适合的地方，请酌情修改，或直接来问我。</li>
+<li>我这里的所有命令都是没有sudo的，因为我就是root用户。有需要自己加。</li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/43b7e6f069f9">zsh 和 fish 安装与使用</a>，工欲善其事,必先利其器</li>
+</ul>
+<span id="more"></span>
+
+<h3 id="这里开始是ftp搭建过程"><a href="#这里开始是ftp搭建过程" class="headerlink" title="这里开始是ftp搭建过程"></a>这里开始是ftp搭建过程</h3><p><strong>1. Proftpd安装</strong></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ apt-get update    <span class="comment"># 更新包信息</span></span><br><span class="line">$ apt-get upgrade  <span class="comment"># 升级</span></span><br><span class="line">$ apt-get install proftpd <span class="comment"># 安装proftp</span></span><br></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/4781155-89214869b66827aa.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>选择“standalone”<br>查看proftpd状态</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /etc/init.d/proftpd status</span></span><br></pre></td></tr></table></figure>
+<p><strong>2. 编辑配置文件</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /etc/proftpd/proftpd.conf</span></span><br></pre></td></tr></table></figure>
+
+<p><strong><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e1546998c254">文件内容</a></strong></p>
+<p><strong>3. 重启服务器</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> /etc/init.d/proftpd restart</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>4. Ubuntu系统配置nologin</strong></p>
+<p>这步是为了防止ftp用户用终端登录</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> vim /etc/shells</span></span><br></pre></td></tr></table></figure>
+
+<p>最后一行增加&#x2F;usr&#x2F;sbin&#x2F;nologin</p>
+<p><strong>5. 创建用户组</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> groupadd student</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> groupadd teacher</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>6. 创建账号</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 创建用户</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> useradd -m fuckhu -g teacher -s /usr/sbin/nologin</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> useradd fuckhus -g student -s /usr/sbin/nologin -d /home/fuckhu/</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash">设置账户密码</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> -e <span class="string">&quot;fuckhu:123&quot;</span> | sudo chpasswd</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> -e <span class="string">&quot;fuckhus:123&quot;</span> | sudo chpasswd</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>7. 创建目录</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /home/fuckhu/</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir 学生作业</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> mkdir 资源共享</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 设置文件所属组和所属用户</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> chown fuckhu 学生作业/</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> chown :teacher 学生作业/</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> chown fuckhu 资源共享/</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> chown :teacher 资源共享/</span></span><br><span class="line"><span class="meta"></span></span><br><span class="line"><span class="meta">#</span><span class="bash"> 给学生加个写作业的权限</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> chmod o+w 学生作业/</span></span><br></pre></td></tr></table></figure>
+<p>教师私人账号功能测试</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4781155-261b0b46cf6fd1ee.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>教师公开账号功能测试</p>
+<p><img src="http://upload-images.jianshu.io/upload_images/4781155-7266590cb2c88b49.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>大家可以自己<a href="ftp://niracler.com/">试试</a><br><a target="_blank" rel="noopener" href="https://bbs.aliyun.com/read/323533.html?page=e">win的用户注意</a></p>
+<h3 id="HTTP服务器安装与配置"><a href="#HTTP服务器安装与配置" class="headerlink" title="HTTP服务器安装与配置"></a>HTTP服务器安装与配置</h3><p><strong>1. 软件安装</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get update</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt-get install apache2</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt-get install apache2-doc</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 服务器配置</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">cd</span> /var/www/html/</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> rm index.html  <span class="comment"># 删除原有的index文件</span></span></span><br><span class="line"><span class="meta">$</span><span class="bash"> ln -s /home/fuckhu/资源共享/ fuckfu <span class="comment"># 建立软连接</span></span></span><br></pre></td></tr></table></figure>
+<p><img src="http://upload-images.jianshu.io/upload_images/4781155-a551097a9b53090f.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<p>然后直接浏览器用你们的ip去访问吧。</p>
+<h3 id="Samba服务器安装与配置"><a href="#Samba服务器安装与配置" class="headerlink" title="Samba服务器安装与配置"></a>Samba服务器安装与配置</h3><p><strong>1. 软件安装</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> apt-get install libtalloc2</span></span><br><span class="line"><span class="meta">$</span><span class="bash"> apt-get install samba</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>2. 系统用户设置 Samba 独立的登录密码:</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> <span class="built_in">echo</span> -e <span class="string">&quot;123\n123&quot;</span> | smbpasswd -a -s fuckhu</span></span><br></pre></td></tr></table></figure>
+<p>添加samba用户帐号，smbpasswd -a -s fuckhu 是静默方式添加samba帐号，echo -e “123\n123” 是两次输出密码 123，中间输出回车符 \n</p>
+<p><strong>抱歉，外网无法测试。</strong></p>
+<h3 id="shell管理程序的设计与实现"><a href="#shell管理程序的设计与实现" class="headerlink" title="shell管理程序的设计与实现"></a>shell管理程序的设计与实现</h3><p>让程序员从一些工作中解脱出来，让你<a target="_blank" rel="noopener" href="https://link.jianshu.com/?t=https://en.wikipedia.org/wiki/Don%27t_repeat_yourself">不必重复你自己</a></p>
+<p>文件namefile.txt(请不要有多余的换行与空格)</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">zengjinping</span><br><span class="line">sundawei</span><br><span class="line">lishaoming</span><br><span class="line">liuxixian</span><br><span class="line">jiajihong</span><br><span class="line">fengfuye</span><br><span class="line">yujinchang</span><br><span class="line">gaoyanqun</span><br></pre></td></tr></table></figure>
+<p>文件creat.sh<br>参考代码</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash">!/bin/bash</span></span><br><span class="line">cat namefile.txt |while read name</span><br><span class="line">do useradd -m $name -g teacher -s /usr/sbin/nologin</span><br><span class="line">useradd $&#123;name&#125;s -g student -s /usr/sbin/nologin -d /home/$name/</span><br><span class="line">echo -e &quot;$name:123&quot; | sudo chpasswd</span><br><span class="line">echo -e &quot;$&#123;name&#125;s:123&quot; | sudo chpasswd</span><br><span class="line">cd /home/$name/</span><br><span class="line">mkdir 学生作业</span><br><span class="line">mkdir 资源共享</span><br><span class="line">chown $name 学生作业/</span><br><span class="line">chown :teacher 学生作业/</span><br><span class="line">chown $name 资源共享/</span><br><span class="line">chown :teacher 资源共享/</span><br><span class="line">chmod o+w 学生作业/</span><br><span class="line">cd /var/www/html/</span><br><span class="line">ln -s /home/$name/资源共享/ $name</span><br><span class="line">echo -e &quot;123\n123&quot; | smbpasswd -a -s $name</span><br><span class="line">done</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">$</span><span class="bash"> sudo bash creat.sh <span class="comment">##执行</span></span></span><br></pre></td></tr></table></figure>
+
+<p><img src="http://upload-images.jianshu.io/upload_images/4781155-e1132b897ec96c89.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240"></p>
+<h3 id="在此过程我所参考过的内容"><a href="#在此过程我所参考过的内容" class="headerlink" title="在此过程我所参考过的内容"></a>在此过程我所参考过的内容</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://wenku.baidu.com/view/0546c4215901020207409c8c.html">黄培灿老师的方法</a></li>
+<li><a target="_blank" rel="noopener" href="http://blog.fens.me/linux-ftp-proftpd/">Proftpd快速搭建FTP服务器</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/panblack/p/samba_batch_adding_users.html">Centos6配置samba服务器并批量添加用户和文件夹</a></li>
+<li><a target="_blank" rel="noopener" href="http://bbs.51cto.com/thread-1081649-1-1.html">Linux 下批量创建用户(shell 命令)</a></li>
+<li><a target="_blank" rel="noopener" href="http://www.linuxidc.com/Linux/2014-12/111056.htm">Linux ln命令 - 建立文件&#x2F;目录链接</a></li>
+<li>老师的讲义。</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/linux/" rel="tag"><i class="fa fa-tag"></i> linux</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2018/03/08/Linux-%E8%AF%BE%E7%A8%8B%E8%AE%BE%E8%AE%A1-ftp%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%86%85%E5%AE%B9/" rel="next" title="Linux | 课程设计 ftp配置文件内容">
+      Linux | 课程设计 ftp配置文件内容 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%88%E6%98%AF%E5%85%B3%E4%BA%8E%E5%87%A0%E7%82%B9%E6%B3%A8%E6%84%8F"><span class="nav-text">先是关于几点注意</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%BF%99%E9%87%8C%E5%BC%80%E5%A7%8B%E6%98%AFftp%E6%90%AD%E5%BB%BA%E8%BF%87%E7%A8%8B"><span class="nav-text">这里开始是ftp搭建过程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#HTTP%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="nav-text">HTTP服务器安装与配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Samba%E6%9C%8D%E5%8A%A1%E5%99%A8%E5%AE%89%E8%A3%85%E4%B8%8E%E9%85%8D%E7%BD%AE"><span class="nav-text">Samba服务器安装与配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#shell%E7%AE%A1%E7%90%86%E7%A8%8B%E5%BA%8F%E7%9A%84%E8%AE%BE%E8%AE%A1%E4%B8%8E%E5%AE%9E%E7%8E%B0"><span class="nav-text">shell管理程序的设计与实现</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9C%A8%E6%AD%A4%E8%BF%87%E7%A8%8B%E6%88%91%E6%89%80%E5%8F%82%E8%80%83%E8%BF%87%E7%9A%84%E5%86%85%E5%AE%B9"><span class="nav-text">在此过程我所参考过的内容</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="niracler"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">niracler</p>
+  <div class="site-description" itemprop="description">What are you doing?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/niracler" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;niracler" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:niracler@gmail.com" title="E-Mail → mailto:niracler@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/niracler" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;niracler" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://t.me/niracler_channel" title="Telegram → https:&#x2F;&#x2F;t.me&#x2F;niracler_channel" rel="noopener" target="_blank"><i class=" fa-fw"></i>Telegram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/4e3cc9bb3aa1" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;4e3cc9bb3aa1" rel="noopener" target="_blank"><i class=" fa-fw"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fas fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zhouyimian.github.io/" title="https:&#x2F;&#x2F;zhouyimian.github.io&#x2F;" rel="noopener" target="_blank">周同学的博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17146846号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niracler</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'd2492e40e7428634adb4',
+      clientSecret: '9a9c088a73eac548059694f5e074f5ba1fcad3bd',
+      repo        : 'niracler.github.io',
+      owner       : 'niracler',
+      admin       : ['niracler'],
+      id          : 'cb26c1bcdc12b447d9ba018a9e713c0d',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.niracler.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="这篇文章应该算是我大数据系列的第一篇文章吧,路漫漫其修远兮，我本来不想这么快就往大数据方向前进的，只是这边项目需要，不得不学。本文章对新手极不友好。前置技能有很多，你总得安装个docker吧,还要了解Docker常用命令, 以及Dockerfile，docker-compose的使用。我的不通用的Python程序员练级攻略里有相应的学习资料。而该项目的地址是 https:&#x2F;&#x2F;github.com&#x2F;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="使用docker搭建hadoop伪分布式">
+<meta property="og:url" content="https://www.niracler.com/2019/03/29/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAhadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F/index.html">
+<meta property="og:site_name" content="Niracler&#39;Blog">
+<meta property="og:description" content="这篇文章应该算是我大数据系列的第一篇文章吧,路漫漫其修远兮，我本来不想这么快就往大数据方向前进的，只是这边项目需要，不得不学。本文章对新手极不友好。前置技能有很多，你总得安装个docker吧,还要了解Docker常用命令, 以及Dockerfile，docker-compose的使用。我的不通用的Python程序员练级攻略里有相应的学习资料。而该项目的地址是 https:&#x2F;&#x2F;github.com&#x2F;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://www.niracler.com/images/Screenshot_20190329_103435.png">
+<meta property="og:image" content="https://www.niracler.com/images/Screenshot_20190410_104008.png">
+<meta property="og:image" content="https://www.niracler.com/images/Screenshot_20190329_080604.png">
+<meta property="og:image" content="https://www.niracler.com/images/Screenshot_20190329_100435.png">
+<meta property="article:published_time" content="2019-03-29T02:10:43.000Z">
+<meta property="article:modified_time" content="2022-04-29T08:02:02.438Z">
+<meta property="article:author" content="niracler">
+<meta property="article:tag" content="docker">
+<meta property="article:tag" content="hadoop">
+<meta property="article:tag" content="大数据">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://www.niracler.com/images/Screenshot_20190329_103435.png">
+
+<link rel="canonical" href="https://www.niracler.com/2019/03/29/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAhadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>使用docker搭建hadoop伪分布式 | Niracler'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Niracler'Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Niracler'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">What are you doing?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/niracler" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.niracler.com/2019/03/29/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAhadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="niracler">
+      <meta itemprop="description" content="What are you doing?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Niracler'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          使用docker搭建hadoop伪分布式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-29 10:10:43" itemprop="dateCreated datePublished" datetime="2019-03-29T10:10:43+08:00">2019-03-29</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-29 16:02:02" itemprop="dateModified" datetime="2022-04-29T16:02:02+08:00">2022-04-29</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>这篇文章应该算是我大数据系列的第一篇文章吧,路漫漫其修远兮，我本来不想这么快就往大数据方向前进的，只是这边项目需要，不得不学。本文章对新手极不友好。前置技能有很多，你总得安装个docker吧,还要了解Docker常用命令, 以及Dockerfile，docker-compose的使用。我的<a href="https://www.niracler.com/2019/03/14/%E4%B8%8D%E9%80%9A%E7%94%A8%E7%9A%84Python%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%94%BB%E7%95%A5/">不通用的Python程序员练级攻略</a>里有相应的学习资料。而该项目的地址是 <a target="_blank" rel="noopener" href="https://github.com/Niracler/bigdata-exercise">https://github.com/Niracler/bigdata-exercise</a></p>
+<p>这篇文章主要讲的是使用docker搭建hadoop伪分布式的细节，假如觉得麻烦的话，有更简便的方法。我这里先说为敬,或者你们可以先试试成功的喜悦。</p>
+<p>将这个项目克隆下来，我的Dockerfile都是基于<a target="_blank" rel="noopener" href="https://github.com/big-data-europe/docker-hadoop">这个项目</a>改写的：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$git</span> <span class="built_in">clone</span> https://github.com/Niracler/bigdata-exercise.git</span><br><span class="line"><span class="variable">$cd</span> bigdata-exercise/docker-hadoop/</span><br></pre></td></tr></table></figure>
+
+<p>启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$sudo</span> su</span><br><span class="line"><span class="variable">$docker</span>-compose -f docker-compose-local.yml up -d</span><br></pre></td></tr></table></figure>
+
+<p>访问<a target="_blank" rel="noopener" href="http://localhost:50070/">http://localhost:50070/</a> 效果</p>
+<p><img src="/images/Screenshot_20190329_103435.png"></p>
+<p>进入容器</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> <span class="built_in">exec</span> -it namenode bash</span><br></pre></td></tr></table></figure>
+
+<p>上传文件测试</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$touch</span> <span class="built_in">test</span></span><br><span class="line"><span class="variable">$hdfs</span> dfs -put <span class="built_in">test</span>  /</span><br><span class="line"><span class="variable">$hdfs</span> dfs -ls /</span><br></pre></td></tr></table></figure>
+
+<p><img src="/images/Screenshot_20190410_104008.png"></p>
+<p>然后？就没有然后了，下面是dockerfile等文件的细节</p>
+<span id="more"></span>
+<hr>
+<h2 id="构建镜像"><a href="#构建镜像" class="headerlink" title="构建镜像"></a>构建镜像</h2><h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><p>你要先在该目录结构下</p>
+<p><img src="/images/Screenshot_20190329_080604.png"></p>
+<h3 id="构建hadoop-base镜像"><a href="#构建hadoop-base镜像" class="headerlink" title="构建hadoop-base镜像"></a>构建hadoop-base镜像</h3><p>hadoop-base的Dockerfile，之后具体的Dockerfile都是基于该Dockerfile,该Dockerfile的主要工作是下载jdk与hadoop</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">FROM openjdk:8</span><br><span class="line">MAINTAINER Niracler &lt;niracler@gmail.com&gt;</span><br><span class="line"></span><br><span class="line"><span class="comment"># 下载并安装hadoop http://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-2.7.7/hadoop-2.7.7.tar.gz</span></span><br><span class="line">ENV HADOOP_VERSION 2.7.7</span><br><span class="line">ENV HADOOP_URL http://mirrors.tuna.tsinghua.edu.cn/apache/hadoop/common/hadoop-<span class="variable">$HADOOP_VERSION</span>/hadoop-<span class="variable">$HADOOP_VERSION</span>.tar.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 解压，放到指定位置，并删除</span></span><br><span class="line">RUN <span class="built_in">set</span> -x \</span><br><span class="line">    &amp;&amp; curl -fSL <span class="string">&quot;<span class="variable">$HADOOP_URL</span>&quot;</span> -o /tmp/hadoop.tar.gz \</span><br><span class="line">    &amp;&amp; tar -xvf /tmp/hadoop.tar.gz -C /opt/ \</span><br><span class="line">    &amp;&amp; rm /tmp/hadoop.tar.gz*</span><br><span class="line"></span><br><span class="line">RUN ln -s /opt/hadoop-<span class="variable">$HADOOP_VERSION</span>/etc/hadoop /etc/hadoop</span><br><span class="line">RUN cp /etc/hadoop/mapred-site.xml.template /etc/hadoop/mapred-site.xml</span><br><span class="line">RUN mkdir /opt/hadoop-<span class="variable">$HADOOP_VERSION</span>/logs</span><br><span class="line"></span><br><span class="line">RUN mkdir /hadoop-data</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置环境变量</span></span><br><span class="line">ENV HADOOP_PREFIX=/opt/hadoop-<span class="variable">$HADOOP_VERSION</span></span><br><span class="line">ENV HADOOP_CONF_DIR=/etc/hadoop</span><br><span class="line">ENV MULTIHOMED_NETWORK=1</span><br><span class="line"></span><br><span class="line">ENV USER=root</span><br><span class="line">ENV PATH <span class="variable">$HADOOP_PREFIX</span>/bin/:<span class="variable">$PATH</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 添加启动文件</span></span><br><span class="line">ADD entrypoint.sh /entrypoint.sh</span><br><span class="line">RUN chmod a+x /entrypoint.sh</span><br><span class="line"></span><br><span class="line">ENTRYPOINT [<span class="string">&quot;/entrypoint.sh&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>启动文件entrypoint.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Set some sensible defaults</span></span><br><span class="line"><span class="built_in">export</span> CORE_CONF_fs_defaultFS=<span class="variable">$&#123;CORE_CONF_fs_defaultFS:-hdfs://`hostname -f`:8020&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">addProperty</span></span>() &#123;</span><br><span class="line">  <span class="built_in">local</span> path=<span class="variable">$1</span></span><br><span class="line">  <span class="built_in">local</span> name=<span class="variable">$2</span></span><br><span class="line">  <span class="built_in">local</span> value=<span class="variable">$3</span></span><br><span class="line"></span><br><span class="line">  <span class="built_in">local</span> entry=<span class="string">&quot;&lt;property&gt;&lt;name&gt;<span class="variable">$name</span>&lt;/name&gt;&lt;value&gt;<span class="variable">$&#123;value&#125;</span>&lt;/value&gt;&lt;/property&gt;&quot;</span></span><br><span class="line">  <span class="built_in">local</span> escapedEntry=$(<span class="built_in">echo</span> <span class="variable">$entry</span> | sed <span class="string">&#x27;s/\//\\\//g&#x27;</span>)</span><br><span class="line">  sed -i <span class="string">&quot;/&lt;\/configuration&gt;/ s/.*/<span class="variable">$&#123;escapedEntry&#125;</span>\n&amp;/&quot;</span> <span class="variable">$path</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">function</span> <span class="function"><span class="title">configure</span></span>() &#123;</span><br><span class="line">    <span class="built_in">local</span> path=<span class="variable">$1</span></span><br><span class="line">    <span class="built_in">local</span> module=<span class="variable">$2</span></span><br><span class="line">    <span class="built_in">local</span> envPrefix=<span class="variable">$3</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">local</span> var</span><br><span class="line">    <span class="built_in">local</span> value</span><br><span class="line"></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Configuring <span class="variable">$module</span>&quot;</span></span><br><span class="line">    <span class="keyword">for</span> c <span class="keyword">in</span> `printenv | perl -sne <span class="string">&#x27;print &quot;$1 &quot; if m/^$&#123;envPrefix&#125;_(.+?)=.*/&#x27;</span> -- -envPrefix=<span class="variable">$envPrefix</span>`; <span class="keyword">do</span></span><br><span class="line">        name=`<span class="built_in">echo</span> <span class="variable">$&#123;c&#125;</span> | perl -pe <span class="string">&#x27;s/___/-/g; s/__/@/g; s/_/./g; s/@/_/g;&#x27;</span>`</span><br><span class="line">        var=<span class="string">&quot;<span class="variable">$&#123;envPrefix&#125;</span>_<span class="variable">$&#123;c&#125;</span>&quot;</span></span><br><span class="line">        value=<span class="variable">$&#123;!var&#125;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot; - Setting <span class="variable">$name</span>=<span class="variable">$value</span>&quot;</span></span><br><span class="line">        addProperty /etc/hadoop/<span class="variable">$module</span>-site.xml <span class="variable">$name</span> <span class="string">&quot;<span class="variable">$value</span>&quot;</span></span><br><span class="line">    <span class="keyword">done</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">configure /etc/hadoop/core-site.xml core CORE_CONF</span><br><span class="line">configure /etc/hadoop/hdfs-site.xml hdfs HDFS_CONF</span><br><span class="line">configure /etc/hadoop/yarn-site.xml yarn YARN_CONF</span><br><span class="line">configure /etc/hadoop/httpfs-site.xml httpfs HTTPFS_CONF</span><br><span class="line">configure /etc/hadoop/kms-site.xml kms KMS_CONF</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;<span class="variable">$MULTIHOMED_NETWORK</span>&quot;</span> = <span class="string">&quot;1&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    <span class="built_in">echo</span> <span class="string">&quot;Configuring for multihomed network&quot;</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># HDFS</span></span><br><span class="line">    addProperty /etc/hadoop/hdfs-site.xml dfs.namenode.rpc-bind-host 0.0.0.0</span><br><span class="line">    addProperty /etc/hadoop/hdfs-site.xml dfs.namenode.servicerpc-bind-host 0.0.0.0</span><br><span class="line">    addProperty /etc/hadoop/hdfs-site.xml dfs.namenode.http-bind-host 0.0.0.0</span><br><span class="line">    addProperty /etc/hadoop/hdfs-site.xml dfs.namenode.https-bind-host 0.0.0.0</span><br><span class="line">    addProperty /etc/hadoop/hdfs-site.xml dfs.client.use.datanode.hostname <span class="literal">true</span></span><br><span class="line">    addProperty /etc/hadoop/hdfs-site.xml dfs.datanode.use.datanode.hostname <span class="literal">true</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># YARN</span></span><br><span class="line">    addProperty /etc/hadoop/yarn-site.xml yarn.resourcemanager.bind-host 0.0.0.0</span><br><span class="line">    addProperty /etc/hadoop/yarn-site.xml yarn.nodemanager.bind-host 0.0.0.0</span><br><span class="line">    addProperty /etc/hadoop/yarn-site.xml yarn.nodemanager.bind-host 0.0.0.0</span><br><span class="line">    addProperty /etc/hadoop/yarn-site.xml yarn.timeline-service.bind-host 0.0.0.0</span><br><span class="line"></span><br><span class="line">    <span class="comment"># MAPRED</span></span><br><span class="line">    addProperty /etc/hadoop/mapred-site.xml yarn.nodemanager.bind-host 0.0.0.0</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -n <span class="string">&quot;<span class="variable">$GANGLIA_HOST</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">    mv /etc/hadoop/hadoop-metrics.properties /etc/hadoop/hadoop-metrics.properties.orig</span><br><span class="line">    mv /etc/hadoop/hadoop-metrics2.properties /etc/hadoop/hadoop-metrics2.properties.orig</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> module <span class="keyword">in</span> mapred jvm rpc ugi; <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$module</span>.class=org.apache.hadoop.metrics.ganglia.GangliaContext31&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$module</span>.period=10&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$module</span>.servers=<span class="variable">$GANGLIA_HOST</span>:8649&quot;</span></span><br><span class="line">    <span class="keyword">done</span> &gt; /etc/hadoop/hadoop-metrics.properties</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> module <span class="keyword">in</span> namenode datanode resourcemanager nodemanager mrappmaster jobhistoryserver; <span class="keyword">do</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$module</span>.sink.ganglia.class=org.apache.hadoop.metrics2.sink.ganglia.GangliaSink31&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$module</span>.sink.ganglia.period=10&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$module</span>.sink.ganglia.supportsparse=true&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$module</span>.sink.ganglia.slope=jvm.metrics.gcCount=zero,jvm.metrics.memHeapUsedM=both&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$module</span>.sink.ganglia.dmax=jvm.metrics.threadsBlocked=70,jvm.metrics.memHeapUsedM=40&quot;</span></span><br><span class="line">        <span class="built_in">echo</span> <span class="string">&quot;<span class="variable">$module</span>.sink.ganglia.servers=<span class="variable">$GANGLIA_HOST</span>:8649&quot;</span></span><br><span class="line">    <span class="keyword">done</span> &gt; /etc/hadoop/hadoop-metrics2.properties</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">exec</span> <span class="variable">$@</span></span><br></pre></td></tr></table></figure>
+
+<p>构建hadoop-base镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> build -t=<span class="string">&quot;hadoop-base&quot;</span> ./base</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建hadoop-namenode"><a href="#构建hadoop-namenode" class="headerlink" title="构建hadoop-namenode"></a>构建hadoop-namenode</h3><p>hadoop-namenode的Dockerfile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">FROM hadoop-base</span><br><span class="line">MAINTAINER niracler &lt;niracler@gmail.com&gt;</span><br><span class="line"></span><br><span class="line">HEALTHCHECK CMD curl -f http://localhost:50070/ || <span class="built_in">exit</span> 1</span><br><span class="line"></span><br><span class="line">ENV HDFS_CONF_dfs_namenode_name_dir=file:///hadoop/dfs/name</span><br><span class="line">RUN mkdir -p /hadoop/dfs/name</span><br><span class="line">VOLUME /hadoop/dfs/name</span><br><span class="line"></span><br><span class="line">ADD run.sh /run.sh</span><br><span class="line">RUN chmod a+x /run.sh</span><br><span class="line"></span><br><span class="line">EXPOSE 50070</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">&quot;/run.sh&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>启动文件run.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">namedir=`<span class="built_in">echo</span> <span class="variable">$HDFS_CONF_dfs_namenode_name_dir</span> | perl -pe <span class="string">&#x27;s#file://##&#x27;</span>`</span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="variable">$namedir</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Namenode name directory not found: <span class="variable">$namedir</span>&quot;</span></span><br><span class="line">  <span class="built_in">exit</span> 2</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ -z <span class="string">&quot;<span class="variable">$CLUSTER_NAME</span>&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Cluster name not specified&quot;</span></span><br><span class="line">  <span class="built_in">exit</span> 2</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> [ <span class="string">&quot;`ls -A <span class="variable">$namedir</span>`&quot;</span> == <span class="string">&quot;&quot;</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Formatting namenode name directory: <span class="variable">$namedir</span>&quot;</span></span><br><span class="line">  <span class="variable">$HADOOP_PREFIX</span>/bin/hdfs --config <span class="variable">$HADOOP_CONF_DIR</span> namenode -format <span class="variable">$CLUSTER_NAME</span></span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$HADOOP_PREFIX</span>/bin/hdfs --config <span class="variable">$HADOOP_CONF_DIR</span> namenode</span><br></pre></td></tr></table></figure>
+
+<p>构建hadoop-namenode镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> build -t=<span class="string">&quot;hadoop-namenode&quot;</span> ./namenode</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建hadoop-datanode"><a href="#构建hadoop-datanode" class="headerlink" title="构建hadoop-datanode"></a>构建hadoop-datanode</h3><p>hadoop-datanode的Dockerfile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">FROM hadoop-base</span><br><span class="line">MAINTAINER niracler &lt;niracler@gmail.com&gt;</span><br><span class="line"></span><br><span class="line">HEALTHCHECK CMD curl -f http://localhost:50075/ || <span class="built_in">exit</span> 1</span><br><span class="line"></span><br><span class="line">ENV HDFS_CONF_dfs_datanode_data_dir=file:///hadoop/dfs/data</span><br><span class="line">RUN mkdir -p /hadoop/dfs/data</span><br><span class="line">VOLUME /hadoop/dfs/data</span><br><span class="line"></span><br><span class="line">ADD run.sh /run.sh</span><br><span class="line">RUN chmod a+x /run.sh</span><br><span class="line"></span><br><span class="line">EXPOSE 50075</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">&quot;/run.sh&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>启动文件run.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line">datadir=`<span class="built_in">echo</span> <span class="variable">$HDFS_CONF_dfs_datanode_data_dir</span> | perl -pe <span class="string">&#x27;s#file://##&#x27;</span>`</span><br><span class="line"><span class="keyword">if</span> [ ! -d <span class="variable">$datadir</span> ]; <span class="keyword">then</span></span><br><span class="line">  <span class="built_in">echo</span> <span class="string">&quot;Datanode data directory not found: <span class="variable">$datadir</span>&quot;</span></span><br><span class="line">  <span class="built_in">exit</span> 2</span><br><span class="line"><span class="keyword">fi</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$HADOOP_PREFIX</span>/bin/hdfs --config <span class="variable">$HADOOP_CONF_DIR</span> datanode</span><br></pre></td></tr></table></figure>
+
+<p>构建hadoop-datanode镜像</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> build -t=<span class="string">&quot;hadoop-datanode&quot;</span> ./datanode</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建hadoop-nodemanager"><a href="#构建hadoop-nodemanager" class="headerlink" title="构建hadoop-nodemanager"></a>构建hadoop-nodemanager</h3><p>hadoop-nodemanager的Dockerfile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FROM hadoop-base</span><br><span class="line">MAINTAINER Niracler &lt;niracler@gmail.com&gt;</span><br><span class="line"></span><br><span class="line">HEALTHCHECK CMD curl -f http://localhost:8042/ || <span class="built_in">exit</span> 1</span><br><span class="line"></span><br><span class="line">ADD run.sh /run.sh</span><br><span class="line">RUN chmod a+x /run.sh</span><br><span class="line"></span><br><span class="line">EXPOSE 8042</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">&quot;/run.sh&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>启动文件run.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$HADOOP_PREFIX</span>/bin/yarn --config <span class="variable">$HADOOP_CONF_DIR</span> nodemanager</span><br></pre></td></tr></table></figure>
+
+<p>构建hadoop-nodemanager</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> build -t=<span class="string">&quot;hadoop-nodemanager&quot;</span> ./nodemanager</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建hadoop-resourcemanager"><a href="#构建hadoop-resourcemanager" class="headerlink" title="构建hadoop-resourcemanager"></a>构建hadoop-resourcemanager</h3><p>hadoop-resourcemanager的Dockerfile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">FROM hadoop-base</span><br><span class="line">MAINTAINER niracler &lt;niracler@gmail.com&gt;</span><br><span class="line"></span><br><span class="line">HEALTHCHECK CMD curl -f http://localhost:8088/ || <span class="built_in">exit</span> 1</span><br><span class="line"></span><br><span class="line">ADD run.sh /run.sh</span><br><span class="line">RUN chmod a+x /run.sh</span><br><span class="line"></span><br><span class="line">EXPOSE 8088</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">&quot;/run.sh&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>启动文件run.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$HADOOP_PREFIX</span>/bin/yarn --config <span class="variable">$HADOOP_CONF_DIR</span> resourcemanager</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> build -t=<span class="string">&quot;hadoop-resourcemanager&quot;</span> ./resourcemanager</span><br></pre></td></tr></table></figure>
+
+<h3 id="构建hadoop-historyserver"><a href="#构建hadoop-historyserver" class="headerlink" title="构建hadoop-historyserver"></a>构建hadoop-historyserver</h3><p>hadoop-historyserver的Dockerfile</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">FROM hadoop-base</span><br><span class="line">MAINTAINER niracler &lt;niracler@gmail.com&gt;</span><br><span class="line"></span><br><span class="line">HEALTHCHECK CMD curl -f http://localhost:8188/ || <span class="built_in">exit</span> 1</span><br><span class="line"></span><br><span class="line">ENV YARN_CONF_yarn_timeline___service_leveldb___timeline___store_path=/hadoop/yarn/timeline</span><br><span class="line">RUN mkdir -p /hadoop/yarn/timeline</span><br><span class="line">VOLUME /hadoop/yarn/timeline</span><br><span class="line"></span><br><span class="line">ADD run.sh /run.sh</span><br><span class="line">RUN chmod a+x /run.sh</span><br><span class="line"></span><br><span class="line">EXPOSE 8188</span><br><span class="line"></span><br><span class="line">CMD [<span class="string">&quot;/run.sh&quot;</span>]</span><br></pre></td></tr></table></figure>
+
+<p>启动文件run.sh</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"></span><br><span class="line"><span class="variable">$HADOOP_PREFIX</span>/bin/yarn --config <span class="variable">$HADOOP_CONF_DIR</span> historyserver</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span> build -t=<span class="string">&quot;hadoop-historyserver&quot;</span> ./historyserver</span><br></pre></td></tr></table></figure>
+
+<h3 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">CORE_CONF_fs_defaultFS=hdfs://namenode:8020</span><br><span class="line">CORE_CONF_hadoop_http_staticuser_user=root</span><br><span class="line">CORE_CONF_hadoop_proxyuser_hue_hosts=*</span><br><span class="line">CORE_CONF_hadoop_proxyuser_hue_groups=*</span><br><span class="line"></span><br><span class="line">HDFS_CONF_dfs_webhdfs_enabled=true</span><br><span class="line">HDFS_CONF_dfs_permissions_enabled=false</span><br><span class="line"></span><br><span class="line">YARN_CONF_yarn_log___aggregation___enable=true</span><br><span class="line">YARN_CONF_yarn_resourcemanager_recovery_enabled=true</span><br><span class="line">YARN_CONF_yarn_resourcemanager_store_class=org.apache.hadoop.yarn.server.resourcemanager.recovery.FileSystemRMStateStore</span><br><span class="line">YARN_CONF_yarn_resourcemanager_fs_state___store_uri=/rmstate</span><br><span class="line">YARN_CONF_yarn_nodemanager_remote___app___log___dir=/app-logs</span><br><span class="line">YARN_CONF_yarn_log_server_url=http://historyserver:8188/applicationhistory/logs/</span><br><span class="line">YARN_CONF_yarn_timeline___service_enabled=true</span><br><span class="line">YARN_CONF_yarn_timeline___service_generic___application___history_enabled=true</span><br><span class="line">YARN_CONF_yarn_resourcemanager_system___metrics___publisher_enabled=true</span><br><span class="line">YARN_CONF_yarn_resourcemanager_hostname=resourcemanager</span><br><span class="line">YARN_CONF_yarn_timeline___service_hostname=historyserver</span><br><span class="line">YARN_CONF_yarn_resourcemanager_address=resourcemanager:8032</span><br><span class="line">YARN_CONF_yarn_resourcemanager_scheduler_address=resourcemanager:8030</span><br><span class="line">YARN_CONF_yarn_resourcemanager_resource___tracker_address=resourcemanager:8031</span><br></pre></td></tr></table></figure>
+
+<h3 id="启动"><a href="#启动" class="headerlink" title="启动"></a>启动</h3><p>这里使用docker-compose,docker-compose-loc.yml内容如下:</p>
+<figure class="highlight yml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;2&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">namenode:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">hadoop-namenode</span></span><br><span class="line">    <span class="attr">hostname:</span> <span class="string">namenode</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">namenode</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./data/namenode:/hadoop/dfs/name</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">CLUSTER_NAME=test</span></span><br><span class="line">    <span class="attr">env_file:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./hadoop.env</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;50070:50070&quot;</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">resourcemanager:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">hadoop-resourcemanager</span></span><br><span class="line">    <span class="attr">hostname:</span> <span class="string">resourcemanager</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">resourcemanager</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">    <span class="attr">links:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">    <span class="attr">env_file:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./hadoop.env</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">historyserver:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">hadoop-historyserver</span></span><br><span class="line">    <span class="attr">hostname:</span> <span class="string">historyserver</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">historyserver</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./data/historyserver:/hadoop/yarn/timeline</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">    <span class="attr">links:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">    <span class="attr">env_file:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./hadoop.env</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">nodemanager1:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">hadoop-nodemanager</span></span><br><span class="line">    <span class="attr">hostname:</span> <span class="string">nodemanager1</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">nodemanager1</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;resourcemanager&quot;</span></span><br><span class="line">    <span class="attr">links:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;resourcemanager&quot;</span></span><br><span class="line">    <span class="attr">env_file:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./hadoop.env</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">datanode1:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">hadoop-datanode</span></span><br><span class="line">    <span class="attr">hostname:</span> <span class="string">datanode1</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">datanode1</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">    <span class="attr">links:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./data/datanode1:/hadoop/dfs/data</span></span><br><span class="line">    <span class="attr">env_file:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./hadoop.env</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">datanode2:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">hadoop-datanode</span></span><br><span class="line">    <span class="attr">hostname:</span> <span class="string">datanode2</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">datanode2</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">    <span class="attr">links:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./data/datanode2:/hadoop/dfs/data</span></span><br><span class="line">    <span class="attr">env_file:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./hadoop.env</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">datanode3:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">hadoop-datanode</span></span><br><span class="line">    <span class="attr">hostname:</span> <span class="string">datanode3</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">datanode3</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">    <span class="attr">links:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;namenode&quot;</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./data/datanode3:/hadoop/dfs/data</span></span><br><span class="line">    <span class="attr">env_file:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">./hadoop.env</span></span><br></pre></td></tr></table></figure>
+
+<p>启动</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="variable">$docker</span>-compose -f docker-compose-local.yml up -d</span><br></pre></td></tr></table></figure>
+
+<h3 id="访问-http-localhost-50070-效果"><a href="#访问-http-localhost-50070-效果" class="headerlink" title="访问 http://localhost:50070/ 效果"></a>访问 <a target="_blank" rel="noopener" href="http://localhost:50070/">http://localhost:50070/</a> 效果</h3><p><img src="/images/Screenshot_20190329_100435.png"></p>
+<h2 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/xu470438000/article/details/50512442">使用docker搭建hadoop分布式集群</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/38c9e98ec481">CentOS更换阿里云YUM源</a>   </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/big-data-europe/docker-hadoop">docker-hadoop</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/yjk13703623757/article/details/78943345">debian系linux，更换apt-get官方源为国内源</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://www.howtoing.com/how-to-install-java-with-apt-get-on-debian-8">如何使用Apt-Get在Debian 8上安装Java</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1cf26c0c9e9b">debian8无痛安装JDK8</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.7.7/hadoop-2.7.7.tar.gz">hadoop安装</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/fanghao/p/8542170.html">HBase Python API</a></li>
+<li><a target="_blank" rel="noopener" href="https://hacpai.com/article/1508232710946">基于 docker 搭建 hadoop 跨主机集群</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000012063374">Docker常用命令</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/df744c4e375e">使用Docker Swarm模式搭建Swarm集群</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/36015864/hadoop-be-replicated-to-0-nodes-instead-of-minreplication-1-there-are-1/36310025">Hadoop: …be replicated to 0 nodes instead of minReplication (&#x3D;1). There are 1 datanode(s) running and no node(s) are excluded in this operation</a></li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/docker/" rel="tag"><i class="fa fa-tag"></i> docker</a>
+              <a href="/tags/hadoop/" rel="tag"><i class="fa fa-tag"></i> hadoop</a>
+              <a href="/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/" rel="tag"><i class="fa fa-tag"></i> 大数据</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E6%A6%82%E8%BF%B0/" rel="prev" title="计算机网络|概述">
+      <i class="fa fa-chevron-left"></i> 计算机网络|概述
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/04/08/%E5%A6%82%E4%BD%95%E7%BB%8F%E8%90%A5%E5%8D%9A%E5%AE%A2/" rel="next" title="如何经营博客">
+      如何经营博客 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F"><span class="nav-text">构建镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95%E7%BB%93%E6%9E%84"><span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BAhadoop-base%E9%95%9C%E5%83%8F"><span class="nav-text">构建hadoop-base镜像</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BAhadoop-namenode"><span class="nav-text">构建hadoop-namenode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BAhadoop-datanode"><span class="nav-text">构建hadoop-datanode</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BAhadoop-nodemanager"><span class="nav-text">构建hadoop-nodemanager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BAhadoop-resourcemanager"><span class="nav-text">构建hadoop-resourcemanager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9E%84%E5%BB%BAhadoop-historyserver"><span class="nav-text">构建hadoop-historyserver</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">配置文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%AF%E5%8A%A8"><span class="nav-text">启动</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE-http-localhost-50070-%E6%95%88%E6%9E%9C"><span class="nav-text">访问 http:&#x2F;&#x2F;localhost:50070&#x2F; 效果</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E6%96%87%E7%AB%A0"><span class="nav-text">参考文章</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="niracler"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">niracler</p>
+  <div class="site-description" itemprop="description">What are you doing?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/niracler" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;niracler" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:niracler@gmail.com" title="E-Mail → mailto:niracler@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/niracler" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;niracler" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://t.me/niracler_channel" title="Telegram → https:&#x2F;&#x2F;t.me&#x2F;niracler_channel" rel="noopener" target="_blank"><i class=" fa-fw"></i>Telegram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/4e3cc9bb3aa1" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;4e3cc9bb3aa1" rel="noopener" target="_blank"><i class=" fa-fw"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fas fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zhouyimian.github.io/" title="https:&#x2F;&#x2F;zhouyimian.github.io&#x2F;" rel="noopener" target="_blank">周同学的博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17146846号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niracler</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'd2492e40e7428634adb4',
+      clientSecret: '9a9c088a73eac548059694f5e074f5ba1fcad3bd',
+      repo        : 'niracler.github.io',
+      owner       : 'niracler',
+      admin       : ['niracler'],
+      id          : '7ec9e28742b7de882848a45c93154f5f',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

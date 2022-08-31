@@ -1,0 +1,515 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Niracler&#39;Blog</title>
+  <icon>https://www.niracler.com/icon.png</icon>
+  <subtitle>What are you doing?</subtitle>
+  <link href="https://www.niracler.com/atom.xml" rel="self"/>
+  
+  <link href="https://www.niracler.com/"/>
+  <updated>2022-04-29T08:02:02.436Z</updated>
+  <id>https://www.niracler.com/</id>
+  
+  <author>
+    <name>niracler</name>
+    
+  </author>
+  
+  <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>WebRTC 学习记录（二）| WebRTC 如何建立连接</title>
+    <link href="https://www.niracler.com/2021/11/15/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89-WebRTC-%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5/"/>
+    <id>https://www.niracler.com/2021/11/15/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%BA%8C%EF%BC%89-WebRTC-%E5%A6%82%E4%BD%95%E5%BB%BA%E7%AB%8B%E8%BF%9E%E6%8E%A5/</id>
+    <published>2021-11-15T01:23:00.000Z</published>
+    <updated>2022-04-29T08:02:02.436Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;WebRTC 是一个宝库，他在数据传输方面也是做到极致了。&lt;/p&gt;
+&lt;h2 id=&quot;为什么是WebRTC？需要解决的问题是什么？我们关注的是什么？&quot;&gt;&lt;a href=&quot;#为什么是WebRTC？需要解决的问题是什么？我们关注的是什么？&quot; class=&quot;headerlink&quot; title=&quot;为什么是WebRTC？需要解决的问题是什么？我们关注的是什么？&quot;&gt;&lt;/a&gt;为什么是WebRTC？需要解决的问题是什么？我们关注的是什么？&lt;/h2&gt;&lt;p&gt;在了解了 croc 的情况下，我们这边看一下该类服务还能够优化到什么地步。&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;我们面对到的一个事实是“Relay 服务器实在太耗流量了！”&lt;/li&gt;
+&lt;li&gt;我们这里先引入一个知识：”NAT 是可以穿透的”。&lt;/li&gt;
+&lt;li&gt;TURN是STUN协议的中转扩展，croc工具自己有中转功能，没有去实现类似STUN的功能。其实 croc 那边也尝试过，但其实到现在都还没支持。[3]&lt;br&gt; &lt;a href=&quot;https://imgtu.com/i/IgGpCT&quot;&gt;&lt;img src=&quot;https://z3.ax1x.com/2021/11/15/IgGpCT.md.png&quot; alt=&quot;IgGpCT.md.png&quot;&gt;&lt;/a&gt;&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    
+    
+    
+    
+    <category term="WebRTC" scheme="https://www.niracler.com/tags/WebRTC/"/>
+    
+    <category term="学习记录" scheme="https://www.niracler.com/tags/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"/>
+    
+    <category term="网络" scheme="https://www.niracler.com/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>WebRTC 学习记录（一）| 从 corc 这个仓库讲起</title>
+    <link href="https://www.niracler.com/2021/11/14/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89-%E4%BB%8E-corc-%E8%BF%99%E4%B8%AA-%E4%BB%93%E5%BA%93%E8%AE%B2%E8%B5%B7/"/>
+    <id>https://www.niracler.com/2021/11/14/WebRTC-%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95%EF%BC%88%E4%B8%80%EF%BC%89-%E4%BB%8E-corc-%E8%BF%99%E4%B8%AA-%E4%BB%93%E5%BA%93%E8%AE%B2%E8%B5%B7/</id>
+    <published>2021-11-14T03:29:55.000Z</published>
+    <updated>2022-04-29T08:02:02.436Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;文件传输以及-croc-代码分析&quot;&gt;&lt;a href=&quot;#文件传输以及-croc-代码分析&quot; class=&quot;headerlink&quot; title=&quot;文件传输以及 croc 代码分析&quot;&gt;&lt;/a&gt;文件传输以及 croc 代码分析&lt;/h2&gt;&lt;p&gt;若是让我们做一个文件传输服务器， 我们应该怎么做？&lt;/p&gt;
+&lt;h3 id=&quot;文件传输的四种网络场景&quot;&gt;&lt;a href=&quot;#文件传输的四种网络场景&quot; class=&quot;headerlink&quot; title=&quot;文件传输的四种网络场景&quot;&gt;&lt;/a&gt;文件传输的四种网络场景&lt;/h3&gt;&lt;p&gt;我根据终端计算机所在的网络环境(是否有公网IP)划分了常见的4种场景:&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="WebRTC" scheme="https://www.niracler.com/tags/WebRTC/"/>
+    
+    <category term="学习记录" scheme="https://www.niracler.com/tags/%E5%AD%A6%E4%B9%A0%E8%AE%B0%E5%BD%95/"/>
+    
+    <category term="网络" scheme="https://www.niracler.com/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>面试题|Python基础(三)</title>
+    <link href="https://www.niracler.com/2019/11/10/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%B8%89/"/>
+    <id>https://www.niracler.com/2019/11/10/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%B8%89/</id>
+    <published>2019-11-10T00:55:55.000Z</published>
+    <updated>2022-04-29T08:02:02.441Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;1-评价一下自己&quot;&gt;&lt;a href=&quot;#1-评价一下自己&quot; class=&quot;headerlink&quot; title=&quot;1 评价一下自己&quot;&gt;&lt;/a&gt;1 评价一下自己&lt;/h3&gt;&lt;p&gt;评价一下自己，最大的优点以及最大的缺点，另外你的人生规划是什么？&lt;/p&gt;
+&lt;p&gt;我最大的优点是能够好好地做到时间规划&lt;/p&gt;
+&lt;h3 id=&quot;2-如果上司交给你一份不属于你份内的工作&quot;&gt;&lt;a href=&quot;#2-如果上司交给你一份不属于你份内的工作&quot; class=&quot;headerlink&quot; title=&quot;2 如果上司交给你一份不属于你份内的工作&quot;&gt;&lt;/a&gt;2 如果上司交给你一份不属于你份内的工作&lt;/h3&gt;&lt;p&gt;你会拒绝or接受它？&lt;/p&gt;
+&lt;p&gt;当然，这个是要看情况了。我想了解一下你所说的“份内的工作”是什么含义。这是需要具体情况具体分析的，假如是“我做前端的人员，然后需要我去做后端”，这种情况属于是我的相关类型工作虽说是不属于我份内的工作，只要有合理的原因我还是能接受的，但这种情况要是一直持续下去，而我又真的对这种“不属于我份内的工作”&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="python" scheme="https://www.niracler.com/tags/python/"/>
+    
+    <category term="面试题" scheme="https://www.niracler.com/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>面试题|Python基础(二)</title>
+    <link href="https://www.niracler.com/2019/10/19/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%BA%8C/"/>
+    <id>https://www.niracler.com/2019/10/19/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%BA%8C/</id>
+    <published>2019-10-19T07:16:24.000Z</published>
+    <updated>2022-04-29T08:02:02.441Z</updated>
+    
+    
+    <summary type="html">&lt;h3 id=&quot;36-什么是断言-assert-，有什么应用场景&quot;&gt;&lt;a href=&quot;#36-什么是断言-assert-，有什么应用场景&quot; class=&quot;headerlink&quot; title=&quot;36 什么是断言(assert)，有什么应用场景&quot;&gt;&lt;/a&gt;36 什么是断言(assert)，有什么应用场景&lt;/h3&gt;&lt;p&gt;我没有用过断言(assert)，应该是用来测试或者是抓取错误的&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="python" scheme="https://www.niracler.com/tags/python/"/>
+    
+    <category term="面试题" scheme="https://www.niracler.com/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>面试题|Python基础(一)</title>
+    <link href="https://www.niracler.com/2019/10/13/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%B8%80/"/>
+    <id>https://www.niracler.com/2019/10/13/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%B8%80/</id>
+    <published>2019-10-13T13:34:44.000Z</published>
+    <updated>2022-04-29T08:02:02.441Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;Python基础&quot;&gt;&lt;a href=&quot;#Python基础&quot; class=&quot;headerlink&quot; title=&quot;Python基础&quot;&gt;&lt;/a&gt;Python基础&lt;/h2&gt;&lt;h3 id=&quot;1-为什么学习Python&quot;&gt;&lt;a href=&quot;#1-为什么学习Python&quot; class=&quot;headerlink&quot; title=&quot;1 为什么学习Python&quot;&gt;&lt;/a&gt;1 为什么学习Python&lt;/h3&gt;&lt;p&gt;那是一个很长的故事。本来我也只是想将Python作为第二语言的。自从我买了个阿里云服务器之后，就洪水泛滥，一发不可收拾了。&lt;/p&gt;
+&lt;h3 id=&quot;2-通过什么途径学习Python&quot;&gt;&lt;a href=&quot;#2-通过什么途径学习Python&quot; class=&quot;headerlink&quot; title=&quot;2 通过什么途径学习Python&quot;&gt;&lt;/a&gt;2 通过什么途径学习Python&lt;/h3&gt;&lt;p&gt;我是自学的，上网找教程自学的，不过每一个教程我都只是看了一部分，基本上都没有看完。大一下学期的时候看的是小甲鱼的Python教程，大二上学期的时候，看的是一篇使用django搭建个人博客的博客，以及一个叫自强学堂的网站，大二下学期看的是北京理工大学的爬虫基础教程，大三上学期是学习机器学习的相关算法这段时间看视频看得比较少，学校课程也比较重，大三下学期强化了pandas等数据处理的库，以及sklean等机器学习的相关库，然后大三的暑假开始尝试使用上面说到的这些技术栈来做我自己的毕业设计。其实我一开始是没有想着只从事Python方面的学习的，只是各种阴差阳错。&lt;/p&gt;
+&lt;h3 id=&quot;3-公司线上和开发环境使用的什么系统&quot;&gt;&lt;a href=&quot;#3-公司线上和开发环境使用的什么系统&quot; class=&quot;headerlink&quot; title=&quot;3 公司线上和开发环境使用的什么系统&quot;&gt;&lt;/a&gt;3 公司线上和开发环境使用的什么系统&lt;/h3&gt;&lt;p&gt;我们学校这边办公室的开发环境与服务器的线上环境用的都是Linux，开发环境用的是Manjaro的发行版，而服务器用的是Centos的发行版。使用Win也是完全没有问题的。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="python" scheme="https://www.niracler.com/tags/python/"/>
+    
+    <category term="面试题" scheme="https://www.niracler.com/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>量化交易|万矿交易平台学习(初阶)</title>
+    <link href="https://www.niracler.com/2019/07/11/%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93-%E4%B8%87%E7%9F%BF%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%AD%A6%E4%B9%A0/"/>
+    <id>https://www.niracler.com/2019/07/11/%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93-%E4%B8%87%E7%9F%BF%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%AD%A6%E4%B9%A0/</id>
+    <published>2019-07-11T06:29:28.000Z</published>
+    <updated>2022-04-29T08:02:02.441Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;关于我对量化交易的看法&quot;&gt;&lt;a href=&quot;#关于我对量化交易的看法&quot; class=&quot;headerlink&quot; title=&quot;关于我对量化交易的看法&quot;&gt;&lt;/a&gt;关于我对量化交易的看法&lt;/h2&gt;&lt;p&gt;在此之前，我先说一下我对量化交易的看法，假如你的水平只是半桶水，那么你可能会亏死。量化交易就是一帮专业的赚快钱的人，我就不相信教这门课的讲师能有几个能靠这个赚钱的。&lt;/p&gt;
+&lt;h2 id=&quot;万矿量化平台介绍&quot;&gt;&lt;a href=&quot;#万矿量化平台介绍&quot; class=&quot;headerlink&quot; title=&quot;万矿量化平台介绍&quot;&gt;&lt;/a&gt;万矿量化平台介绍&lt;/h2&gt;&lt;blockquote&gt;
+&lt;p&gt;万矿平台的功能也就下面四个，它的编程题目也是按照这四个出的&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;ol&gt;
+&lt;li&gt;数据获取与处理&lt;/li&gt;
+&lt;li&gt;因子研究&lt;/li&gt;
+&lt;li&gt;数据可视化&lt;/li&gt;
+&lt;li&gt;策略回测&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    
+    
+    
+    
+    <category term="量化交易" scheme="https://www.niracler.com/tags/%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>English</title>
+    <link href="https://www.niracler.com/2019/06/23/English/"/>
+    <id>https://www.niracler.com/2019/06/23/English/</id>
+    <published>2019-06-23T12:23:12.000Z</published>
+    <updated>2022-04-29T08:02:02.435Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;U1&quot;&gt;&lt;a href=&quot;#U1&quot; class=&quot;headerlink&quot; title=&quot;U1&quot;&gt;&lt;/a&gt;U1&lt;/h2&gt;&lt;h3 id=&quot;U1L1&quot;&gt;&lt;a href=&quot;#U1L1&quot; class=&quot;headerlink&quot; title=&quot;U1L1&quot;&gt;&lt;/a&gt;U1L1&lt;/h3&gt;&lt;p&gt;My expenses are really high at the moment because I stopped living with my parents. Now I have to pay rent for my apartment, buy food, and pay for everything myself. I have to make a budget every month so I can pay for everything. I decided to open a savings account at the bank to help me organize my finances. Last month, I borrowed some money to buy a car. The money was lent to me by the bank. That money has helped me, but now I have debt.&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="笔记" scheme="https://www.niracler.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="English" scheme="https://www.niracler.com/tags/English/"/>
+    
+    <category term="学校内容" scheme="https://www.niracler.com/tags/%E5%AD%A6%E6%A0%A1%E5%86%85%E5%AE%B9/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>《软技能:代码之外的生存指南》读后感(上)</title>
+    <link href="https://www.niracler.com/2019/06/13/%E3%80%8A%E8%BD%AF%E6%8A%80%E8%83%BD-%E4%BB%A3%E7%A0%81%E4%B9%8B%E5%A4%96%E7%9A%84%E7%94%9F%E5%AD%98%E6%8C%87%E5%8D%97%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F-%E4%B8%8A/"/>
+    <id>https://www.niracler.com/2019/06/13/%E3%80%8A%E8%BD%AF%E6%8A%80%E8%83%BD-%E4%BB%A3%E7%A0%81%E4%B9%8B%E5%A4%96%E7%9A%84%E7%94%9F%E5%AD%98%E6%8C%87%E5%8D%97%E3%80%8B%E8%AF%BB%E5%90%8E%E6%84%9F-%E4%B8%8A/</id>
+    <published>2019-06-13T01:31:02.000Z</published>
+    <updated>2022-04-29T08:02:02.437Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;本文是我看《软技能:代码之外的生存指南》的读后感。书中写了好多程序之外的生存攻略，还是&lt;/p&gt;
+&lt;h3 id=&quot;段子&quot;&gt;&lt;a href=&quot;#段子&quot; class=&quot;headerlink&quot; title=&quot;段子&quot;&gt;&lt;/a&gt;段子&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;确保写出的代码不至于让你的后继维护者恨不得驾起他们的小汽车从你身上碾压过。。。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;看这段的时候简直是太真实了，我之前看别人代码的时候就有这种冲动。当然，更多的时候是别人对我有这种冲动。。。&lt;/p&gt;
+&lt;hr&gt;
+&lt;blockquote&gt;
+&lt;p&gt;你要传达的不仅是这款软件的价值是什么，还有它与别的成千上万款软件开发人员提供的服务有何不同。&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;吸引人的，总是那些你有而别人没有的东西&lt;/p&gt;
+&lt;hr&gt;</summary>
+    
+    
+    
+    
+    <category term="笔记" scheme="https://www.niracler.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="读后感" scheme="https://www.niracler.com/tags/%E8%AF%BB%E5%90%8E%E6%84%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>计算机网络|链路层</title>
+    <link href="https://www.niracler.com/2019/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E9%93%BE%E8%B7%AF%E5%B1%82/"/>
+    <id>https://www.niracler.com/2019/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E9%93%BE%E8%B7%AF%E5%B1%82/</id>
+    <published>2019-05-31T12:34:42.000Z</published>
+    <updated>2022-04-29T08:02:02.441Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;课后习题&quot;&gt;&lt;a href=&quot;#课后习题&quot; class=&quot;headerlink&quot; title=&quot;课后习题&quot;&gt;&lt;/a&gt;课后习题&lt;/h2&gt;&lt;h3 id=&quot;1-数据链路-即逻辑链路-与链路-即物理链路-有何区别？“电路接通了”与“数据链路接通了”的区别何在&quot;&gt;&lt;a href=&quot;#1-数据链路-即逻辑链路-与链路-即物理链路-有何区别？“电路接通了”与“数据链路接通了”的区别何在&quot; class=&quot;headerlink&quot; title=&quot;1 数据链路(即逻辑链路)与链路(即物理链路)有何区别？“电路接通了”与“数据链路接通了”的区别何在&quot;&gt;&lt;/a&gt;1 数据链路(即逻辑链路)与链路(即物理链路)有何区别？“电路接通了”与“数据链路接通了”的区别何在&lt;/h3&gt;&lt;p&gt;数据链路与链路的区别在于：&lt;/p&gt;
+&lt;p&gt;数据链路除链路外，还必须有一些必要的规程来控制数据的传输，因此，数据链路比链路多了实现通信规程做需要的硬件和软件。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;电路接通了&lt;/strong&gt; 表示链路两端端的结点交换机已经开机, 物理连接已经能够传送比特流了， 但是数据传输并不可靠， 在物理连接的基础上，再建立数据链路连接，才是 &lt;strong&gt;数据链路接通了&lt;/strong&gt; 。&lt;/p&gt;
+&lt;p&gt;此后，由于数据链路连接具有检测、确认和重传功能，才使不太可靠的物理链路变成可靠的数据链路，进行可靠的数据传输当数据链路断开连接时，物理电路连接不一定跟着断开连接。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="笔记" scheme="https://www.niracler.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="学校内容" scheme="https://www.niracler.com/tags/%E5%AD%A6%E6%A0%A1%E5%86%85%E5%AE%B9/"/>
+    
+    <category term="网络" scheme="https://www.niracler.com/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>计算机网络|物理层</title>
+    <link href="https://www.niracler.com/2019/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%89%A9%E7%90%86%E5%B1%82/"/>
+    <id>https://www.niracler.com/2019/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%89%A9%E7%90%86%E5%B1%82/</id>
+    <published>2019-05-31T12:34:31.000Z</published>
+    <updated>2022-04-29T08:02:02.440Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;课后习题&quot;&gt;&lt;a href=&quot;#课后习题&quot; class=&quot;headerlink&quot; title=&quot;课后习题&quot;&gt;&lt;/a&gt;课后习题&lt;/h2&gt;&lt;h3 id=&quot;物理层要解决哪些问题？物理层的主要特点是什么？&quot;&gt;&lt;a href=&quot;#物理层要解决哪些问题？物理层的主要特点是什么？&quot; class=&quot;headerlink&quot; title=&quot;物理层要解决哪些问题？物理层的主要特点是什么？&quot;&gt;&lt;/a&gt;物理层要解决哪些问题？物理层的主要特点是什么？&lt;/h3&gt;&lt;p&gt;物理层要解决的主要问题：&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;物理层要尽可能地屏蔽掉物理设备和传输媒体，通信手段的不同，使数据链路层感觉不到这些差异，只考虑完成本层的协议和服务&lt;/li&gt;
+&lt;li&gt;给其服务用户(数据链路层)在一条物理的传输媒体上传输和接收比特流(一般为串行按顺序传输的比特流)的能力，为此，物理层应该解决物理连接的建立、维持和释放的问题。&lt;/li&gt;
+&lt;li&gt;在两个相邻系统之间唯一地标识数据电路&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    
+    
+    
+    
+    <category term="笔记" scheme="https://www.niracler.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="学校内容" scheme="https://www.niracler.com/tags/%E5%AD%A6%E6%A0%A1%E5%86%85%E5%AE%B9/"/>
+    
+    <category term="网络" scheme="https://www.niracler.com/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>计算机网络|网络层</title>
+    <link href="https://www.niracler.com/2019/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%BD%91%E7%BB%9C%E5%B1%82/"/>
+    <id>https://www.niracler.com/2019/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%BD%91%E7%BB%9C%E5%B1%82/</id>
+    <published>2019-05-31T12:13:10.000Z</published>
+    <updated>2022-04-29T08:02:02.440Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;本章重要内容&quot;&gt;&lt;a href=&quot;#本章重要内容&quot; class=&quot;headerlink&quot; title=&quot;本章重要内容&quot;&gt;&lt;/a&gt;本章重要内容&lt;/h2&gt;&lt;h3 id=&quot;虚拟互连网络的概念&quot;&gt;&lt;a href=&quot;#虚拟互连网络的概念&quot; class=&quot;headerlink&quot; title=&quot;虚拟互连网络的概念&quot;&gt;&lt;/a&gt;虚拟互连网络的概念&lt;/h3&gt;&lt;p&gt;所谓的互连网络也就是逻辑互连网络，它的意思就是互连起来的各种物理网络的异构性本来是客观存在的，但是我们利用IP协议就可以使这些性能各异的网路在网络层上看起来是一个统一的网络。&lt;/p&gt;
+&lt;h3 id=&quot;IP地址与物理地址的关系&quot;&gt;&lt;a href=&quot;#IP地址与物理地址的关系&quot; class=&quot;headerlink&quot; title=&quot;IP地址与物理地址的关系&quot;&gt;&lt;/a&gt;IP地址与物理地址的关系&lt;/h3&gt;&lt;p&gt;从层次的角度看，物理地址是数据链路层和物理层使用的地址，而IP地址是网络层以上各层使用的地址， 是一种逻辑地址 （称 IP 地址为逻辑地址是因为 IP 地址是用软件实现的）&lt;/p&gt;
+&lt;p&gt;总之，IP 地址放在 IP 数据报的首部，而硬件地址则放在 MAC 帧的首部。在网络层和网络层以上使用的是IP地址，而数据链路层及以下使用的是硬件地址。当 IP 数据报放入数据链路层的 MAC 帧中以后，整个IP数据报就成为 MAC 帧的数据，因而在数据链路层看不见数据报的IP地址。&lt;/p&gt;
+&lt;h3 id=&quot;传统的分类的-IP-地址（包括子网掩码）和无分类域间路由选择CIDR&quot;&gt;&lt;a href=&quot;#传统的分类的-IP-地址（包括子网掩码）和无分类域间路由选择CIDR&quot; class=&quot;headerlink&quot; title=&quot;传统的分类的 IP 地址（包括子网掩码）和无分类域间路由选择CIDR&quot;&gt;&lt;/a&gt;传统的分类的 IP 地址（包括子网掩码）和无分类域间路由选择CIDR&lt;/h3&gt;&lt;p&gt;IP数据报的格式&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;版本（4位）：指IP协议的版本&lt;/li&gt;
+&lt;li&gt;首部长度（4位）：可表示的最大十进制数值是15&lt;/li&gt;
+&lt;li&gt;区分服务（8位）：这个字段在旧标准中叫做服务类型，但实际上一直没被使用过&lt;/li&gt;
+&lt;li&gt;总长度（16位）：指首部和数据之和的长度&lt;/li&gt;
+&lt;li&gt;标识（16位）：IP软件在存储器中维持一个计数器， 每产生一个数据报，计数器就加1，并将此值附给标识字段&lt;/li&gt;
+&lt;li&gt;标志&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id=&quot;路由选择协议的工作原理&quot;&gt;&lt;a href=&quot;#路由选择协议的工作原理&quot; class=&quot;headerlink&quot; title=&quot;路由选择协议的工作原理&quot;&gt;&lt;/a&gt;路由选择协议的工作原理&lt;/h3&gt;</summary>
+    
+    
+    
+    
+    <category term="笔记" scheme="https://www.niracler.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="学校内容" scheme="https://www.niracler.com/tags/%E5%AD%A6%E6%A0%A1%E5%86%85%E5%AE%B9/"/>
+    
+    <category term="网络" scheme="https://www.niracler.com/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>centos7 关闭防火墙</title>
+    <link href="https://www.niracler.com/2019/05/11/centos7-%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99/"/>
+    <id>https://www.niracler.com/2019/05/11/centos7-%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99/</id>
+    <published>2019-05-11T08:59:06.000Z</published>
+    <updated>2022-04-29T08:02:02.436Z</updated>
+    
+    
+      
+      
+        
+        
+    <summary type="html">&lt;h2 id=&quot;centos7-关闭防火墙&quot;&gt;&lt;a href=&quot;#centos7-关闭防火墙&quot; class=&quot;headerlink&quot; title=&quot;centos7 关闭防火墙&quot;&gt;&lt;/a&gt;centos7 关闭防火墙&lt;/h2&gt;&lt;p&gt;关闭&lt;/p&gt;
+&lt;figure</summary>
+        
+      
+    
+    
+    
+    
+    <category term="centos" scheme="https://www.niracler.com/tags/centos/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 docker 快速部署 Redis</title>
+    <link href="https://www.niracler.com/2019/05/11/%E4%BD%BF%E7%94%A8-docker-%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2-Redis/"/>
+    <id>https://www.niracler.com/2019/05/11/%E4%BD%BF%E7%94%A8-docker-%E5%BF%AB%E9%80%9F%E9%83%A8%E7%BD%B2-Redis/</id>
+    <published>2019-05-11T07:29:02.000Z</published>
+    <updated>2022-04-29T08:02:02.437Z</updated>
+    
+    
+    <summary type="html">&lt;h2 id=&quot;正常的使用-docker-命令部署的方法&quot;&gt;&lt;a href=&quot;#正常的使用-docker-命令部署的方法&quot; class=&quot;headerlink&quot; title=&quot;正常的使用 docker 命令部署的方法&quot;&gt;&lt;/a&gt;正常的使用 docker 命令部署的方法&lt;/h2&gt;&lt;p&gt;因为分布式爬虫需要用到 redis ， 所以我就试着搭建一个 redis 用于学习学习&lt;/p&gt;
+&lt;h3 id=&quot;最简单的启动方法&quot;&gt;&lt;a href=&quot;#最简单的启动方法&quot; class=&quot;headerlink&quot; title=&quot;最简单的启动方法&quot;&gt;&lt;/a&gt;最简单的启动方法&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$docker&lt;/span&gt; run --name my-redis -d redis&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;ul&gt;
+&lt;li&gt;-d 是让容器在后台启动  &lt;/li&gt;
+&lt;li&gt;–name my-redis 为这容器命名&lt;/li&gt;
+&lt;li&gt;redis 镜像名&lt;/li&gt;
+&lt;/ul&gt;</summary>
+    
+    
+    
+    
+    <category term="docker" scheme="https://www.niracler.com/tags/docker/"/>
+    
+    <category term="redis" scheme="https://www.niracler.com/tags/redis/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Centos7 下使用 yum 安装 docker</title>
+    <link href="https://www.niracler.com/2019/05/11/Centos7-%E4%B8%8B%E4%BD%BF%E7%94%A8-yum-%E5%AE%89%E8%A3%85-docker/"/>
+    <id>https://www.niracler.com/2019/05/11/Centos7-%E4%B8%8B%E4%BD%BF%E7%94%A8-yum-%E5%AE%89%E8%A3%85-docker/</id>
+    <published>2019-05-11T03:11:19.000Z</published>
+    <updated>2022-04-29T08:02:02.435Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;本文是关于 docker-ce 的安装&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id=&quot;使用-root-权限&quot;&gt;&lt;a href=&quot;#使用-root-权限&quot; class=&quot;headerlink&quot; title=&quot;使用 root 权限&quot;&gt;&lt;/a&gt;使用 root 权限&lt;/h3&gt;&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;su -&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;h3 id=&quot;移除旧的版本&quot;&gt;&lt;a href=&quot;#移除旧的版本&quot; class=&quot;headerlink&quot; title=&quot;移除旧的版本&quot;&gt;&lt;/a&gt;移除旧的版本&lt;/h3&gt;</summary>
+    
+    
+    
+    
+    <category term="docker" scheme="https://www.niracler.com/tags/docker/"/>
+    
+    <category term="笔记" scheme="https://www.niracler.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何经营博客</title>
+    <link href="https://www.niracler.com/2019/04/08/%E5%A6%82%E4%BD%95%E7%BB%8F%E8%90%A5%E5%8D%9A%E5%AE%A2/"/>
+    <id>https://www.niracler.com/2019/04/08/%E5%A6%82%E4%BD%95%E7%BB%8F%E8%90%A5%E5%8D%9A%E5%AE%A2/</id>
+    <published>2019-04-08T11:39:14.000Z</published>
+    <updated>2022-04-29T08:02:02.438Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;这是一篇类似于笔记和读后感的文章，主要是我之前看的那本《软技能：代码之外的生存指南》的学习笔记中的如何经营博客的部分。在这部分中，我学习到了很多经营博客的小技巧，于是我想分享一下。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="笔记" scheme="https://www.niracler.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="读后感" scheme="https://www.niracler.com/tags/%E8%AF%BB%E5%90%8E%E6%84%9F/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用docker搭建hadoop伪分布式</title>
+    <link href="https://www.niracler.com/2019/03/29/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAhadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F/"/>
+    <id>https://www.niracler.com/2019/03/29/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAhadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F/</id>
+    <published>2019-03-29T02:10:43.000Z</published>
+    <updated>2022-04-29T08:02:02.438Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;这篇文章应该算是我大数据系列的第一篇文章吧,路漫漫其修远兮，我本来不想这么快就往大数据方向前进的，只是这边项目需要，不得不学。本文章对新手极不友好。前置技能有很多，你总得安装个docker吧,还要了解Docker常用命令, 以及Dockerfile，docker-compose的使用。我的&lt;a href=&quot;https://www.niracler.com/2019/03/14/%E4%B8%8D%E9%80%9A%E7%94%A8%E7%9A%84Python%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%94%BB%E7%95%A5/&quot;&gt;不通用的Python程序员练级攻略&lt;/a&gt;里有相应的学习资料。而该项目的地址是 &lt;a href=&quot;https://github.com/Niracler/bigdata-exercise&quot;&gt;https://github.com/Niracler/bigdata-exercise&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;这篇文章主要讲的是使用docker搭建hadoop伪分布式的细节，假如觉得麻烦的话，有更简便的方法。我这里先说为敬,或者你们可以先试试成功的喜悦。&lt;/p&gt;
+&lt;p&gt;将这个项目克隆下来，我的Dockerfile都是基于&lt;a href=&quot;https://github.com/big-data-europe/docker-hadoop&quot;&gt;这个项目&lt;/a&gt;改写的：&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$git&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;clone&lt;/span&gt; https://github.com/Niracler/bigdata-exercise.git&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$cd&lt;/span&gt; bigdata-exercise/docker-hadoop/&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;启动&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$sudo&lt;/span&gt; su&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$docker&lt;/span&gt;-compose -f docker-compose-local.yml up -d&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;访问&lt;a href=&quot;http://localhost:50070/&quot;&gt;http://localhost:50070/&lt;/a&gt; 效果&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;/images/Screenshot_20190329_103435.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;进入容器&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$docker&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;exec&lt;/span&gt; -it namenode bash&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;上传文件测试&lt;/p&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;2&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;3&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$touch&lt;/span&gt; &lt;span class=&quot;built_in&quot;&gt;test&lt;/span&gt;&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$hdfs&lt;/span&gt; dfs -put &lt;span class=&quot;built_in&quot;&gt;test&lt;/span&gt;  /&lt;/span&gt;&lt;br&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$hdfs&lt;/span&gt; dfs -ls /&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Screenshot_20190410_104008.png&quot;&gt;&lt;/p&gt;
+&lt;p&gt;然后？就没有然后了，下面是dockerfile等文件的细节&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="docker" scheme="https://www.niracler.com/tags/docker/"/>
+    
+    <category term="hadoop" scheme="https://www.niracler.com/tags/hadoop/"/>
+    
+    <category term="大数据" scheme="https://www.niracler.com/tags/%E5%A4%A7%E6%95%B0%E6%8D%AE/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>计算机网络|概述</title>
+    <link href="https://www.niracler.com/2019/03/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E6%A6%82%E8%BF%B0/"/>
+    <id>https://www.niracler.com/2019/03/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E6%A6%82%E8%BF%B0/</id>
+    <published>2019-03-27T12:06:06.000Z</published>
+    <updated>2022-04-29T08:02:02.440Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;学校内容这一系列,我主要是用来整理学校学习的笔记的，大概会更新到学期末，然后才会推送到其他平台&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h2 id=&quot;重要内容&quot;&gt;&lt;a href=&quot;#重要内容&quot; class=&quot;headerlink&quot; title=&quot;重要内容&quot;&gt;&lt;/a&gt;重要内容&lt;/h2&gt;&lt;h3 id=&quot;因特网的边缘部分和核心部分的作用&quot;&gt;&lt;a href=&quot;#因特网的边缘部分和核心部分的作用&quot; class=&quot;headerlink&quot; title=&quot;因特网的边缘部分和核心部分的作用&quot;&gt;&lt;/a&gt;因特网的边缘部分和核心部分的作用&lt;/h3&gt;&lt;p&gt;边缘部分： 有所有连接在互联网上的主机组成。这部分是用户直接使用的，用来通信(传送数据、音频或视频)和资源共享。&lt;/p&gt;
+&lt;p&gt;核心部分： 有大量网络和连接这些网络的路由器组成。这部分是为边缘部分提供服务的。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="笔记" scheme="https://www.niracler.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="学校内容" scheme="https://www.niracler.com/tags/%E5%AD%A6%E6%A0%A1%E5%86%85%E5%AE%B9/"/>
+    
+    <category term="网络" scheme="https://www.niracler.com/tags/%E7%BD%91%E7%BB%9C/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>vue.js学习(一)</title>
+    <link href="https://www.niracler.com/2019/03/25/vue-js%E5%AD%A6%E4%B9%A0-%E4%B8%80/"/>
+    <id>https://www.niracler.com/2019/03/25/vue-js%E5%AD%A6%E4%B9%A0-%E4%B8%80/</id>
+    <published>2019-03-25T12:02:14.000Z</published>
+    <updated>2022-04-29T08:02:02.436Z</updated>
+    
+    
+    <summary type="html">&lt;h1 id=&quot;vue-exercise&quot;&gt;&lt;a href=&quot;#vue-exercise&quot; class=&quot;headerlink&quot; title=&quot;vue-exercise&quot;&gt;&lt;/a&gt;vue-exercise&lt;/h1&gt;&lt;p&gt;不定期的vue学习动态&lt;br&gt;第一天&lt;/p&gt;
+&lt;hr&gt;
+&lt;h3 id=&quot;hello-world&quot;&gt;&lt;a href=&quot;#hello-world&quot; class=&quot;headerlink&quot; title=&quot;hello world&quot;&gt;&lt;/a&gt;hello world&lt;/h3&gt;&lt;p&gt;关于一个&lt;a href=&quot;day01/01.html&quot;&gt;最小的vue项目的结构&lt;/a&gt;&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;导入vue&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;创建vue实例&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;使用插值表达式调用数据&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;</summary>
+    
+    
+    
+    
+    <category term="vue" scheme="https://www.niracler.com/tags/vue/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>不通用的docker常用命令汇总</title>
+    <link href="https://www.niracler.com/2019/03/22/%E4%B8%8D%E9%80%9A%E7%94%A8%E7%9A%84docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/"/>
+    <id>https://www.niracler.com/2019/03/22/%E4%B8%8D%E9%80%9A%E7%94%A8%E7%9A%84docker%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4%E6%B1%87%E6%80%BB/</id>
+    <published>2019-03-22T03:43:31.000Z</published>
+    <updated>2022-04-29T08:02:02.437Z</updated>
+    
+    
+    <summary type="html">&lt;p&gt;最全面的介绍在&lt;a href=&quot;https://docs.docker.com/&quot;&gt;docker官方文档&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;root权限&quot;&gt;&lt;a href=&quot;#root权限&quot; class=&quot;headerlink&quot; title=&quot;root权限&quot;&gt;&lt;/a&gt;root权限&lt;/h3&gt;&lt;blockquote&gt;
+&lt;p&gt;注意：docker命令的使用大多需要权限， 所以先使用root用户&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;figure class=&quot;highlight bash&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;td class=&quot;gutter&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;1&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;line&quot;&gt;&lt;span class=&quot;variable&quot;&gt;$sudo&lt;/span&gt; su&lt;/span&gt;&lt;br&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;&lt;/figure&gt;</summary>
+    
+    
+    
+    
+    <category term="docker" scheme="https://www.niracler.com/tags/docker/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>摘抄加感想是阅读的好方法</title>
+    <link href="https://www.niracler.com/2019/03/16/%E6%91%98%E6%8A%84%E5%8A%A0%E6%84%9F%E6%83%B3%E6%98%AF%E9%98%85%E8%AF%BB%E7%9A%84%E5%A5%BD%E6%96%B9%E6%B3%95/"/>
+    <id>https://www.niracler.com/2019/03/16/%E6%91%98%E6%8A%84%E5%8A%A0%E6%84%9F%E6%83%B3%E6%98%AF%E9%98%85%E8%AF%BB%E7%9A%84%E5%A5%BD%E6%96%B9%E6%B3%95/</id>
+    <published>2019-03-16T02:28:04.000Z</published>
+    <updated>2022-04-29T08:02:02.438Z</updated>
+    
+    
+    <summary type="html">&lt;blockquote&gt;
+&lt;p&gt;看了《如何有效阅读一本书》后，感觉我多年以来看的书都浪费了&lt;br&gt;经过总结,这本书的重点讲述的阅读方法就是摘抄加感想&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;&lt;img src=&quot;/images/Screenshot_20190315_214135.png&quot;&gt;&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="笔记" scheme="https://www.niracler.com/tags/%E7%AC%94%E8%AE%B0/"/>
+    
+    <category term="读后感" scheme="https://www.niracler.com/tags/%E8%AF%BB%E5%90%8E%E6%84%9F/"/>
+    
+  </entry>
+  
+</feed>

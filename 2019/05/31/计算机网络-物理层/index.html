@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.niracler.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="课后习题物理层要解决哪些问题？物理层的主要特点是什么？物理层要解决的主要问题：  物理层要尽可能地屏蔽掉物理设备和传输媒体，通信手段的不同，使数据链路层感觉不到这些差异，只考虑完成本层的协议和服务 给其服务用户(数据链路层)在一条物理的传输媒体上传输和接收比特流(一般为串行按顺序传输的比特流)的能力，为此，物理层应该解决物理连接的建立、维持和释放的问题。 在两个相邻系统之间唯一地标识数据电路">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络|物理层">
+<meta property="og:url" content="https://www.niracler.com/2019/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%89%A9%E7%90%86%E5%B1%82/index.html">
+<meta property="og:site_name" content="Niracler&#39;Blog">
+<meta property="og:description" content="课后习题物理层要解决哪些问题？物理层的主要特点是什么？物理层要解决的主要问题：  物理层要尽可能地屏蔽掉物理设备和传输媒体，通信手段的不同，使数据链路层感觉不到这些差异，只考虑完成本层的协议和服务 给其服务用户(数据链路层)在一条物理的传输媒体上传输和接收比特流(一般为串行按顺序传输的比特流)的能力，为此，物理层应该解决物理连接的建立、维持和释放的问题。 在两个相邻系统之间唯一地标识数据电路">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-05-31T12:34:31.000Z">
+<meta property="article:modified_time" content="2022-04-29T08:02:02.440Z">
+<meta property="article:author" content="niracler">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="学校内容">
+<meta property="article:tag" content="网络">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.niracler.com/2019/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%89%A9%E7%90%86%E5%B1%82/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>计算机网络|物理层 | Niracler'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Niracler'Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Niracler'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">What are you doing?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/niracler" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.niracler.com/2019/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%89%A9%E7%90%86%E5%B1%82/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="niracler">
+      <meta itemprop="description" content="What are you doing?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Niracler'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络|物理层
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-05-31 20:34:31" itemprop="dateCreated datePublished" datetime="2019-05-31T20:34:31+08:00">2019-05-31</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-29 16:02:02" itemprop="dateModified" datetime="2022-04-29T16:02:02+08:00">2022-04-29</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="课后习题"><a href="#课后习题" class="headerlink" title="课后习题"></a>课后习题</h2><h3 id="物理层要解决哪些问题？物理层的主要特点是什么？"><a href="#物理层要解决哪些问题？物理层的主要特点是什么？" class="headerlink" title="物理层要解决哪些问题？物理层的主要特点是什么？"></a>物理层要解决哪些问题？物理层的主要特点是什么？</h3><p>物理层要解决的主要问题：</p>
+<ol>
+<li>物理层要尽可能地屏蔽掉物理设备和传输媒体，通信手段的不同，使数据链路层感觉不到这些差异，只考虑完成本层的协议和服务</li>
+<li>给其服务用户(数据链路层)在一条物理的传输媒体上传输和接收比特流(一般为串行按顺序传输的比特流)的能力，为此，物理层应该解决物理连接的建立、维持和释放的问题。</li>
+<li>在两个相邻系统之间唯一地标识数据电路</li>
+</ol>
+<span id="more"></span>
+
+<p>物理层的主要特点：</p>
+<ol>
+<li>由于在OSI之前，许多物理规程或协议已经制定出来了，而且在数据通信领域中，这些物理规程已经被许多商业化的设备所采用，加之，物理层协议涉及的范围广泛，所以至今没有按OSI的抽象模型制定一套新的物理层协议，而是沿用已存在的物理规程，将物理层确定为描述与传输接口的机械，电气，功能和规程特性</li>
+<li>由于物理连接的方式很多，传输媒体的种类也很多，因此具体的物理协议相当复杂。</li>
+</ol>
+<h3 id="规程和协议有什么区别？"><a href="#规程和协议有什么区别？" class="headerlink" title="规程和协议有什么区别？"></a>规程和协议有什么区别？</h3><p>规程指物理层协议</p>
+<h3 id="试给出数据通信系统的模型并说明其主要组成构建的作用"><a href="#试给出数据通信系统的模型并说明其主要组成构建的作用" class="headerlink" title="试给出数据通信系统的模型并说明其主要组成构建的作用"></a>试给出数据通信系统的模型并说明其主要组成构建的作用</h3><ul>
+<li>源点：源点设备产生要传输的数据。源点又称为源站</li>
+<li>发送器：通常源点生成的数据要通过发送器编码后才能在传输系统中进行传输</li>
+<li>接收器：接收传输系统传输过来的信号，并将其转换为能够被目的设备处理的信息</li>
+<li>终点：终点设备从接收器</li>
+</ul>
+<h3 id="试解释以下名词：数据，信号，模拟数据，模拟信号，基带信号，带通信号，数字数据，数字信号，码元，单工通信，半双工通信，串行传输，并行传输"><a href="#试解释以下名词：数据，信号，模拟数据，模拟信号，基带信号，带通信号，数字数据，数字信号，码元，单工通信，半双工通信，串行传输，并行传输" class="headerlink" title="试解释以下名词：数据，信号，模拟数据，模拟信号，基带信号，带通信号，数字数据，数字信号，码元，单工通信，半双工通信，串行传输，并行传输"></a>试解释以下名词：数据，信号，模拟数据，模拟信号，基带信号，带通信号，数字数据，数字信号，码元，单工通信，半双工通信，串行传输，并行传输</h3><ul>
+<li>数据：运送信息的实体</li>
+<li>信号：数据的电气的或电磁的表现</li>
+<li>模拟数据：运送信息的模拟信号</li>
+<li>模拟信号：连续变化的信号</li>
+<li>数字信号：取值为有限的几个离散值的信号</li>
+<li>数字数据：取值为不连续数值的数据</li>
+<li>码元：在使用时间域的波形表示数字信号时，代表不同离散数值的基本波形</li>
+</ul>
+<hr>
+<p><strong>重点</strong>内容</p>
+<ul>
+<li><strong>单工通信</strong>：即只有一个方向的通信而没有反方向的交互</li>
+<li><strong>半双工通信</strong>：即通信和双方都可以发送信息，但不能双方同时发送</li>
+<li><strong>全双工通信</strong>：即通信的双方可以同时发送和接收信息</li>
+</ul>
+<hr>
+<ul>
+<li>基带信号（即基本频带信号）：来自信源的信号，像计算机输出的代表各种文字或图像文件的数据信号都属于基带信号</li>
+<li>带通信号：把基带信号进过载波调制后，将信号的频率范围搬移到较高的频段以便在信道中传输（即仅在一段频率范围内能够通过信道）</li>
+</ul>
+<h3 id="物理层的接口有哪几个方面的特征？各包含些什么内容？"><a href="#物理层的接口有哪几个方面的特征？各包含些什么内容？" class="headerlink" title="物理层的接口有哪几个方面的特征？各包含些什么内容？"></a>物理层的接口有哪几个方面的特征？各包含些什么内容？</h3><ul>
+<li>机械特征：指明接口所用的接线器的形状和尺寸、引线数目和排列、固定和锁定装置等等</li>
+<li>电气特性：指明在接口电缆的各条线上出现的电压范围</li>
+<li>功能特征：指明某条线上出现的某一电平的电压表示何意</li>
+<li>规程特性：指明对于不同功能的各种可能事件的出现顺序</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/%E5%AD%A6%E6%A0%A1%E5%86%85%E5%AE%B9/" rel="tag"><i class="fa fa-tag"></i> 学校内容</a>
+              <a href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E7%BD%91%E7%BB%9C%E5%B1%82/" rel="prev" title="计算机网络|网络层">
+      <i class="fa fa-chevron-left"></i> 计算机网络|网络层
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/05/31/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E9%93%BE%E8%B7%AF%E5%B1%82/" rel="next" title="计算机网络|链路层">
+      计算机网络|链路层 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98"><span class="nav-text">课后习题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E8%A6%81%E8%A7%A3%E5%86%B3%E5%93%AA%E4%BA%9B%E9%97%AE%E9%A2%98%EF%BC%9F%E7%89%A9%E7%90%86%E5%B1%82%E7%9A%84%E4%B8%BB%E8%A6%81%E7%89%B9%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="nav-text">物理层要解决哪些问题？物理层的主要特点是什么？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%84%E7%A8%8B%E5%92%8C%E5%8D%8F%E8%AE%AE%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-text">规程和协议有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%95%E7%BB%99%E5%87%BA%E6%95%B0%E6%8D%AE%E9%80%9A%E4%BF%A1%E7%B3%BB%E7%BB%9F%E7%9A%84%E6%A8%A1%E5%9E%8B%E5%B9%B6%E8%AF%B4%E6%98%8E%E5%85%B6%E4%B8%BB%E8%A6%81%E7%BB%84%E6%88%90%E6%9E%84%E5%BB%BA%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">试给出数据通信系统的模型并说明其主要组成构建的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%95%E8%A7%A3%E9%87%8A%E4%BB%A5%E4%B8%8B%E5%90%8D%E8%AF%8D%EF%BC%9A%E6%95%B0%E6%8D%AE%EF%BC%8C%E4%BF%A1%E5%8F%B7%EF%BC%8C%E6%A8%A1%E6%8B%9F%E6%95%B0%E6%8D%AE%EF%BC%8C%E6%A8%A1%E6%8B%9F%E4%BF%A1%E5%8F%B7%EF%BC%8C%E5%9F%BA%E5%B8%A6%E4%BF%A1%E5%8F%B7%EF%BC%8C%E5%B8%A6%E9%80%9A%E4%BF%A1%E5%8F%B7%EF%BC%8C%E6%95%B0%E5%AD%97%E6%95%B0%E6%8D%AE%EF%BC%8C%E6%95%B0%E5%AD%97%E4%BF%A1%E5%8F%B7%EF%BC%8C%E7%A0%81%E5%85%83%EF%BC%8C%E5%8D%95%E5%B7%A5%E9%80%9A%E4%BF%A1%EF%BC%8C%E5%8D%8A%E5%8F%8C%E5%B7%A5%E9%80%9A%E4%BF%A1%EF%BC%8C%E4%B8%B2%E8%A1%8C%E4%BC%A0%E8%BE%93%EF%BC%8C%E5%B9%B6%E8%A1%8C%E4%BC%A0%E8%BE%93"><span class="nav-text">试解释以下名词：数据，信号，模拟数据，模拟信号，基带信号，带通信号，数字数据，数字信号，码元，单工通信，半双工通信，串行传输，并行传输</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%A9%E7%90%86%E5%B1%82%E7%9A%84%E6%8E%A5%E5%8F%A3%E6%9C%89%E5%93%AA%E5%87%A0%E4%B8%AA%E6%96%B9%E9%9D%A2%E7%9A%84%E7%89%B9%E5%BE%81%EF%BC%9F%E5%90%84%E5%8C%85%E5%90%AB%E4%BA%9B%E4%BB%80%E4%B9%88%E5%86%85%E5%AE%B9%EF%BC%9F"><span class="nav-text">物理层的接口有哪几个方面的特征？各包含些什么内容？</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="niracler"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">niracler</p>
+  <div class="site-description" itemprop="description">What are you doing?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/niracler" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;niracler" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:niracler@gmail.com" title="E-Mail → mailto:niracler@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/niracler" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;niracler" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://t.me/niracler_channel" title="Telegram → https:&#x2F;&#x2F;t.me&#x2F;niracler_channel" rel="noopener" target="_blank"><i class=" fa-fw"></i>Telegram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/4e3cc9bb3aa1" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;4e3cc9bb3aa1" rel="noopener" target="_blank"><i class=" fa-fw"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fas fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zhouyimian.github.io/" title="https:&#x2F;&#x2F;zhouyimian.github.io&#x2F;" rel="noopener" target="_blank">周同学的博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17146846号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niracler</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'd2492e40e7428634adb4',
+      clientSecret: '9a9c088a73eac548059694f5e074f5ba1fcad3bd',
+      repo        : 'niracler.github.io',
+      owner       : 'niracler',
+      admin       : ['niracler'],
+      id          : '03ba099b6571eac0caebba7cc9e17cd9',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

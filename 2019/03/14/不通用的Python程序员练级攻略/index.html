@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.niracler.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="本文章记录的是笔者在立志成为 python 程序员的目标制定及技术点亮过程，主要有我看过的觉得可以的资源，以及我自己的总结，还夹带着一些无聊的日常   保持更新的技术栈思维导图">
+<meta property="og:type" content="article">
+<meta property="og:title" content="不通用的 Python 程序员练级攻略">
+<meta property="og:url" content="https://www.niracler.com/2019/03/14/%E4%B8%8D%E9%80%9A%E7%94%A8%E7%9A%84Python%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%94%BB%E7%95%A5/index.html">
+<meta property="og:site_name" content="Niracler&#39;Blog">
+<meta property="og:description" content="本文章记录的是笔者在立志成为 python 程序员的目标制定及技术点亮过程，主要有我看过的觉得可以的资源，以及我自己的总结，还夹带着一些无聊的日常   保持更新的技术栈思维导图">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://upload-images.jianshu.io/upload_images/4781155-2c23e3e36cbf3c27.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+<meta property="article:published_time" content="2019-03-14T08:48:59.000Z">
+<meta property="article:modified_time" content="2022-04-29T08:02:02.437Z">
+<meta property="article:author" content="niracler">
+<meta property="article:tag" content="python">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://upload-images.jianshu.io/upload_images/4781155-2c23e3e36cbf3c27.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240">
+
+<link rel="canonical" href="https://www.niracler.com/2019/03/14/%E4%B8%8D%E9%80%9A%E7%94%A8%E7%9A%84Python%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%94%BB%E7%95%A5/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>不通用的 Python 程序员练级攻略 | Niracler'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Niracler'Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Niracler'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">What are you doing?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/niracler" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.niracler.com/2019/03/14/%E4%B8%8D%E9%80%9A%E7%94%A8%E7%9A%84Python%E7%A8%8B%E5%BA%8F%E5%91%98%E7%BB%83%E7%BA%A7%E6%94%BB%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="niracler">
+      <meta itemprop="description" content="What are you doing?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Niracler'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          不通用的 Python 程序员练级攻略
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-14 16:48:59" itemprop="dateCreated datePublished" datetime="2019-03-14T16:48:59+08:00">2019-03-14</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-29 16:02:02" itemprop="dateModified" datetime="2022-04-29T16:02:02+08:00">2022-04-29</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>本文章记录的是笔者在立志成为 python 程序员的目标制定及技术点亮过程，主要有我看过的觉得可以的资源，以及我自己的总结，<br>还夹带着一些无聊的日常</p>
+</blockquote>
+<p><img src="https://upload-images.jianshu.io/upload_images/4781155-2c23e3e36cbf3c27.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="技术栈。jpg"></p>
+<p>保持更新的技术栈<a target="_blank" rel="noopener" href="https://www.processon.com/view/link/5c04f065e4b0059238d440d1">思维导图</a></p>
+<span id="more"></span>
+
+<h2 id="目录"><a href="#目录" class="headerlink" title="目录"></a>目录</h2><h2 id="python"><a href="#python" class="headerlink" title="python"></a>python</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/0014316089557264a6b348958f449949df42a6d3a2e542c000">廖雪峰的 python</a><br>  可能是最好的 python 中文教程</li>
+</ul>
+<h3 id="代码风格"><a href="#代码风格" class="headerlink" title="代码风格"></a>代码风格</h3><h3 id="高级特性"><a href="#高级特性" class="headerlink" title="高级特性"></a>高级特性</h3><h2 id="web"><a href="#web" class="headerlink" title="web"></a>web</h2><h3 id="前端"><a href="#前端" class="headerlink" title="前端"></a>前端</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/0deb70e6f395">npm 换源</a></li>
+</ul>
+<h3 id="后端"><a href="#后端" class="headerlink" title="后端"></a>后端</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://code.ziqiangxuetang.com/django/django-tutorial.html">Django 基础教程 by<br>  自强学堂</a><br>  第一次接触可以看这个</li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av40066981?from=search&seid=5778159097686358187">Python 前后端分离开发 Vue+Django REST<br>  framework 实战</a></li>
+</ul>
+<h2 id="爬虫"><a href="#爬虫" class="headerlink" title="爬虫"></a>爬虫</h2><ul>
+<li>[Python 3 网络爬虫开发实战<br>  , 崔庆才著』(<a target="_blank" rel="noopener" href="https://pan.baidu.com/s/1dxLM6hDhLQ4yrR0iRcID2Q">https://pan.baidu.com/s/1dxLM6hDhLQ4yrR0iRcID2Q</a>)<br>  关于爬虫的资料跟书籍首推 崔庆才的爬虫书，总的来说，我感觉有点像官方文档</li>
+<li><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av37497888">崔庆才 python3 爬虫入门到精通</a><br>  b 站视频</li>
+</ul>
+<h3 id="前端分析"><a href="#前端分析" class="headerlink" title="前端分析"></a>前端分析</h3><h3 id="框架"><a href="#框架" class="headerlink" title="框架"></a>框架</h3><blockquote>
+<p>目前使用过的爬虫框架只有 scrapy</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://blog.michaelyin.info/scrapy-tutorial-9-how-use-scrapy-item/">How To Use Scrapy<br>Item</a><br>使用 SQLAlchemy 优雅地解决 scrapy 连接 mysql 数据库的问题</li>
+</ul>
+<h3 id="请求"><a href="#请求" class="headerlink" title="请求"></a>请求</h3><h3 id="动态页面爬取"><a href="#动态页面爬取" class="headerlink" title="动态页面爬取"></a>动态页面爬取</h3><h3 id="APP-爬取"><a href="#APP-爬取" class="headerlink" title="APP 爬取"></a>APP 爬取</h3><h3 id="数据库"><a href="#数据库" class="headerlink" title="数据库"></a>数据库</h3><h3 id="代理池"><a href="#代理池" class="headerlink" title="代理池"></a>代理池</h3><h3 id="小灵感"><a href="#小灵感" class="headerlink" title="小灵感"></a>小灵感</h3><h2 id="数据结构与算法"><a href="#数据结构与算法" class="headerlink" title="数据结构与算法"></a>数据结构与算法</h2><h3 id="数据结构"><a href="#数据结构" class="headerlink" title="数据结构"></a>数据结构</h3><h3 id="算法"><a href="#算法" class="headerlink" title="算法"></a>算法</h3><h2 id="数据挖掘-amp-机器学习"><a href="#数据挖掘-amp-机器学习" class="headerlink" title="数据挖掘&amp;机器学习"></a>数据挖掘&amp;机器学习</h2><h3 id="有监督"><a href="#有监督" class="headerlink" title="有监督"></a>有监督</h3><h3 id="无监督"><a href="#无监督" class="headerlink" title="无监督"></a>无监督</h3><h3 id="数据预处理"><a href="#数据预处理" class="headerlink" title="数据预处理"></a>数据预处理</h3><h3 id="统计分析"><a href="#统计分析" class="headerlink" title="统计分析"></a>统计分析</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.dataquest.io/blog/large_files/pandas-cheat-sheet.pdf">pandas 速查表</a><br>  当然要学过的才会看、</li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/04d180d90a3f">《利用 Python 进行数据分析·第 2 版》</a><br>  pandas 库的作者写的，你说好不好？</li>
+<li>[Sklearn 与 TensorFlow<br>  机器学习实用指南』(<a target="_blank" rel="noopener" href="https://github.com/apachecn/hands-on-ml-zh">https://github.com/apachecn/hands-on-ml-zh</a>)</li>
+</ul>
+<h3 id="数据可视化"><a href="#数据可视化" class="headerlink" title="数据可视化"></a>数据可视化</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/e543dc63454f">python networkx<br>  包绘制复杂网络关系图</a></li>
+</ul>
+<h2 id="运维"><a href="#运维" class="headerlink" title="运维"></a>运维</h2><h3 id="自动化部署"><a href="#自动化部署" class="headerlink" title="自动化部署"></a>自动化部署</h3><h3 id="监控"><a href="#监控" class="headerlink" title="监控"></a>监控</h3><h3 id="负载"><a href="#负载" class="headerlink" title="负载"></a>负载</h3><h2 id="中间件"><a href="#中间件" class="headerlink" title="中间件"></a>中间件</h2><h3 id="server"><a href="#server" class="headerlink" title="server"></a>server</h3><p><a target="_blank" rel="noopener" href="https://blog.csdn.net/panfengyun12345/article/details/16878873">virsh 的使用与实例步骤安装虚拟机</a></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">systemctl <span class="built_in">enable</span> libvirtd</span><br><span class="line">systemctl start libvirtd</span><br><span class="line"></span><br><span class="line">yum install qemu-kvm libvirt virt-install ebtables bridge-utils</span><br><span class="line"></span><br><span class="line">scp -r root@172.28.7.39:/root/create_br0.sh create_br0.sh</span><br><span class="line"></span><br><span class="line">virt-install --virt-type kvm --name CentOS-7-x86_64-C00 --ram 4096 \</span><br><span class="line">    --disk path=/home/raw/CentOS-7-x86_64-C00.raw,device=disk,bus=virtio \</span><br><span class="line">    --network bridge:br0 --graphics vnc,listen=0.0.0.0,port=5900 --noautoconsole \</span><br><span class="line">    --network bridge=br0,model=virtio  --boot hd</span><br><span class="line"></span><br><span class="line">virt-install --virt-type kvm --name CentOS-7-x86_64-C00 --vcpus=4 --ram 4096 \</span><br><span class="line">    --os-type linux --os-variant=rhl7 \</span><br><span class="line">    --disk path=/home/raw/CentOS-7-x86_64-C00.raw,device=disk,bus=virtio \</span><br><span class="line">    --network bridge:br0,model=virtio --graphics vnc,listen=0.0.0.0,port=6900 \</span><br><span class="line">    --noautoconsole --boot hd</span><br><span class="line"></span><br><span class="line">virt-clone -n CentOS-7-x86_64-C01 -o CentOS-7-x86_64-C00 -f /home/raw/CentOS-7-x86_64-C01.raw</span><br></pre></td></tr></table></figure>
+
+<h3 id="文件服务器"><a href="#文件服务器" class="headerlink" title="文件服务器"></a>文件服务器</h3><h3 id="容器"><a href="#容器" class="headerlink" title="容器"></a>容器</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://legacy.gitbook.com/book/philipzheng/docker_practice/details">Docker 從入門到實踐</a></li>
+<li><a target="_blank" rel="noopener" href="https://legacy.gitbook.com/book/joshhu/docker_theory_install/details">Docker 原理圖解及全環境安裝</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/mungo/article/details/54632686">自己学 Docker:10.Docker.v1.12 升级到 v1.13.0 正式版</a><br>  关于 docker 的版本升级可以看这里</li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/46004648/how-to-setup-mysql-with-utf-8-using-docker-compose">优雅地解决 docker 容器中 mysql 的编码问题</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/xu470438000/article/details/50512442">使用 docker 搭建 hadoop 分布式集群</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/38c9e98ec481">CentOS 更换阿里云 YUM 源</a>   </li>
+<li><a target="_blank" rel="noopener" href="https://github.com/big-data-europe/docker-hadoop">docker-hadoop</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/yjk13703623757/article/details/78943345">debian 系 linux，更换 apt-get 官方源为国内源</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://www.howtoing.com/how-to-install-java-with-apt-get-on-debian-8">如何使用 Apt-Get 在 Debian 8 上安装 Java</a>  </li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1cf26c0c9e9b">debian8 无痛安装 JDK8</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.7.7/hadoop-2.7.7.tar.gz">hadoop 安装</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/fanghao/p/8542170.html">HBase Python API</a></li>
+<li><a target="_blank" rel="noopener" href="https://hacpai.com/article/1508232710946">基于 docker 搭建 hadoop 跨主机集群</a></li>
+<li><a target="_blank" rel="noopener" href="https://segmentfault.com/a/1190000012063374">Docker 常用命令</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/df744c4e375e">使用 Docker Swarm 模式搭建 Swarm 集群</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/u013948858/article/details/78429954">非 root 用户加入 docker 用户组省去 sudo</a> 之后要重启</li>
+<li><a target="_blank" rel="noopener" href="https://www.runoob.com/docker/centos-docker-install.html">CentOS Docker 安装</a></li>
+</ul>
+<h2 id="开发环境"><a href="#开发环境" class="headerlink" title="开发环境"></a>开发环境</h2><h3 id="编辑器-amp-IDEs"><a href="#编辑器-amp-IDEs" class="headerlink" title="编辑器 &amp;IDEs"></a>编辑器 &amp;IDEs</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jetbrains.com/pycharm/">pycharm</a> python 最强大的 IDE</li>
+<li><a target="_blank" rel="noopener" href="https://atom.io/">atom</a> 我写 markdown 文档就是用这个</li>
+<li><a target="_blank" rel="noopener" href="https://blog.fundebug.com/2018/07/24/vs-extensions/">30 个极大提高开发效率的 Visual Studio Code 插件</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/40640654">Visual Studio Code 有哪些你常用的插件？</a></li>
+</ul>
+<h3 id="版本控制"><a href="#版本控制" class="headerlink" title="版本控制"></a>版本控制</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000">Git 教程 - 廖雪峰的官方网站</a>\</li>
+<li><a target="_blank" rel="noopener" href="https://www.cnblogs.com/schaepher/p/4933873.html">GitHub 团队项目合作流程</a></li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/11497457/git-clone-without-git-directory">Git 克隆时不带。git 文件夹</a></li>
+</ul>
+<h3 id="画图"><a href="#画图" class="headerlink" title="画图"></a>画图</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.processon.com/">processon</a><br>我是挺喜欢这个在线画图网站的，就是有时候有 bug</li>
+<li><a target="_blank" rel="noopener" href="https://github.com/96chh/Upgrade-ProcessOn">Upgrade-ProcessOn</a> 增加<br>ProcessOn 的免费文件数（逃)</li>
+</ul>
+<h2 id="操作系统"><a href="#操作系统" class="headerlink" title="操作系统"></a>操作系统</h2><blockquote>
+<p>因为笔者开发时使用的是 linux 操作系统的 manjaro 发行版，其中踩过无数的坑，<br>也做过一些笔记</p>
+</blockquote>
+<h3 id="linux-那些坑"><a href="#linux-那些坑" class="headerlink" title="linux 那些坑"></a>linux 那些坑</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/6e9eb98c0494">Manjaro linux 安装笔记</a><br>无数次重装系统后我都是对着着文档安装软件的，当年帮我装这系统的人写的</li>
+<li><a href="manjaro/Manjaro_install.txt">本人的安装 manjaro 常用软件的文档</a></li>
+<li><a target="_blank" rel="noopener" href="https://mtaoist.xyz/2018/03/19/Bumblebee/">Manjaro Linux 配置 Intel 与 Nvidia 双显卡切换</a><br>因为显卡问题而无法进入系统时，也可以用这里面的方法解决</li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/Tangcuyuha/article/details/80298500">给本子安装 manjaro 出现无法关机的解决办法</a><br>当时也是因为显卡问题</li>
+<li><a target="_blank" rel="noopener" href="https://forum.manjaro.org/t/no-wired-network-realtek-rtl8111-8168-8411/22501">No wired network (Realtek RTL8111&#x2F;8168&#x2F;8411)</a><br>以太网卡找不到的问题</li>
+</ul>
+<h3 id="操作系统笔记"><a href="#操作系统笔记" class="headerlink" title="操作系统笔记"></a>操作系统笔记</h3><ul>
+<li><a href="computer_system/">操作系统常见概念</a></li>
+</ul>
+<h2 id="数据"><a href="#数据" class="headerlink" title="数据"></a>数据</h2><h3 id="关系型数据库"><a href="#关系型数据库" class="headerlink" title="关系型数据库"></a>关系型数据库</h3><ul>
+<li><a href="">mysql</a></li>
+<li><a href="">mongodb</a></li>
+</ul>
+<h3 id="标记语言"><a href="#标记语言" class="headerlink" title="标记语言"></a>标记语言</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/1e402922ee32">Markdown—— 入门指南</a></li>
+<li><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/4721ddd27027">实用帖 | 如何为 Markdown 文件自动生成目录？</a></li>
+<li><a target="_blank" rel="noopener" href="https://pandoc.org/MANUAL.html">Pandoc</a> 感觉我会喜欢上这个工具的</li>
+<li><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/39956497/pandoc-convert-docx-to-markdown-with-embedded-images">pandoc word to markdown with images</a></li>
+</ul>
+<h2 id="程序人生"><a href="#程序人生" class="headerlink" title="程序人生"></a>程序人生</h2><h3 id="日记"><a href="#日记" class="headerlink" title="日记"></a>日记</h3><blockquote>
+<p>我认为， 我们要时刻知道自己在干什么， 并定时地审视自己 -</p>
+</blockquote>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://niracler.github.io/">niracler 的博客</a></li>
+</ul>
+<h3 id="hexo"><a href="#hexo" class="headerlink" title="hexo"></a>hexo</h3><ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.jianshu.com/p/a39573555039">使用 hexo+github 免费搭建个人博客网站超详细教程</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://github.com/nodejh/nodejh.github.io/issues/37">使用 Hexo 创建项目文档网站</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://jinzequn.github.io/2018/01/24/github-hexo/">blog+github 备份和恢复</a></p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.mdslq.cn/archives/f186e832.html">Hexo 博客 Next 主题打开过慢的解决办法</a></p>
+</li>
+</ul>
+<h3 id="面试"><a href="#面试" class="headerlink" title="面试"></a>面试</h3><ul>
+<li><a target="_blank" rel="noopener" href="https://github.com/kenwoodjw/python_interview_question">关于 python 的面试题</a></li>
+</ul>
+<h2 id="提高效率的软件推荐"><a href="#提高效率的软件推荐" class="headerlink" title="提高效率的软件推荐"></a>提高效率的软件推荐</h2><h3 id="v2ray"><a href="#v2ray" class="headerlink" title="v2ray"></a>v2ray</h3><ul>
+<li><a target="_blank" rel="noopener" href="http://einverne.github.io/post/2018/01/v2ray.html#linux">v2ray</a></li>
+</ul>
+<h2 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h2><ul>
+<li><a href="economics-notes/">西方经济学复习笔记</a></li>
+</ul>
+<h2 id="本项目参考内容"><a href="#本项目参考内容" class="headerlink" title="本项目参考内容"></a>本项目参考内容</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://www.zhihu.com/question/28799035">整个 IT 行业的技术栈是怎样的？</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/ethanww/dive-into-python">python 程序员之路</a></li>
+<li><a target="_blank" rel="noopener" href="https://github.com/Snailclimb/JavaGuide">【Java 学习 + 面试指南】</a><br>  一份涵盖大部分 Java 程序员所需要掌握的核心知识。\</li>
+<li><a target="_blank" rel="noopener" href="https://www.fullstackpython.com/table-of-contents.html">fullstackpython</a><br>  我看了这个，差点都不想继续写了、</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/10/%E4%BD%BF%E7%94%A8Hexo-Github-Pages%E6%90%AD%E5%BB%BA%E4%B8%AA%E4%BA%BA%E7%8B%AC%E7%AB%8B%E5%8D%9A%E5%AE%A2/" rel="prev" title="使用Hexo + Github Pages搭建个人独立博客">
+      <i class="fa fa-chevron-left"></i> 使用Hexo + Github Pages搭建个人独立博客
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/16/%E6%91%98%E6%8A%84%E5%8A%A0%E6%84%9F%E6%83%B3%E6%98%AF%E9%98%85%E8%AF%BB%E7%9A%84%E5%A5%BD%E6%96%B9%E6%B3%95/" rel="next" title="摘抄加感想是阅读的好方法">
+      摘抄加感想是阅读的好方法 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%9B%AE%E5%BD%95"><span class="nav-text">目录</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#python"><span class="nav-text">python</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%A0%81%E9%A3%8E%E6%A0%BC"><span class="nav-text">代码风格</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%AB%98%E7%BA%A7%E7%89%B9%E6%80%A7"><span class="nav-text">高级特性</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#web"><span class="nav-text">web</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF"><span class="nav-text">前端</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%90%8E%E7%AB%AF"><span class="nav-text">后端</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%88%AC%E8%99%AB"><span class="nav-text">爬虫</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%89%8D%E7%AB%AF%E5%88%86%E6%9E%90"><span class="nav-text">前端分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A1%86%E6%9E%B6"><span class="nav-text">框架</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%B7%E6%B1%82"><span class="nav-text">请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8A%A8%E6%80%81%E9%A1%B5%E9%9D%A2%E7%88%AC%E5%8F%96"><span class="nav-text">动态页面爬取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#APP-%E7%88%AC%E5%8F%96"><span class="nav-text">APP 爬取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A3%E7%90%86%E6%B1%A0"><span class="nav-text">代理池</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E7%81%B5%E6%84%9F"><span class="nav-text">小灵感</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%E4%B8%8E%E7%AE%97%E6%B3%95"><span class="nav-text">数据结构与算法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84"><span class="nav-text">数据结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%97%E6%B3%95"><span class="nav-text">算法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98-amp-%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0"><span class="nav-text">数据挖掘&amp;机器学习</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9C%89%E7%9B%91%E7%9D%A3"><span class="nav-text">有监督</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A0%E7%9B%91%E7%9D%A3"><span class="nav-text">无监督</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E9%A2%84%E5%A4%84%E7%90%86"><span class="nav-text">数据预处理</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BB%9F%E8%AE%A1%E5%88%86%E6%9E%90"><span class="nav-text">统计分析</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E5%8F%AF%E8%A7%86%E5%8C%96"><span class="nav-text">数据可视化</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%90%E7%BB%B4"><span class="nav-text">运维</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E9%83%A8%E7%BD%B2"><span class="nav-text">自动化部署</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%91%E6%8E%A7"><span class="nav-text">监控</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B4%9F%E8%BD%BD"><span class="nav-text">负载</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%AD%E9%97%B4%E4%BB%B6"><span class="nav-text">中间件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#server"><span class="nav-text">server</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%96%87%E4%BB%B6%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-text">文件服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%B9%E5%99%A8"><span class="nav-text">容器</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83"><span class="nav-text">开发环境</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E8%BE%91%E5%99%A8-amp-IDEs"><span class="nav-text">编辑器 &amp;IDEs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6"><span class="nav-text">版本控制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%94%BB%E5%9B%BE"><span class="nav-text">画图</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="nav-text">操作系统</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#linux-%E9%82%A3%E4%BA%9B%E5%9D%91"><span class="nav-text">linux 那些坑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E7%AC%94%E8%AE%B0"><span class="nav-text">操作系统笔记</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE"><span class="nav-text">数据</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93"><span class="nav-text">关系型数据库</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%87%E8%AE%B0%E8%AF%AD%E8%A8%80"><span class="nav-text">标记语言</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E4%BA%BA%E7%94%9F"><span class="nav-text">程序人生</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%97%A5%E8%AE%B0"><span class="nav-text">日记</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#hexo"><span class="nav-text">hexo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%A2%E8%AF%95"><span class="nav-text">面试</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8F%90%E9%AB%98%E6%95%88%E7%8E%87%E7%9A%84%E8%BD%AF%E4%BB%B6%E6%8E%A8%E8%8D%90"><span class="nav-text">提高效率的软件推荐</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#v2ray"><span class="nav-text">v2ray</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%B6%E4%BB%96"><span class="nav-text">其他</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%AC%E9%A1%B9%E7%9B%AE%E5%8F%82%E8%80%83%E5%86%85%E5%AE%B9"><span class="nav-text">本项目参考内容</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="niracler"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">niracler</p>
+  <div class="site-description" itemprop="description">What are you doing?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/niracler" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;niracler" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:niracler@gmail.com" title="E-Mail → mailto:niracler@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/niracler" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;niracler" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://t.me/niracler_channel" title="Telegram → https:&#x2F;&#x2F;t.me&#x2F;niracler_channel" rel="noopener" target="_blank"><i class=" fa-fw"></i>Telegram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/4e3cc9bb3aa1" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;4e3cc9bb3aa1" rel="noopener" target="_blank"><i class=" fa-fw"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fas fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zhouyimian.github.io/" title="https:&#x2F;&#x2F;zhouyimian.github.io&#x2F;" rel="noopener" target="_blank">周同学的博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17146846号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niracler</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'd2492e40e7428634adb4',
+      clientSecret: '9a9c088a73eac548059694f5e074f5ba1fcad3bd',
+      repo        : 'niracler.github.io',
+      owner       : 'niracler',
+      admin       : ['niracler'],
+      id          : 'af5e388ae1a023a039190a0c1c27bb02',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.niracler.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Python基础1 为什么学习Python那是一个很长的故事。本来我也只是想将Python作为第二语言的。自从我买了个阿里云服务器之后，就洪水泛滥，一发不可收拾了。 2 通过什么途径学习Python我是自学的，上网找教程自学的，不过每一个教程我都只是看了一部分，基本上都没有看完。大一下学期的时候看的是小甲鱼的Python教程，大二上学期的时候，看的是一篇使用django搭建个人博客的博客，以及一个">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试题|Python基础(一)">
+<meta property="og:url" content="https://www.niracler.com/2019/10/13/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%B8%80/index.html">
+<meta property="og:site_name" content="Niracler&#39;Blog">
+<meta property="og:description" content="Python基础1 为什么学习Python那是一个很长的故事。本来我也只是想将Python作为第二语言的。自从我买了个阿里云服务器之后，就洪水泛滥，一发不可收拾了。 2 通过什么途径学习Python我是自学的，上网找教程自学的，不过每一个教程我都只是看了一部分，基本上都没有看完。大一下学期的时候看的是小甲鱼的Python教程，大二上学期的时候，看的是一篇使用django搭建个人博客的博客，以及一个">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-10-13T13:34:44.000Z">
+<meta property="article:modified_time" content="2022-04-29T08:02:02.441Z">
+<meta property="article:author" content="niracler">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="面试题">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.niracler.com/2019/10/13/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%B8%80/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>面试题|Python基础(一) | Niracler'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Niracler'Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Niracler'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">What are you doing?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/niracler" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.niracler.com/2019/10/13/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%B8%80/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="niracler">
+      <meta itemprop="description" content="What are you doing?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Niracler'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面试题|Python基础(一)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-13 21:34:44" itemprop="dateCreated datePublished" datetime="2019-10-13T21:34:44+08:00">2019-10-13</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-29 16:02:02" itemprop="dateModified" datetime="2022-04-29T16:02:02+08:00">2022-04-29</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h2 id="Python基础"><a href="#Python基础" class="headerlink" title="Python基础"></a>Python基础</h2><h3 id="1-为什么学习Python"><a href="#1-为什么学习Python" class="headerlink" title="1 为什么学习Python"></a>1 为什么学习Python</h3><p>那是一个很长的故事。本来我也只是想将Python作为第二语言的。自从我买了个阿里云服务器之后，就洪水泛滥，一发不可收拾了。</p>
+<h3 id="2-通过什么途径学习Python"><a href="#2-通过什么途径学习Python" class="headerlink" title="2 通过什么途径学习Python"></a>2 通过什么途径学习Python</h3><p>我是自学的，上网找教程自学的，不过每一个教程我都只是看了一部分，基本上都没有看完。大一下学期的时候看的是小甲鱼的Python教程，大二上学期的时候，看的是一篇使用django搭建个人博客的博客，以及一个叫自强学堂的网站，大二下学期看的是北京理工大学的爬虫基础教程，大三上学期是学习机器学习的相关算法这段时间看视频看得比较少，学校课程也比较重，大三下学期强化了pandas等数据处理的库，以及sklean等机器学习的相关库，然后大三的暑假开始尝试使用上面说到的这些技术栈来做我自己的毕业设计。其实我一开始是没有想着只从事Python方面的学习的，只是各种阴差阳错。</p>
+<h3 id="3-公司线上和开发环境使用的什么系统"><a href="#3-公司线上和开发环境使用的什么系统" class="headerlink" title="3 公司线上和开发环境使用的什么系统"></a>3 公司线上和开发环境使用的什么系统</h3><p>我们学校这边办公室的开发环境与服务器的线上环境用的都是Linux，开发环境用的是Manjaro的发行版，而服务器用的是Centos的发行版。使用Win也是完全没有问题的。</p>
+<span id="more"></span>
+
+<h3 id="4-Python-和-Java-PHP-C-C-C-等其他语言的对比"><a href="#4-Python-和-Java-PHP-C-C-C-等其他语言的对比" class="headerlink" title="4 Python 和 Java PHP C C# C++ 等其他语言的对比"></a>4 Python 和 Java PHP C C# C++ 等其他语言的对比</h3><p><del>总的来说,Python 会使用起来比较简单吧，但是性能会比上面所说的那些语言要低。是一种灵活性非常高的语言。Python是一种解释型的语言，而其他几种都是编译型的语言，写好代码之后需要经过编译才能运行。当然，Python好像也是可以编译的。</del></p>
+<p>Python 与 PHP 属于解释型语言,运行的时候是一行一行解释并运行。而C,Java,C#,C++ 都是编译型语言,需要经过编译才能运行.</p>
+<p>与Java相比：在很多方面，Python比Java要简单，比如Java中所有变量必须声明才能使用，而Python不需要声明，用少量代码就可以构建出很多功能;(高效的高级数据结构)</p>
+<p>与PHP相比：Python标准包直接提供了工具，并且相对于PHP代码更容易维护</p>
+<p>与C相比：</p>
+<p>Python这门语言是由C开发而来。在使用方面，Python的类库齐全并且使用简洁,如果要实现同样的功能,Python 10行代码可以解决,C可能就需要100行甚至更多。在速度方面，Python的运行速度相较与C,绝逼是慢了。但是具体相比较而言慢多少我是没有比较过的。</p>
+<p>Python特点以及优势：</p>
+<ol>
+<li>语法简洁优美</li>
+<li>功能强大,开发效率高</li>
+<li>标准库与第三方库都非常强大</li>
+<li>应用领域也非常广</li>
+<li>可移植性，可扩展性，可嵌入性</li>
+</ol>
+<h3 id="5-Python解释器种类及其特点"><a href="#5-Python解释器种类及其特点" class="headerlink" title="5 Python解释器种类及其特点"></a>5 Python解释器种类及其特点</h3><p>CPython是官方版本的解释器，使用C语言开发，所以叫CPython。在命令行下运行Python就是启动CPython解释器，是使用最广的Python解释器。</p>
+<p>IPython是基于CPython之上的一个交互式解释器，也就是说，IPython只是在交互方式上有所增强，但是执行Python代码的功能是和CPython是完全一样的。CPython用&gt;&gt;作为提示符，而IPython使用In[序号]:作为提示符。</p>
+<p>PyPy是由Python写的解释器,它的执行速度是最快。PyPy采用JIT技术,对Python代码进行动态编译(注意不是解释),绝大部分Python代码都可以在PyPy下运行,但是PyPy和CPython有一些是不同的,这就导致相同的Python代码在两种解释器下执行可能会有不同的结果。</p>
+<p>Jython是运行在Java平台上的Python解释器,可以直接把Python代码编译成Java字节码执行。</p>
+<p>IronPython和Jython类似,只不过IronPython是运行在.Net平台上的Python解释器,可以直接把Python代码编译成.Net的字节码。</p>
+<p>小结:<br>Python的解释器很多,但使用最广泛的还是CPython。如果要和Java或.Net平台交互,最好的办法不是用Jython或IronPython,而是通过网络调用来交互,确保各程序之间的独立性。</p>
+<h3 id="6-位和字节的关系"><a href="#6-位和字节的关系" class="headerlink" title="6 位和字节的关系"></a>6 位和字节的关系</h3><p>8字节等于1位。</p>
+<p>数据传输是以字节为单位，而数据传输大多是以位为单位。一个位就代表一个0或1，是构成存储器的最小单位。而2每8位组成一个字节，字节是最小一级的信息单位。</p>
+<h3 id="7-b-B-KB-MB-GB的关系"><a href="#7-b-B-KB-MB-GB的关系" class="headerlink" title="7 b,B,KB,MB,GB的关系"></a>7 b,B,KB,MB,GB的关系</h3><p>1GB &#x3D; 2^10MB &#x3D; 2^20KB &#x3D; 2^30B &#x3D; 8 * 2^30b</p>
+<h3 id="8-至少举例5个PEP8规范-越多越好"><a href="#8-至少举例5个PEP8规范-越多越好" class="headerlink" title="8 至少举例5个PEP8规范(越多越好)"></a>8 至少举例5个PEP8规范(越多越好)</h3><ol>
+<li>使用四个空格而不是tab进行缩进</li>
+<li>每行长度不能超过79</li>
+<li>使用空格来间隔函数和类，以及函数内部的大块代码</li>
+<li>必要时候，在每一行下写注释</li>
+<li>使用文档注释，写出函数注释</li>
+<li>在操作符和逗号之后使用空格，但不要在括号内部使用</li>
+<li>命名类和函数的时候使用一致的方式，比如使用CamelCase来命名类,使用lower_case_with_underscores来命名函数和方法</li>
+<li>在类中总是使用self来作为默认</li>
+<li>尽量不要使用魔法方法</li>
+<li>默认使用UTF-8,甚至是ASCII作为编码方式</li>
+<li>换行可以使用反斜杠，最好使用圆括号</li>
+<li>尽量不要使用魔法方法</li>
+<li>不要在一句中 import 多个库</li>
+<li>函数命名使用全部小写的方式，常量命名使用大写，类属性(方法和变量)使用小写，类的命名首字母大写。</li>
+</ol>
+<p>关于空格的使用</p>
+<ol>
+<li>各种右括号前不要加空格</li>
+<li>逗号，冒号，分号前不要加空格</li>
+<li>函数的左括号前不要加空格</li>
+<li>序列的左括号前不要加空格</li>
+<li>操作副左右各加一个空格，不要为了对齐增加空格</li>
+<li>函数默认参数使用的赋值符左右省略空格</li>
+<li>不要将多句语句写在同一行，尽管使用‘;’允许</li>
+<li>if&#x2F;for&#x2F;while语句中，即使执行语句只有一行，也必须另起一行</li>
+</ol>
+<h3 id="9-求结果：-or-and"><a href="#9-求结果：-or-and" class="headerlink" title="9 求结果： or and"></a>9 求结果： or and</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">v1 = <span class="number">1</span> <span class="keyword">or</span> <span class="number">3</span></span><br><span class="line">v2 = <span class="number">1</span> <span class="keyword">and</span> <span class="number">3</span></span><br><span class="line">v3 = <span class="number">0</span> <span class="keyword">and</span> <span class="number">2</span> <span class="keyword">and</span> <span class="number">1</span></span><br><span class="line">v4 = <span class="number">0</span> <span class="keyword">and</span> <span class="number">2</span> <span class="keyword">or</span> <span class="number">1</span></span><br><span class="line">v5 = <span class="number">0</span> <span class="keyword">and</span> <span class="number">2</span> <span class="keyword">or</span> <span class="number">1</span> <span class="keyword">or</span> <span class="number">4</span></span><br><span class="line">v6 = <span class="number">0</span> <span class="keyword">or</span> <span class="literal">False</span> <span class="keyword">and</span> <span class="number">3</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span>(v1) <span class="comment"># 1</span></span><br><span class="line"><span class="built_in">print</span>(v2) <span class="comment"># 3</span></span><br><span class="line"><span class="built_in">print</span>(v3) <span class="comment"># 0</span></span><br><span class="line"><span class="built_in">print</span>(v4) <span class="comment"># 1</span></span><br><span class="line"><span class="built_in">print</span>(v5) <span class="comment"># 1</span></span><br><span class="line"><span class="built_in">print</span>(v6) <span class="comment"># False</span></span><br></pre></td></tr></table></figure>
+
+<p>总结:</p>
+<ul>
+<li>x or y 如果x为真，则值为x，否则为y</li>
+<li>x and y 如果x为真，则值为y，否则为x</li>
+<li>从右到左</li>
+</ul>
+<h3 id="10-简述解释型和编译型语言"><a href="#10-简述解释型和编译型语言" class="headerlink" title="10 简述解释型和编译型语言"></a>10 简述解释型和编译型语言</h3><p>解释型语言:是运行的时候一行一行地解释运行。<br>编译型语言:需要写好代码后，先经过编译阶段，然后才能执行。</p>
+<h3 id="11-ascii-unicode-utf-8-gbk-的区别"><a href="#11-ascii-unicode-utf-8-gbk-的区别" class="headerlink" title="11 ascii, unicode, utf-8, gbk 的区别"></a>11 ascii, unicode, utf-8, gbk 的区别</h3><p>Python2内容进行编码的默认为ascii，而Python3对内容进行编码的默认为utf-8</p>
+<p>ascii 最多只能用八位来表示，即一个字节，所以 ASCII 码最多只能表示256个字符</p>
+<p>unicode 万国码，任何一个字符等于两个字节</p>
+<p>utf-8 万国码的升级版，一个中文字符等于三个字节，英文是一个字节，欧洲的是两个字节</p>
+<p>gbk 国内版本，一个中文字符等于两个字节，英文是一个字节</p>
+<p>gbk转utf-8 需要通过媒介 unicode</p>
+<h3 id="12-字节码和机器码的区别"><a href="#12-字节码和机器码的区别" class="headerlink" title="12 字节码和机器码的区别"></a>12 字节码和机器码的区别</h3><ul>
+<li>机器码是电脑CPU可以直接解读的数据  </li>
+<li>字节码是一种中间状态的二进制代码。需要直译器转译之后才能成为机器码</li>
+</ul>
+<h3 id="13-三元运算符编写格式"><a href="#13-三元运算符编写格式" class="headerlink" title="13 三元运算符编写格式"></a>13 三元运算符编写格式</h3><p>结果1 if 条件 else 结果2<br>如果条件为真,把if前面的值赋值给变量,否则把else后面的值赋值给变量。例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">res = <span class="string">&#x27;gt&#x27;</span> <span class="keyword">if</span> <span class="number">1</span> &gt; <span class="number">3</span> <span class="keyword">else</span> <span class="string">&#x27;it&#x27;</span></span><br><span class="line"><span class="built_in">print</span>(res)</span><br></pre></td></tr></table></figure>
+
+<h3 id="14-列举你了解的所有-Python2-和-Python3-的区别"><a href="#14-列举你了解的所有-Python2-和-Python3-的区别" class="headerlink" title="14 列举你了解的所有 Python2 和 Python3 的区别"></a>14 列举你了解的所有 Python2 和 Python3 的区别</h3><p><del>1. print 是否需要括号</del><br><del>2. 因为我没有使用过Python2,所以这方面我不太了解</del></p>
+<ol>
+<li>print时，py2可以不需要加括号，而py3必须要加括号</li>
+<li>exec语句被py3废弃，统一使用exec函数</li>
+<li>py2臃肿，源码重复量大，语法不清晰，掺杂者C，PHP，Java的一些陋习</li>
+<li>py2几乎是重构后的源码，规范，清晰，优美</li>
+<li>py2要输出中文，需要加 <code># -*- encoding:utf-8 -*-</code>，py3则不需要，可以直接使用</li>
+<li>py2使用raw_input,而py3统一使用input函数</li>
+<li>file函数统一被py3废弃，统一使用open来处理文件，可以通过io.IOBase检查文件类型</li>
+<li>字典变量has_key被Py3废弃，统一使用in关键词</li>
+<li>异常 StandardError 被 py3 废弃，统一使用 Exception</li>
+<li>迭代器 iterator 的 next() 函数被 Py3 废弃，统一使用 next(iterator)</li>
+<li>long 整数类型被 Py3 废弃，统一使用 int</li>
+<li>不相等操作符 <code>&lt;&gt;</code> 被Py3废弃，统一使用 <code>!=</code></li>
+<li>Py2中模块文件的集合必须有 <strong>init</strong> ,Py3 则不必须</li>
+<li>Py3 统一使用 range,Python3 中 range 的机制也进行修改并提高了大数据集生成效率</li>
+</ol>
+<h3 id="15-Py2-项目如何迁移成-Py3"><a href="#15-Py2-项目如何迁移成-Py3" class="headerlink" title="15 Py2 项目如何迁移成 Py3"></a>15 Py2 项目如何迁移成 Py3</h3><p>应该会有相应的工具吧，上网搜搜？？</p>
+<h3 id="16-用一行代码实现数值交换"><a href="#16-用一行代码实现数值交换" class="headerlink" title="16 用一行代码实现数值交换"></a>16 用一行代码实现数值交换</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">a = <span class="number">1</span></span><br><span class="line">b = <span class="number">2</span></span><br><span class="line"></span><br><span class="line">a,b = b,a</span><br></pre></td></tr></table></figure>
+
+<h3 id="17-Python3-和-Python2-中-int-和-long-的区别"><a href="#17-Python3-和-Python2-中-int-和-long-的区别" class="headerlink" title="17 Python3 和 Python2 中 int 和 long 的区别"></a>17 Python3 和 Python2 中 int 和 long 的区别</h3><p>Python3 中没有 long，只有一种整数类型 int, 大多数情况下，和 Py2 中的长整型类似</p>
+<h3 id="18-xrange-和-range-的区别"><a href="#18-xrange-和-range-的区别" class="headerlink" title="18 xrange 和 range 的区别"></a>18 xrange 和 range 的区别</h3><p>都是在循环时使用，xrange内存性能更好，xrange 与 range 用法完全相同，range 一个生成 list 对象，而 xrange 是生成器。要生成很大的数字序列的时候，用 xrange 会比 range 性能优很多，因为不需要一上来就开辟一块很大的内存空间。</p>
+<p>在 Py3 中，range() 是像 xrange() 那样实现， xrange() 被抛弃</p>
+<h3 id="19-如何实现字符串的反转"><a href="#19-如何实现字符串的反转" class="headerlink" title="19 如何实现字符串的反转"></a>19 如何实现字符串的反转</h3><p>如：name &#x3D; “wupeiqi” 请反转为 name &#x3D; “iqiepuw”</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">name[::-<span class="number">1</span>]</span><br></pre></td></tr></table></figure>
+
+<h3 id="20-文件操作时：xreadlines-和-readlines-的区别"><a href="#20-文件操作时：xreadlines-和-readlines-的区别" class="headerlink" title="20 文件操作时：xreadlines 和 readlines 的区别"></a>20 文件操作时：xreadlines 和 readlines 的区别</h3><ul>
+<li>readlines 返回的是一个列表</li>
+<li>xreadlines 返回的是一个生成器</li>
+</ul>
+<h3 id="21-列举布尔值为-False-的常见值"><a href="#21-列举布尔值为-False-的常见值" class="headerlink" title="21 列举布尔值为 False 的常见值"></a>21 列举布尔值为 False 的常见值</h3><p>0, “”, {}, [], (), set(), False, 负数, 不成立的表达式, None等</p>
+<h3 id="22-列举字符串，列表，元组，字典每个常用的五个方法"><a href="#22-列举字符串，列表，元组，字典每个常用的五个方法" class="headerlink" title="22 列举字符串，列表，元组，字典每个常用的五个方法"></a>22 列举字符串，列表，元组，字典每个常用的五个方法</h3><p>字符串：count,encode,format,find,isdigit</p>
+<p>列表:append,insert,pop,remove,extend</p>
+<p>元组:count,index,压根没有这么多方法</p>
+<p>字典：get,keys,values</p>
+<h3 id="23-is-和-x3D-x3D-的区别"><a href="#23-is-和-x3D-x3D-的区别" class="headerlink" title="23 is 和 &#x3D;&#x3D; 的区别"></a>23 is 和 &#x3D;&#x3D; 的区别</h3><p>is 比较的是内存地址，&#x3D;&#x3D;比较的是值</p>
+<h3 id="24-1-2-3-4-5-能组成多少个互不相同且无重复的三位数"><a href="#24-1-2-3-4-5-能组成多少个互不相同且无重复的三位数" class="headerlink" title="24 1,2,3,4,5 能组成多少个互不相同且无重复的三位数"></a>24 1,2,3,4,5 能组成多少个互不相同且无重复的三位数</h3><p>好吧 你说我能不能 111？？</p>
+<h3 id="25-什么是反射？以及其应用场景"><a href="#25-什么是反射？以及其应用场景" class="headerlink" title="25 什么是反射？以及其应用场景"></a>25 什么是反射？以及其应用场景</h3><h3 id="26-简述Python的深浅拷贝"><a href="#26-简述Python的深浅拷贝" class="headerlink" title="26 简述Python的深浅拷贝"></a>26 简述Python的深浅拷贝</h3><ul>
+<li>浅拷贝只是增加了一个指针指向一个存在的内存空间</li>
+<li>而深拷贝是增加一个指针并开辟了新的内存，这个增加的指针指向这个新的内存</li>
+<li>采用浅拷贝的情况，释放内存会一同释放内存,深拷贝就不会出现释放同一内存的错误</li>
+</ul>
+<h3 id="27-Python-垃圾回收机制"><a href="#27-Python-垃圾回收机制" class="headerlink" title="27 Python 垃圾回收机制"></a>27 Python 垃圾回收机制</h3><ul>
+<li>指针计数</li>
+<li>标记清楚</li>
+<li>分代回收</li>
+</ul>
+<h3 id="28-Python-的可变类型和不可变类型的区别"><a href="#28-Python-的可变类型和不可变类型的区别" class="headerlink" title="28 Python 的可变类型和不可变类型的区别"></a>28 Python 的可变类型和不可变类型的区别</h3><ul>
+<li>可变数据类型:列表、字典、可变集合</li>
+<li>不可变数据类型:数字、字符串、元组、不可变集合</li>
+</ul>
+<h3 id="29-求结果"><a href="#29-求结果" class="headerlink" title="29 求结果"></a>29 求结果</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">v = <span class="built_in">dict</span>.fromkeys([<span class="string">&#x27;k1&#x27;</span>,<span class="string">&#x27;k2&#x27;</span>],[])</span><br><span class="line">v[<span class="string">&#x27;k1&#x27;</span>].append(<span class="number">666</span>)</span><br><span class="line"><span class="built_in">print</span>(v)</span><br><span class="line">v[<span class="string">&#x27;k1&#x27;</span>] = <span class="number">777</span></span><br><span class="line"><span class="built_in">print</span>(v)</span><br></pre></td></tr></table></figure>
+
+<p><del>{‘k1’:[666], ‘k2’:[]}</del><br><del>{‘k1’:777, ‘k2’:[]}</del></p>
+<p>结果:<br>{‘k1’: [666], ‘k2’: [666]}<br>{‘k1’: 777, ‘k2’: [666]}  </p>
+<p>解释:<br>Python 字典(Dictionary) fromkeys() 函数用于创建一个新字典,以序列seq中元素做字典的键,value为字典所有键<br>对应的初始值,默认为None。</p>
+<h3 id="30-一行代码实现删除列表中重复的值"><a href="#30-一行代码实现删除列表中重复的值" class="headerlink" title="30 一行代码实现删除列表中重复的值"></a>30 一行代码实现删除列表中重复的值</h3><p><del>这个真的挺有难度的，等等</del></p>
+<p>没有比这更简单的了</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">64</span>,<span class="number">3</span>,<span class="number">5</span>,<span class="number">4</span>,<span class="number">8</span>,<span class="number">4</span>,<span class="number">34</span>,<span class="number">83</span>,<span class="number">45</span>,<span class="number">48</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">513</span>,<span class="number">8</span>]</span><br><span class="line"><span class="built_in">list</span>(<span class="built_in">set</span>(a))</span><br></pre></td></tr></table></figure>
+
+<h3 id="31-如何实现”1-2-3”变成-‘1’-’2’-’3’"><a href="#31-如何实现”1-2-3”变成-‘1’-’2’-’3’" class="headerlink" title="31 如何实现”1,2,3”变成[‘1’,’2’,’3’]"></a>31 如何实现”1,2,3”变成[‘1’,’2’,’3’]</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;1,2,3&quot;</span>.split(<span class="string">&#x27;,&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="32-如何实现-‘1’-’2’-’3’-变成-1-2-3"><a href="#32-如何实现-‘1’-’2’-’3’-变成-1-2-3" class="headerlink" title="32 如何实现[‘1’,’2’,’3’] 变成 [1, 2, 3]"></a>32 如何实现[‘1’,’2’,’3’] 变成 [1, 2, 3]</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="built_in">int</span>(i) <span class="keyword">for</span> i <span class="keyword">in</span> res]</span><br></pre></td></tr></table></figure>
+
+<h3 id="33-比较-a-x3D-1-2-3-和-b-x3D-1-2-3-以及-c-x3D-1-2-3-的区别"><a href="#33-比较-a-x3D-1-2-3-和-b-x3D-1-2-3-以及-c-x3D-1-2-3-的区别" class="headerlink" title="33 比较: a &#x3D; [1,2,3] 和 b &#x3D; [(1),(2),(3) ] 以及 c &#x3D; [(1,),(2,),(3,) ] 的区别"></a>33 比较: a &#x3D; [1,2,3] 和 b &#x3D; [(1),(2),(3) ] 以及 c &#x3D; [(1,),(2,),(3,) ] 的区别</h3><h3 id="34-如何用一行代码生成-1-4-9-16-25-36-49-64-81-100"><a href="#34-如何用一行代码生成-1-4-9-16-25-36-49-64-81-100" class="headerlink" title="34 如何用一行代码生成[1,4,9,16,25,36,49,64,81,100]"></a>34 如何用一行代码生成[1,4,9,16,25,36,49,64,81,100]</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[i**<span class="number">2</span> <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">11</span>)]</span><br></pre></td></tr></table></figure>
+
+<h3 id="35-常用字符串格式化哪几种"><a href="#35-常用字符串格式化哪几种" class="headerlink" title="35 常用字符串格式化哪几种"></a>35 常用字符串格式化哪几种</h3><p>字符串格式化的方法主要有两种</p>
+<ol>
+<li>占位符 %</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Hello, %s&#x27;</span> % <span class="string">&#x27;Python&#x27;</span>)</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;Hello, %d %s %.2f&#x27;</span> % (<span class="number">666</span>, <span class="string">&#x27;Python&#x27;</span>, <span class="number">9.99999</span>))</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>format</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&#123;k&#125; is &#123;v&#125;&#x27;</span>.<span class="built_in">format</span>(k=<span class="string">&#x27;python&#x27;</span>, v=<span class="string">&#x27;easy&#x27;</span>))</span><br><span class="line"><span class="built_in">print</span>(<span class="string">&#x27;&#123;0&#125; is &#123;1&#125;&#x27;</span>.<span class="built_in">format</span>(<span class="string">&#x27;python&#x27;</span>, <span class="string">&#x27;easy&#x27;</span>))</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag"><i class="fa fa-tag"></i> 面试题</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/07/11/%E9%87%8F%E5%8C%96%E4%BA%A4%E6%98%93-%E4%B8%87%E7%9F%BF%E4%BA%A4%E6%98%93%E5%B9%B3%E5%8F%B0%E5%AD%A6%E4%B9%A0/" rel="prev" title="量化交易|万矿交易平台学习(初阶)">
+      <i class="fa fa-chevron-left"></i> 量化交易|万矿交易平台学习(初阶)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/10/19/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%BA%8C/" rel="next" title="面试题|Python基础(二)">
+      面试题|Python基础(二) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python%E5%9F%BA%E7%A1%80"><span class="nav-text">Python基础</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E4%B8%BA%E4%BB%80%E4%B9%88%E5%AD%A6%E4%B9%A0Python"><span class="nav-text">1 为什么学习Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E9%80%9A%E8%BF%87%E4%BB%80%E4%B9%88%E9%80%94%E5%BE%84%E5%AD%A6%E4%B9%A0Python"><span class="nav-text">2 通过什么途径学习Python</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%85%AC%E5%8F%B8%E7%BA%BF%E4%B8%8A%E5%92%8C%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E4%BD%BF%E7%94%A8%E7%9A%84%E4%BB%80%E4%B9%88%E7%B3%BB%E7%BB%9F"><span class="nav-text">3 公司线上和开发环境使用的什么系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Python-%E5%92%8C-Java-PHP-C-C-C-%E7%AD%89%E5%85%B6%E4%BB%96%E8%AF%AD%E8%A8%80%E7%9A%84%E5%AF%B9%E6%AF%94"><span class="nav-text">4 Python 和 Java PHP C C# C++ 等其他语言的对比</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Python%E8%A7%A3%E9%87%8A%E5%99%A8%E7%A7%8D%E7%B1%BB%E5%8F%8A%E5%85%B6%E7%89%B9%E7%82%B9"><span class="nav-text">5 Python解释器种类及其特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-%E4%BD%8D%E5%92%8C%E5%AD%97%E8%8A%82%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-text">6 位和字节的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-b-B-KB-MB-GB%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-text">7 b,B,KB,MB,GB的关系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-%E8%87%B3%E5%B0%91%E4%B8%BE%E4%BE%8B5%E4%B8%AAPEP8%E8%A7%84%E8%8C%83-%E8%B6%8A%E5%A4%9A%E8%B6%8A%E5%A5%BD"><span class="nav-text">8 至少举例5个PEP8规范(越多越好)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-%E6%B1%82%E7%BB%93%E6%9E%9C%EF%BC%9A-or-and"><span class="nav-text">9 求结果： or and</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-%E7%AE%80%E8%BF%B0%E8%A7%A3%E9%87%8A%E5%9E%8B%E5%92%8C%E7%BC%96%E8%AF%91%E5%9E%8B%E8%AF%AD%E8%A8%80"><span class="nav-text">10 简述解释型和编译型语言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-ascii-unicode-utf-8-gbk-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">11 ascii, unicode, utf-8, gbk 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-%E5%AD%97%E8%8A%82%E7%A0%81%E5%92%8C%E6%9C%BA%E5%99%A8%E7%A0%81%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">12 字节码和机器码的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-%E4%B8%89%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E7%BC%96%E5%86%99%E6%A0%BC%E5%BC%8F"><span class="nav-text">13 三元运算符编写格式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-%E5%88%97%E4%B8%BE%E4%BD%A0%E4%BA%86%E8%A7%A3%E7%9A%84%E6%89%80%E6%9C%89-Python2-%E5%92%8C-Python3-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">14 列举你了解的所有 Python2 和 Python3 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-Py2-%E9%A1%B9%E7%9B%AE%E5%A6%82%E4%BD%95%E8%BF%81%E7%A7%BB%E6%88%90-Py3"><span class="nav-text">15 Py2 项目如何迁移成 Py3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-%E7%94%A8%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E6%95%B0%E5%80%BC%E4%BA%A4%E6%8D%A2"><span class="nav-text">16 用一行代码实现数值交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-Python3-%E5%92%8C-Python2-%E4%B8%AD-int-%E5%92%8C-long-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">17 Python3 和 Python2 中 int 和 long 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-xrange-%E5%92%8C-range-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">18 xrange 和 range 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#19-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E5%8F%8D%E8%BD%AC"><span class="nav-text">19 如何实现字符串的反转</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#20-%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C%E6%97%B6%EF%BC%9Axreadlines-%E5%92%8C-readlines-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">20 文件操作时：xreadlines 和 readlines 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#21-%E5%88%97%E4%B8%BE%E5%B8%83%E5%B0%94%E5%80%BC%E4%B8%BA-False-%E7%9A%84%E5%B8%B8%E8%A7%81%E5%80%BC"><span class="nav-text">21 列举布尔值为 False 的常见值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#22-%E5%88%97%E4%B8%BE%E5%AD%97%E7%AC%A6%E4%B8%B2%EF%BC%8C%E5%88%97%E8%A1%A8%EF%BC%8C%E5%85%83%E7%BB%84%EF%BC%8C%E5%AD%97%E5%85%B8%E6%AF%8F%E4%B8%AA%E5%B8%B8%E7%94%A8%E7%9A%84%E4%BA%94%E4%B8%AA%E6%96%B9%E6%B3%95"><span class="nav-text">22 列举字符串，列表，元组，字典每个常用的五个方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#23-is-%E5%92%8C-x3D-x3D-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">23 is 和 &#x3D;&#x3D; 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#24-1-2-3-4-5-%E8%83%BD%E7%BB%84%E6%88%90%E5%A4%9A%E5%B0%91%E4%B8%AA%E4%BA%92%E4%B8%8D%E7%9B%B8%E5%90%8C%E4%B8%94%E6%97%A0%E9%87%8D%E5%A4%8D%E7%9A%84%E4%B8%89%E4%BD%8D%E6%95%B0"><span class="nav-text">24 1,2,3,4,5 能组成多少个互不相同且无重复的三位数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#25-%E4%BB%80%E4%B9%88%E6%98%AF%E5%8F%8D%E5%B0%84%EF%BC%9F%E4%BB%A5%E5%8F%8A%E5%85%B6%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">25 什么是反射？以及其应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#26-%E7%AE%80%E8%BF%B0Python%E7%9A%84%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="nav-text">26 简述Python的深浅拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#27-Python-%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6"><span class="nav-text">27 Python 垃圾回收机制</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#28-Python-%E7%9A%84%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B%E5%92%8C%E4%B8%8D%E5%8F%AF%E5%8F%98%E7%B1%BB%E5%9E%8B%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">28 Python 的可变类型和不可变类型的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#29-%E6%B1%82%E7%BB%93%E6%9E%9C"><span class="nav-text">29 求结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#30-%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E5%88%A0%E9%99%A4%E5%88%97%E8%A1%A8%E4%B8%AD%E9%87%8D%E5%A4%8D%E7%9A%84%E5%80%BC"><span class="nav-text">30 一行代码实现删除列表中重复的值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#31-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E2%80%9D1-2-3%E2%80%9D%E5%8F%98%E6%88%90-%E2%80%981%E2%80%99-%E2%80%992%E2%80%99-%E2%80%993%E2%80%99"><span class="nav-text">31 如何实现”1,2,3”变成[‘1’,’2’,’3’]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#32-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0-%E2%80%981%E2%80%99-%E2%80%992%E2%80%99-%E2%80%993%E2%80%99-%E5%8F%98%E6%88%90-1-2-3"><span class="nav-text">32 如何实现[‘1’,’2’,’3’] 变成 [1, 2, 3]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#33-%E6%AF%94%E8%BE%83-a-x3D-1-2-3-%E5%92%8C-b-x3D-1-2-3-%E4%BB%A5%E5%8F%8A-c-x3D-1-2-3-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">33 比较: a &#x3D; [1,2,3] 和 b &#x3D; [(1),(2),(3) ] 以及 c &#x3D; [(1,),(2,),(3,) ] 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#34-%E5%A6%82%E4%BD%95%E7%94%A8%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90-1-4-9-16-25-36-49-64-81-100"><span class="nav-text">34 如何用一行代码生成[1,4,9,16,25,36,49,64,81,100]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#35-%E5%B8%B8%E7%94%A8%E5%AD%97%E7%AC%A6%E4%B8%B2%E6%A0%BC%E5%BC%8F%E5%8C%96%E5%93%AA%E5%87%A0%E7%A7%8D"><span class="nav-text">35 常用字符串格式化哪几种</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="niracler"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">niracler</p>
+  <div class="site-description" itemprop="description">What are you doing?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/niracler" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;niracler" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:niracler@gmail.com" title="E-Mail → mailto:niracler@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/niracler" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;niracler" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://t.me/niracler_channel" title="Telegram → https:&#x2F;&#x2F;t.me&#x2F;niracler_channel" rel="noopener" target="_blank"><i class=" fa-fw"></i>Telegram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/4e3cc9bb3aa1" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;4e3cc9bb3aa1" rel="noopener" target="_blank"><i class=" fa-fw"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fas fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zhouyimian.github.io/" title="https:&#x2F;&#x2F;zhouyimian.github.io&#x2F;" rel="noopener" target="_blank">周同学的博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17146846号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niracler</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'd2492e40e7428634adb4',
+      clientSecret: '9a9c088a73eac548059694f5e074f5ba1fcad3bd',
+      repo        : 'niracler.github.io',
+      owner       : 'niracler',
+      admin       : ['niracler'],
+      id          : '73c646c1b10f4815b16ce5a06b710403',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

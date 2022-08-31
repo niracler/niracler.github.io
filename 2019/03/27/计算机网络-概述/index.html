@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.niracler.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="学校内容这一系列,我主要是用来整理学校学习的笔记的，大概会更新到学期末，然后才会推送到其他平台  重要内容因特网的边缘部分和核心部分的作用边缘部分： 有所有连接在互联网上的主机组成。这部分是用户直接使用的，用来通信(传送数据、音频或视频)和资源共享。 核心部分： 有大量网络和连接这些网络的路由器组成。这部分是为边缘部分提供服务的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="计算机网络|概述">
+<meta property="og:url" content="https://www.niracler.com/2019/03/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Niracler&#39;Blog">
+<meta property="og:description" content="学校内容这一系列,我主要是用来整理学校学习的笔记的，大概会更新到学期末，然后才会推送到其他平台  重要内容因特网的边缘部分和核心部分的作用边缘部分： 有所有连接在互联网上的主机组成。这部分是用户直接使用的，用来通信(传送数据、音频或视频)和资源共享。 核心部分： 有大量网络和连接这些网络的路由器组成。这部分是为边缘部分提供服务的。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-03-27T12:06:06.000Z">
+<meta property="article:modified_time" content="2022-04-29T08:02:02.440Z">
+<meta property="article:author" content="niracler">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="学校内容">
+<meta property="article:tag" content="网络">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.niracler.com/2019/03/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E6%A6%82%E8%BF%B0/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>计算机网络|概述 | Niracler'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Niracler'Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Niracler'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">What are you doing?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/niracler" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.niracler.com/2019/03/27/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C-%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="niracler">
+      <meta itemprop="description" content="What are you doing?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Niracler'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          计算机网络|概述
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-27 20:06:06" itemprop="dateCreated datePublished" datetime="2019-03-27T20:06:06+08:00">2019-03-27</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-29 16:02:02" itemprop="dateModified" datetime="2022-04-29T16:02:02+08:00">2022-04-29</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <blockquote>
+<p>学校内容这一系列,我主要是用来整理学校学习的笔记的，大概会更新到学期末，然后才会推送到其他平台</p>
+</blockquote>
+<h2 id="重要内容"><a href="#重要内容" class="headerlink" title="重要内容"></a>重要内容</h2><h3 id="因特网的边缘部分和核心部分的作用"><a href="#因特网的边缘部分和核心部分的作用" class="headerlink" title="因特网的边缘部分和核心部分的作用"></a>因特网的边缘部分和核心部分的作用</h3><p>边缘部分： 有所有连接在互联网上的主机组成。这部分是用户直接使用的，用来通信(传送数据、音频或视频)和资源共享。</p>
+<p>核心部分： 有大量网络和连接这些网络的路由器组成。这部分是为边缘部分提供服务的。</p>
+<span id="more"></span>
+
+<h3 id="分组交换的概念"><a href="#分组交换的概念" class="headerlink" title="分组交换的概念"></a>分组交换的概念</h3><blockquote>
+<p>我认为分组交换一定要与电路交换、报文交换等作对比才能凸显其特点的</p>
+</blockquote>
+<p>电路交换：整个报文的比特流连续地从源点直达到终点，好像在一个管道中传输。</p>
+<p>报文交换：整个报文先传输到相邻结点，全部存储下来后查找转发表，转发到下一个结点。</p>
+<p>分组交换：单个分组(这只是整个报文)传送到相邻结点，存储下来后查找转发表，转发到下一个结点。</p>
+<h3 id="计算机网络的一些性能指标"><a href="#计算机网络的一些性能指标" class="headerlink" title="计算机网络的一些性能指标"></a>计算机网络的一些性能指标</h3><ol>
+<li><p>速率：数据传输的速率</p>
+</li>
+<li><p>带宽：单位时间内网络中的某信道所能通过的“最高数据率”</p>
+</li>
+<li><p>时延：分为四种时延，发送时延、传播时延、处理时延、排队时延<br>  发送时延：主机或路由器发送数据帧所需要的时间<br>  传播时延：电磁波在信道中传播一定的距离所花费的时间<br>  处理时延：主机或路由器在收到分组时要花费一定的时间进行处理。<br>  排队时延：分组在进入路由器后要先在输入队列中排队等待处理  </p>
+</li>
+<li><p>时延带宽积 &#x3D; 传播时延 * 带宽</p>
+</li>
+<li><p>吞吐量：单位时间内通过某个网络（或信道、接口）的实际的数据量。</p>
+</li>
+<li><p>往返时间RTT：网络传输往返一次所需要的时间</p>
+</li>
+<li><p>利用率：分为信道利用率和网络利用率</p>
+</li>
+</ol>
+<h3 id="计算机网络分层次的体系结构"><a href="#计算机网络分层次的体系结构" class="headerlink" title="计算机网络分层次的体系结构"></a>计算机网络分层次的体系结构</h3><p>应用层：通过应用进程间的交互来完成特定的网络应用</p>
+<p>传输层：负责向两台主机中进程之间的通信提供通用的数据传输服务</p>
+<p>网络层：负责为分组交换网上</p>
+<p>链路层：凸出数据部分，上交给网络层</p>
+<p>物理层：物理层的任务就是透明地传送比特流（注意：传递信息的物理媒体，如双绞线、同轴电缆、光缆等，实在物理层的下面，当做第0层）物理层还需要确定连接电缆插头的定义及连接法。</p>
+<h3 id="协议与服务的概念"><a href="#协议与服务的概念" class="headerlink" title="协议与服务的概念"></a>协议与服务的概念</h3><p>  协议是水平的，而服务是垂直的</p>
+<h2 id="课后习题"><a href="#课后习题" class="headerlink" title="课后习题"></a>课后习题</h2><h3 id="计算机网络可以向用户提供哪些服务？"><a href="#计算机网络可以向用户提供哪些服务？" class="headerlink" title="计算机网络可以向用户提供哪些服务？"></a>计算机网络可以向用户提供哪些服务？</h3><p>连通性和共享性</p>
+<h3 id="简述分组交换的要点"><a href="#简述分组交换的要点" class="headerlink" title="简述分组交换的要点"></a>简述分组交换的要点</h3><ol>
+<li>报文分组，加首部</li>
+<li>经路由器存储转发</li>
+<li>在目的地合并</li>
+</ol>
+<h3 id="试从多个方面比较电路交换、报文交换和分组交换的优缺点？"><a href="#试从多个方面比较电路交换、报文交换和分组交换的优缺点？" class="headerlink" title="试从多个方面比较电路交换、报文交换和分组交换的优缺点？"></a>试从多个方面比较电路交换、报文交换和分组交换的优缺点？</h3><ul>
+<li>电路交换：端对端通信质量因约定了通信资源而获得了可靠保障，对连续大量数据效率高</li>
+<li>报文交换：无需预约传输带宽，动态逐段利用传输带宽，对突发性数据通信效率高</li>
+<li>分组交换：具有报文交换之高效、迅速的要点，且各分组小，路由灵活，网络生存性能好</li>
+</ul>
+<h3 id="为什么说因特网是自印刷术以来人类通信方面最大的变革？"><a href="#为什么说因特网是自印刷术以来人类通信方面最大的变革？" class="headerlink" title="为什么说因特网是自印刷术以来人类通信方面最大的变革？"></a>为什么说因特网是自印刷术以来人类通信方面最大的变革？</h3><p>融合其他通信网络，在信息化过程中起核心作用，提供最好的连通性和信息共享，第一次提供了各种媒体形式的实时交互能力</p>
+<h3 id="因特网的发展大致分为哪几个阶段？请指出这三个阶段的主要特点"><a href="#因特网的发展大致分为哪几个阶段？请指出这三个阶段的主要特点" class="headerlink" title="因特网的发展大致分为哪几个阶段？请指出这三个阶段的主要特点"></a>因特网的发展大致分为哪几个阶段？请指出这三个阶段的主要特点</h3><ul>
+<li>从单个网络APPANET向互联网发展</li>
+<li>TCP&#x2F;IP协议的初步成型</li>
+<li>建成三级结构的Internet</li>
+<li>分为主干网、地区网和校园网</li>
+<li>形成多层次ISP结构的Internet</li>
+<li>ISP首次出现</li>
+</ul>
+<h3 id="简述因特网标准制定的几个阶段？"><a href="#简述因特网标准制定的几个阶段？" class="headerlink" title="简述因特网标准制定的几个阶段？"></a>简述因特网标准制定的几个阶段？</h3><ol>
+<li>因特网草案(Inter Draft)–在这个阶段还不是RFC文档</li>
+<li>建议标准(Proposed Standard)–从这个阶段开始就成为RFC文档</li>
+<li>标准草案(Draft Standard)</li>
+<li>因特网标准(Internet Standard)</li>
+</ol>
+<h3 id="小写和大写开头的英文名-internet-和-Internet-在意思上有何重要区别"><a href="#小写和大写开头的英文名-internet-和-Internet-在意思上有何重要区别" class="headerlink" title="小写和大写开头的英文名 internet 和 Internet 在意思上有何重要区别?"></a>小写和大写开头的英文名 internet 和 Internet 在意思上有何重要区别?</h3><ol>
+<li>internet(互联网或互连网):通用名词,它泛指由多个计算机网络互连而成的网络, 协议无特指</li>
+<li>Internet(因特网):专用名词,特指采用TCP&#x2F;IP协议的互联网络.</li>
+<li>区别:后者实际上是前者的双向应用</li>
+</ol>
+<h3 id="计算机网路都有哪些类型-各种类型的网络都有哪些特点"><a href="#计算机网路都有哪些类型-各种类型的网络都有哪些特点" class="headerlink" title="计算机网路都有哪些类型?各种类型的网络都有哪些特点?"></a>计算机网路都有哪些类型?各种类型的网络都有哪些特点?</h3><p>按范围:</p>
+<ol>
+<li>广域网WAN:远程,高速,是Internet的核心网</li>
+<li>城域网:城市范围,链接多个局域网</li>
+<li>局域网:校园,企业,机关,社区</li>
+<li>个域网PAN:个人电子设备</li>
+</ol>
+<p>按用户:</p>
+<ol>
+<li>公用网:面向公共营运</li>
+<li>专用网:面向特定机构</li>
+</ol>
+<h3 id="计算机网络中的主干网和本地接入网的主要区别是什么"><a href="#计算机网络中的主干网和本地接入网的主要区别是什么" class="headerlink" title="计算机网络中的主干网和本地接入网的主要区别是什么?"></a>计算机网络中的主干网和本地接入网的主要区别是什么?</h3><p>主干网:提供远程覆盖\高速传输\和路由器最优化通信<br>本地接入网:主要支持用户的接入本地,实现散户接入,速率低</p>
+<h3 id="试在下列条件下比较电路交换和分组交换"><a href="#试在下列条件下比较电路交换和分组交换" class="headerlink" title="试在下列条件下比较电路交换和分组交换"></a>试在下列条件下比较电路交换和分组交换</h3><p>要传输的报文共x(bit)。从源点到终点共经过k段链路，每段链路的传播时延为d(s)，数据率为b(b&#x2F;s)。在电路交换时电路的建立时间为s(s)。在分组交换时分组长度为p(bit),且各结点的排队时间可忽略不计。<strong>问在什么情况下,分组交换的时延比电路交换的要小?</strong>  </p>
+<p>答：线路交换时延：kd+x&#x2F;b+s,  分组交换时延：kd+(x&#x2F;p)*(p&#x2F;b)+ (k-1)*(p&#x2F;b)，其中(k-1)*(p&#x2F;b)表示K段传输中，有(k-1)次的储存转发延迟，当s&gt;(k-1)*(p&#x2F;b)时，电路交换的时延比分组交换的时延大，当x&gt;&gt;p,相反。</p>
+<h3 id="若打算使总的时延为最小，问分组的数据部分长度p应取为多大？"><a href="#若打算使总的时延为最小，问分组的数据部分长度p应取为多大？" class="headerlink" title="若打算使总的时延为最小，问分组的数据部分长度p应取为多大？"></a>若打算使总的时延为最小，问分组的数据部分长度p应取为多大？</h3><p>在上题的分组交换网中，设报文长度和分组长度分别为x和(p+h)(bit),其中p为分组的数据部分的长度，而h为每个分组所带的控制信息固定长度，与p的大小无关。通信的两端共经过k段链路。链路的数据率为b(b&#x2F;s)，但传播时延和结点的排队时间均可忽略不计。若打算使总的时延为最小，问分组的数据部分长度p应取为多大？</p>
+<p>答：总时延D表达式，分组交换时延为：D&#x3D; kd+(x&#x2F;p)*((p+h)&#x2F;b)+ (k-1)*(p+h)&#x2F;b  D对p求导后，令其值等于0，求得p&#x3D;[(xh)&#x2F;(k-1)]^0.5</p>
+<h3 id="因特网的两大组成部分-边缘部分与核心部分-的特点是什么？它们的工作方式各有什么特点？"><a href="#因特网的两大组成部分-边缘部分与核心部分-的特点是什么？它们的工作方式各有什么特点？" class="headerlink" title="因特网的两大组成部分(边缘部分与核心部分)的特点是什么？它们的工作方式各有什么特点？"></a>因特网的两大组成部分(边缘部分与核心部分)的特点是什么？它们的工作方式各有什么特点？</h3><ul>
+<li>边缘部分：由各主机构成，用户直接进行信息处理和信息共享。低速连入核心网</li>
+<li>核心部分：有各路由器连网，负责为边缘部分提供高速远程分组交换</li>
+</ul>
+<h3 id="客户服务器与对等通信方式的主要区别是什么？有没有相同的地方？"><a href="#客户服务器与对等通信方式的主要区别是什么？有没有相同的地方？" class="headerlink" title="客户服务器与对等通信方式的主要区别是什么？有没有相同的地方？"></a>客户服务器与对等通信方式的主要区别是什么？有没有相同的地方？</h3><p>前者严格区分服务与被服务者，后者无此区别。后者实际上是前者的双向应用</p>
+<h3 id="计算机网络有哪些常用的性能指标？"><a href="#计算机网络有哪些常用的性能指标？" class="headerlink" title="计算机网络有哪些常用的性能指标？"></a>计算机网络有哪些常用的性能指标？</h3><p>速率、带宽、吞吐量、时延、时延带宽积， 往返时间RTT、利用率</p>
+<h3 id="假定网络利用率达到了90-，-试估计一下现在的网络时延是它的最小值的多少倍？"><a href="#假定网络利用率达到了90-，-试估计一下现在的网络时延是它的最小值的多少倍？" class="headerlink" title="假定网络利用率达到了90%， 试估计一下现在的网络时延是它的最小值的多少倍？"></a>假定网络利用率达到了90%， 试估计一下现在的网络时延是它的最小值的多少倍？</h3><p>设网络利用率为U，网络时延为D，网络时延最小值为D0U&#x3D;90%；D&#x3D;D0&#x2F;(1-U)—-&gt;D&#x2F; D0&#x3D;10 现在的网络时延是最小值的10倍</p>
+<h3 id="计算机通信网有哪些非性能特征？非性能特征与性能特征有什么区别？"><a href="#计算机通信网有哪些非性能特征？非性能特征与性能特征有什么区别？" class="headerlink" title="计算机通信网有哪些非性能特征？非性能特征与性能特征有什么区别？"></a>计算机通信网有哪些非性能特征？非性能特征与性能特征有什么区别？</h3><ul>
+<li>非性能特征：宏观整体评价网络的外在表现。</li>
+<li>性能指标：具体定量描述网络的技术性能</li>
+</ul>
+<h3 id="收发两端之间的传输距离为1000km，信号在媒体上的传播速率为2×108m-x2F-s。试计算以下两种情况的发送时延和传播时延："><a href="#收发两端之间的传输距离为1000km，信号在媒体上的传播速率为2×108m-x2F-s。试计算以下两种情况的发送时延和传播时延：" class="headerlink" title="收发两端之间的传输距离为1000km，信号在媒体上的传播速率为2×108m&#x2F;s。试计算以下两种情况的发送时延和传播时延："></a>收发两端之间的传输距离为1000km，信号在媒体上的传播速率为2×108m&#x2F;s。试计算以下两种情况的发送时延和传播时延：</h3><ol>
+<li>数据长度为107bit,数据发送速率为100kb&#x2F;s。</li>
+<li>数据长度为103bit,数据发送速率为1Gb&#x2F;s。</li>
+</ol>
+<p>从上面的计算中可以得到什么样的结论？<br>解：</p>
+<ol>
+<li>发送时延：ts&#x3D;107&#x2F;105&#x3D;100s传播时延tp&#x3D;106&#x2F;(2×108)&#x3D;0.005s</li>
+<li>发送时延：ts &#x3D;103&#x2F;109&#x3D;1µs传播时延：tp&#x3D;106&#x2F;(2×108)&#x3D;0.005s</li>
+</ol>
+<p>结论：若数据长度大而发送速率低，则在总的时延中，发送时延往往大于传播时延。但若数据长度短而发送速率高，则传播时延就可能是总时延中的主要成分。</p>
+<h3 id="假设信号在媒体上的传播速度为2×108m-x2F-s-媒体长度L分别为："><a href="#假设信号在媒体上的传播速度为2×108m-x2F-s-媒体长度L分别为：" class="headerlink" title="假设信号在媒体上的传播速度为2×108m&#x2F;s.媒体长度L分别为："></a>假设信号在媒体上的传播速度为2×108m&#x2F;s.媒体长度L分别为：</h3><ol>
+<li>10cm（网络接口卡）</li>
+<li>100m（局域网）</li>
+<li>100km（城域网）</li>
+<li>5000km（广域网）</li>
+</ol>
+<p>试计算出当数据率为1Mb&#x2F;s和10Gb&#x2F;s时在以上媒体中正在传播的比特数。<br>解：</p>
+<ol>
+<li>1Mb&#x2F;s:<br>  传播时延&#x3D;0.1&#x2F;(2×108)&#x3D;5×10-10<br>  比特数&#x3D;5×10-10×1×106&#x3D;5×10-4</li>
+</ol>
+<p>  1Gb&#x2F;s:<br>  比特数&#x3D;5×10-10×1×109&#x3D;5×10-1</p>
+<ol>
+<li>1Mb&#x2F;s:<br>  传播时延&#x3D;100&#x2F;(2×108)&#x3D;5×10-7<br>  比特数&#x3D;5×10-7×1×106&#x3D;5×10-1</li>
+</ol>
+<p>  1Gb&#x2F;s:<br>  比特数&#x3D;5×10-7×1×109&#x3D;5×102</p>
+<ol>
+<li>1Mb&#x2F;s:<br>  传播时延&#x3D;100000&#x2F;(2×108)&#x3D;5×10-4<br>  比特数&#x3D;5×10-4×1×106&#x3D;5×102</li>
+</ol>
+<p>  1Gb&#x2F;s:<br>  比特数&#x3D;5×10-4×1×109&#x3D;5×105</p>
+<ol>
+<li>1Mb&#x2F;s:<br>  传播时延&#x3D;5000000&#x2F;(2×108)&#x3D;2.5×10-2<br>  比特数&#x3D;2.5×10-2×1×106&#x3D;5×104</li>
+</ol>
+<p>  1Gb&#x2F;s:<br>  比特数&#x3D;2.5×10-2×1×109&#x3D;5×107</p>
+<h3 id="长度为100字节的应用层数据交给传输层传送，需加上20字节的TCP首部。"><a href="#长度为100字节的应用层数据交给传输层传送，需加上20字节的TCP首部。" class="headerlink" title="长度为100字节的应用层数据交给传输层传送，需加上20字节的TCP首部。"></a>长度为100字节的应用层数据交给传输层传送，需加上20字节的TCP首部。</h3><p>再交给网络层传送，需加上20字节的IP首部。最后交给数据链路层的以太网传送，加上首部和尾部工18字节。试求数据的传输效率。数据的传输效率是指发送的应用层数据除以所发送的总数据（即应用数据加上各种首部和尾部的额外开销）。若应用层数据长度为1000字节，数据的传输效率是多少？</p>
+<ol>
+<li>100&#x2F;（100+20+20+18）&#x3D;63.3%</li>
+<li>1000&#x2F;（1000+20+20+18）&#x3D;94.5%</li>
+</ol>
+<h3 id="网络体系结构为什么要采用分层次的结构？试举出一些与分层体系结构的思想相似的日常生活"><a href="#网络体系结构为什么要采用分层次的结构？试举出一些与分层体系结构的思想相似的日常生活" class="headerlink" title="网络体系结构为什么要采用分层次的结构？试举出一些与分层体系结构的思想相似的日常生活"></a>网络体系结构为什么要采用分层次的结构？试举出一些与分层体系结构的思想相似的日常生活</h3><p>分层的好处：  </p>
+<ol>
+<li>各层之间是独立的。某一层可以使用下一层提供的服务而不需要知道服务是如何实现的</li>
+<li>灵活性好。当某一层发生变化时，只要其接口关系不变，则这一层以上或以下的各层君不受影响</li>
+<li>结构上可分隔开。各层可以采用最适合的技术来实现</li>
+<li>易于实现和维护</li>
+<li>能促进标准化工作。</li>
+</ol>
+<p>与分层体系结构的思想相似的日常生活有邮政系统，物流系统</p>
+<h3 id="协议与服务有何区别？有何关系？"><a href="#协议与服务有何区别？有何关系？" class="headerlink" title="协议与服务有何区别？有何关系？"></a>协议与服务有何区别？有何关系？</h3><p>网络协议：为进行网络中的数据交换而建立的规则、标准或约定。由以下三个要素组成：</p>
+<ol>
+<li>语法：即数据与控制信息的结构或格式</li>
+<li>语义：即需要发出何种控制信息，完成何种动作以及做出何种响应。</li>
+<li>同步：即事件实现顺序的详细说明。协议是控制两个对等实体进行通信的规则的集合。在协议的控制下，两个对等实体间的通信使本层能够向上一层提供服务，而要实现本层协议，还需要使用下面一层提供服务。</li>
+</ol>
+<p>协议和服务的概念的区分：</p>
+<ol>
+<li><p>协议的实现保证了能够向上一层提供服务。本层的服务用户只能看见服务而无法看见下面的协议。下面的协议对上面的服务用户是透明的。</p>
+</li>
+<li><p>协议是“水平的”， 即协议是控制两个对等实体进行通信的规则。但服务是“垂直的”， 即服务是由下层通过层间接口向上层提供的。上层使用所提供的服务必须与下层交换一些命令，这些命令在OSI中称为服务原语。</p>
+</li>
+</ol>
+<h3 id="网络协议的三要素是什么？各有什么含义？"><a href="#网络协议的三要素是什么？各有什么含义？" class="headerlink" title="网络协议的三要素是什么？各有什么含义？"></a>网络协议的三要素是什么？各有什么含义？</h3><p>网络协议：为进行网络中的数据交换而建立的规则、标准或约定</p>
+<ol>
+<li>语法：即数据与控制信息的结构或格式。</li>
+<li>语义：即需要发出何种信息，完成何种动作，做出何种响应。</li>
+<li>同步：即事件实现顺序的详细说明。</li>
+</ol>
+<h3 id="为什么一个网络协议必须把各种不利的情况都考虑到？"><a href="#为什么一个网络协议必须把各种不利的情况都考虑到？" class="headerlink" title="为什么一个网络协议必须把各种不利的情况都考虑到？"></a>为什么一个网络协议必须把各种不利的情况都考虑到？</h3><p>因为网络协议如果不全面考虑不利情况，当情况发生变化时，协议就会保持理想状况，一直等下去！就如同两个朋友在电话中约好。下午三点在公园见面，并且约定不见不散。这个协议就是很不科学的，因为任何一方如果有耽搁了而来不了，就无法通知对方，而另一方就必须一直等下去！所以看一个计算机网络是否正确，不能只看在正常情况下是否正确，而且还必须非常仔细地检查协议能否应对各种异常情况。</p>
+<h3 id="论述具有五层协议的网络体系结构的要点，包括各层的主要功能"><a href="#论述具有五层协议的网络体系结构的要点，包括各层的主要功能" class="headerlink" title="论述具有五层协议的网络体系结构的要点，包括各层的主要功能"></a>论述具有五层协议的网络体系结构的要点，包括各层的主要功能</h3><p>综合OSI和TCP&#x2F;IP的优点，采用一种原理体系结构。</p>
+<p>各层的主要功能：</p>
+<p>物理层：物理层的任务就是透明地传送比特流（注意：传递信息的物理媒体，如双绞线、同轴电缆、光缆等，实在物理层的下面，当做第0层）物理层还需要确定连接电缆插头的定义及连接法。</p>
+<p>数据链路层：数据链路层的任务是在两个相邻结点间的线路上无差错地传输以帧（frame）为单位的数据。每一帧包括数据和必要的控制信息。</p>
+<p>网络层：网络层的任务就是选择合适的路由，使发送站的传输层所传下来的分组能够正确无误地按照地址找到目的站，并交付给目的站的运输层。</p>
+<p>运输层：运输层的任务是向上一层的进行通信的两个进程之间提供一个可靠的端到端服务，使它们看不见传输层一下的数据通信的细节。</p>
+<p>应用层：应用层直接为用户的应用进程提供服务</p>
+<h3 id="试举出日常生活中有关“透明”这种名词的例子。"><a href="#试举出日常生活中有关“透明”这种名词的例子。" class="headerlink" title="试举出日常生活中有关“透明”这种名词的例子。"></a>试举出日常生活中有关“透明”这种名词的例子。</h3><p>电视、计算机视窗操作系统、工农业产品</p>
+<h3 id="试解释一下名词：协议栈、实体、对等层、协议数据单元、服务访问点、客户、服务器、客户-服务器方式"><a href="#试解释一下名词：协议栈、实体、对等层、协议数据单元、服务访问点、客户、服务器、客户-服务器方式" class="headerlink" title="试解释一下名词：协议栈、实体、对等层、协议数据单元、服务访问点、客户、服务器、客户-服务器方式"></a>试解释一下名词：协议栈、实体、对等层、协议数据单元、服务访问点、客户、服务器、客户-服务器方式</h3><ul>
+<li><p>协议栈：指计算机网络体系结构采用分层模型后，每层主要功能由对等层协议的运行来实现，因而每一层可用一些主要协议来表征，几个层次画在一起很像一个栈的结构</p>
+</li>
+<li><p>实体：表示任何可以发送或接收信息的硬件或软件进程。</p>
+</li>
+<li><p>对等层：在网络体系结构中，通信双方实现同样功能的层</p>
+</li>
+<li><p>协议数据单元：对等层实体进行信息交换的数据单位</p>
+</li>
+<li><p>服务访问点：在同一系统中相邻两层的实体进行交互的地方</p>
+</li>
+<li><p>客户：是服务的请求方</p>
+</li>
+<li><p>服务器：是服务的提供方</p>
+</li>
+<li><p>客户-服务器方式所描述的是进程之间服务和被服务的关系。客户与服务器都是指通信中所涉及的两个应用进程。</p>
+</li>
+</ul>
+<h3 id="试解释-everything-over-IP-和-IP-over-everything-的含义"><a href="#试解释-everything-over-IP-和-IP-over-everything-的含义" class="headerlink" title="试解释 everything over IP 和 IP over everything 的含义"></a>试解释 everything over IP 和 IP over everything 的含义</h3><p>TCP&#x2F;IP协议可以为各式各样的应用提供服务 （所谓的everything over ip）<br>允许IP协议在各式各样的网络构成的互联网上运行（所谓的ip over everything）</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"><i class="fa fa-tag"></i> 笔记</a>
+              <a href="/tags/%E5%AD%A6%E6%A0%A1%E5%86%85%E5%AE%B9/" rel="tag"><i class="fa fa-tag"></i> 学校内容</a>
+              <a href="/tags/%E7%BD%91%E7%BB%9C/" rel="tag"><i class="fa fa-tag"></i> 网络</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/25/vue-js%E5%AD%A6%E4%B9%A0-%E4%B8%80/" rel="prev" title="vue.js学习(一)">
+      <i class="fa fa-chevron-left"></i> vue.js学习(一)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/29/%E4%BD%BF%E7%94%A8docker%E6%90%AD%E5%BB%BAhadoop%E4%BC%AA%E5%88%86%E5%B8%83%E5%BC%8F/" rel="next" title="使用docker搭建hadoop伪分布式">
+      使用docker搭建hadoop伪分布式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%87%8D%E8%A6%81%E5%86%85%E5%AE%B9"><span class="nav-text">重要内容</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%A0%E7%89%B9%E7%BD%91%E7%9A%84%E8%BE%B9%E7%BC%98%E9%83%A8%E5%88%86%E5%92%8C%E6%A0%B8%E5%BF%83%E9%83%A8%E5%88%86%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">因特网的边缘部分和核心部分的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-text">分组交换的概念</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E7%9A%84%E4%B8%80%E4%BA%9B%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87"><span class="nav-text">计算机网络的一些性能指标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%88%86%E5%B1%82%E6%AC%A1%E7%9A%84%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-text">计算机网络分层次的体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E4%B8%8E%E6%9C%8D%E5%8A%A1%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="nav-text">协议与服务的概念</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%BE%E5%90%8E%E4%B9%A0%E9%A2%98"><span class="nav-text">课后习题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E5%8F%AF%E4%BB%A5%E5%90%91%E7%94%A8%E6%88%B7%E6%8F%90%E4%BE%9B%E5%93%AA%E4%BA%9B%E6%9C%8D%E5%8A%A1%EF%BC%9F"><span class="nav-text">计算机网络可以向用户提供哪些服务？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2%E7%9A%84%E8%A6%81%E7%82%B9"><span class="nav-text">简述分组交换的要点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%95%E4%BB%8E%E5%A4%9A%E4%B8%AA%E6%96%B9%E9%9D%A2%E6%AF%94%E8%BE%83%E7%94%B5%E8%B7%AF%E4%BA%A4%E6%8D%A2%E3%80%81%E6%8A%A5%E6%96%87%E4%BA%A4%E6%8D%A2%E5%92%8C%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9%EF%BC%9F"><span class="nav-text">试从多个方面比较电路交换、报文交换和分组交换的优缺点？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%AF%B4%E5%9B%A0%E7%89%B9%E7%BD%91%E6%98%AF%E8%87%AA%E5%8D%B0%E5%88%B7%E6%9C%AF%E4%BB%A5%E6%9D%A5%E4%BA%BA%E7%B1%BB%E9%80%9A%E4%BF%A1%E6%96%B9%E9%9D%A2%E6%9C%80%E5%A4%A7%E7%9A%84%E5%8F%98%E9%9D%A9%EF%BC%9F"><span class="nav-text">为什么说因特网是自印刷术以来人类通信方面最大的变革？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%A0%E7%89%B9%E7%BD%91%E7%9A%84%E5%8F%91%E5%B1%95%E5%A4%A7%E8%87%B4%E5%88%86%E4%B8%BA%E5%93%AA%E5%87%A0%E4%B8%AA%E9%98%B6%E6%AE%B5%EF%BC%9F%E8%AF%B7%E6%8C%87%E5%87%BA%E8%BF%99%E4%B8%89%E4%B8%AA%E9%98%B6%E6%AE%B5%E7%9A%84%E4%B8%BB%E8%A6%81%E7%89%B9%E7%82%B9"><span class="nav-text">因特网的发展大致分为哪几个阶段？请指出这三个阶段的主要特点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E8%BF%B0%E5%9B%A0%E7%89%B9%E7%BD%91%E6%A0%87%E5%87%86%E5%88%B6%E5%AE%9A%E7%9A%84%E5%87%A0%E4%B8%AA%E9%98%B6%E6%AE%B5%EF%BC%9F"><span class="nav-text">简述因特网标准制定的几个阶段？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B0%8F%E5%86%99%E5%92%8C%E5%A4%A7%E5%86%99%E5%BC%80%E5%A4%B4%E7%9A%84%E8%8B%B1%E6%96%87%E5%90%8D-internet-%E5%92%8C-Internet-%E5%9C%A8%E6%84%8F%E6%80%9D%E4%B8%8A%E6%9C%89%E4%BD%95%E9%87%8D%E8%A6%81%E5%8C%BA%E5%88%AB"><span class="nav-text">小写和大写开头的英文名 internet 和 Internet 在意思上有何重要区别?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E8%B7%AF%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%E7%B1%BB%E5%9E%8B-%E5%90%84%E7%A7%8D%E7%B1%BB%E5%9E%8B%E7%9A%84%E7%BD%91%E7%BB%9C%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B%E7%89%B9%E7%82%B9"><span class="nav-text">计算机网路都有哪些类型?各种类型的网络都有哪些特点?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%B8%AD%E7%9A%84%E4%B8%BB%E5%B9%B2%E7%BD%91%E5%92%8C%E6%9C%AC%E5%9C%B0%E6%8E%A5%E5%85%A5%E7%BD%91%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88"><span class="nav-text">计算机网络中的主干网和本地接入网的主要区别是什么?</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%95%E5%9C%A8%E4%B8%8B%E5%88%97%E6%9D%A1%E4%BB%B6%E4%B8%8B%E6%AF%94%E8%BE%83%E7%94%B5%E8%B7%AF%E4%BA%A4%E6%8D%A2%E5%92%8C%E5%88%86%E7%BB%84%E4%BA%A4%E6%8D%A2"><span class="nav-text">试在下列条件下比较电路交换和分组交换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8B%A5%E6%89%93%E7%AE%97%E4%BD%BF%E6%80%BB%E7%9A%84%E6%97%B6%E5%BB%B6%E4%B8%BA%E6%9C%80%E5%B0%8F%EF%BC%8C%E9%97%AE%E5%88%86%E7%BB%84%E7%9A%84%E6%95%B0%E6%8D%AE%E9%83%A8%E5%88%86%E9%95%BF%E5%BA%A6p%E5%BA%94%E5%8F%96%E4%B8%BA%E5%A4%9A%E5%A4%A7%EF%BC%9F"><span class="nav-text">若打算使总的时延为最小，问分组的数据部分长度p应取为多大？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%A0%E7%89%B9%E7%BD%91%E7%9A%84%E4%B8%A4%E5%A4%A7%E7%BB%84%E6%88%90%E9%83%A8%E5%88%86-%E8%BE%B9%E7%BC%98%E9%83%A8%E5%88%86%E4%B8%8E%E6%A0%B8%E5%BF%83%E9%83%A8%E5%88%86-%E7%9A%84%E7%89%B9%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E5%AE%83%E4%BB%AC%E7%9A%84%E5%B7%A5%E4%BD%9C%E6%96%B9%E5%BC%8F%E5%90%84%E6%9C%89%E4%BB%80%E4%B9%88%E7%89%B9%E7%82%B9%EF%BC%9F"><span class="nav-text">因特网的两大组成部分(边缘部分与核心部分)的特点是什么？它们的工作方式各有什么特点？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%A2%E6%88%B7%E6%9C%8D%E5%8A%A1%E5%99%A8%E4%B8%8E%E5%AF%B9%E7%AD%89%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E6%9C%89%E6%B2%A1%E6%9C%89%E7%9B%B8%E5%90%8C%E7%9A%84%E5%9C%B0%E6%96%B9%EF%BC%9F"><span class="nav-text">客户服务器与对等通信方式的主要区别是什么？有没有相同的地方？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%9C%89%E5%93%AA%E4%BA%9B%E5%B8%B8%E7%94%A8%E7%9A%84%E6%80%A7%E8%83%BD%E6%8C%87%E6%A0%87%EF%BC%9F"><span class="nav-text">计算机网络有哪些常用的性能指标？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%87%E5%AE%9A%E7%BD%91%E7%BB%9C%E5%88%A9%E7%94%A8%E7%8E%87%E8%BE%BE%E5%88%B0%E4%BA%8690-%EF%BC%8C-%E8%AF%95%E4%BC%B0%E8%AE%A1%E4%B8%80%E4%B8%8B%E7%8E%B0%E5%9C%A8%E7%9A%84%E7%BD%91%E7%BB%9C%E6%97%B6%E5%BB%B6%E6%98%AF%E5%AE%83%E7%9A%84%E6%9C%80%E5%B0%8F%E5%80%BC%E7%9A%84%E5%A4%9A%E5%B0%91%E5%80%8D%EF%BC%9F"><span class="nav-text">假定网络利用率达到了90%， 试估计一下现在的网络时延是它的最小值的多少倍？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E7%AE%97%E6%9C%BA%E9%80%9A%E4%BF%A1%E7%BD%91%E6%9C%89%E5%93%AA%E4%BA%9B%E9%9D%9E%E6%80%A7%E8%83%BD%E7%89%B9%E5%BE%81%EF%BC%9F%E9%9D%9E%E6%80%A7%E8%83%BD%E7%89%B9%E5%BE%81%E4%B8%8E%E6%80%A7%E8%83%BD%E7%89%B9%E5%BE%81%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB%EF%BC%9F"><span class="nav-text">计算机通信网有哪些非性能特征？非性能特征与性能特征有什么区别？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%94%B6%E5%8F%91%E4%B8%A4%E7%AB%AF%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BC%A0%E8%BE%93%E8%B7%9D%E7%A6%BB%E4%B8%BA1000km%EF%BC%8C%E4%BF%A1%E5%8F%B7%E5%9C%A8%E5%AA%92%E4%BD%93%E4%B8%8A%E7%9A%84%E4%BC%A0%E6%92%AD%E9%80%9F%E7%8E%87%E4%B8%BA2%C3%97108m-x2F-s%E3%80%82%E8%AF%95%E8%AE%A1%E7%AE%97%E4%BB%A5%E4%B8%8B%E4%B8%A4%E7%A7%8D%E6%83%85%E5%86%B5%E7%9A%84%E5%8F%91%E9%80%81%E6%97%B6%E5%BB%B6%E5%92%8C%E4%BC%A0%E6%92%AD%E6%97%B6%E5%BB%B6%EF%BC%9A"><span class="nav-text">收发两端之间的传输距离为1000km，信号在媒体上的传播速率为2×108m&#x2F;s。试计算以下两种情况的发送时延和传播时延：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%81%87%E8%AE%BE%E4%BF%A1%E5%8F%B7%E5%9C%A8%E5%AA%92%E4%BD%93%E4%B8%8A%E7%9A%84%E4%BC%A0%E6%92%AD%E9%80%9F%E5%BA%A6%E4%B8%BA2%C3%97108m-x2F-s-%E5%AA%92%E4%BD%93%E9%95%BF%E5%BA%A6L%E5%88%86%E5%88%AB%E4%B8%BA%EF%BC%9A"><span class="nav-text">假设信号在媒体上的传播速度为2×108m&#x2F;s.媒体长度L分别为：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%95%BF%E5%BA%A6%E4%B8%BA100%E5%AD%97%E8%8A%82%E7%9A%84%E5%BA%94%E7%94%A8%E5%B1%82%E6%95%B0%E6%8D%AE%E4%BA%A4%E7%BB%99%E4%BC%A0%E8%BE%93%E5%B1%82%E4%BC%A0%E9%80%81%EF%BC%8C%E9%9C%80%E5%8A%A0%E4%B8%8A20%E5%AD%97%E8%8A%82%E7%9A%84TCP%E9%A6%96%E9%83%A8%E3%80%82"><span class="nav-text">长度为100字节的应用层数据交给传输层传送，需加上20字节的TCP首部。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E9%87%87%E7%94%A8%E5%88%86%E5%B1%82%E6%AC%A1%E7%9A%84%E7%BB%93%E6%9E%84%EF%BC%9F%E8%AF%95%E4%B8%BE%E5%87%BA%E4%B8%80%E4%BA%9B%E4%B8%8E%E5%88%86%E5%B1%82%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E7%9A%84%E6%80%9D%E6%83%B3%E7%9B%B8%E4%BC%BC%E7%9A%84%E6%97%A5%E5%B8%B8%E7%94%9F%E6%B4%BB"><span class="nav-text">网络体系结构为什么要采用分层次的结构？试举出一些与分层体系结构的思想相似的日常生活</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%8F%E8%AE%AE%E4%B8%8E%E6%9C%8D%E5%8A%A1%E6%9C%89%E4%BD%95%E5%8C%BA%E5%88%AB%EF%BC%9F%E6%9C%89%E4%BD%95%E5%85%B3%E7%B3%BB%EF%BC%9F"><span class="nav-text">协议与服务有何区别？有何关系？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E7%9A%84%E4%B8%89%E8%A6%81%E7%B4%A0%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F%E5%90%84%E6%9C%89%E4%BB%80%E4%B9%88%E5%90%AB%E4%B9%89%EF%BC%9F"><span class="nav-text">网络协议的三要素是什么？各有什么含义？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E4%B8%80%E4%B8%AA%E7%BD%91%E7%BB%9C%E5%8D%8F%E8%AE%AE%E5%BF%85%E9%A1%BB%E6%8A%8A%E5%90%84%E7%A7%8D%E4%B8%8D%E5%88%A9%E7%9A%84%E6%83%85%E5%86%B5%E9%83%BD%E8%80%83%E8%99%91%E5%88%B0%EF%BC%9F"><span class="nav-text">为什么一个网络协议必须把各种不利的情况都考虑到？</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BA%E8%BF%B0%E5%85%B7%E6%9C%89%E4%BA%94%E5%B1%82%E5%8D%8F%E8%AE%AE%E7%9A%84%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84%E7%9A%84%E8%A6%81%E7%82%B9%EF%BC%8C%E5%8C%85%E6%8B%AC%E5%90%84%E5%B1%82%E7%9A%84%E4%B8%BB%E8%A6%81%E5%8A%9F%E8%83%BD"><span class="nav-text">论述具有五层协议的网络体系结构的要点，包括各层的主要功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%95%E4%B8%BE%E5%87%BA%E6%97%A5%E5%B8%B8%E7%94%9F%E6%B4%BB%E4%B8%AD%E6%9C%89%E5%85%B3%E2%80%9C%E9%80%8F%E6%98%8E%E2%80%9D%E8%BF%99%E7%A7%8D%E5%90%8D%E8%AF%8D%E7%9A%84%E4%BE%8B%E5%AD%90%E3%80%82"><span class="nav-text">试举出日常生活中有关“透明”这种名词的例子。</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%95%E8%A7%A3%E9%87%8A%E4%B8%80%E4%B8%8B%E5%90%8D%E8%AF%8D%EF%BC%9A%E5%8D%8F%E8%AE%AE%E6%A0%88%E3%80%81%E5%AE%9E%E4%BD%93%E3%80%81%E5%AF%B9%E7%AD%89%E5%B1%82%E3%80%81%E5%8D%8F%E8%AE%AE%E6%95%B0%E6%8D%AE%E5%8D%95%E5%85%83%E3%80%81%E6%9C%8D%E5%8A%A1%E8%AE%BF%E9%97%AE%E7%82%B9%E3%80%81%E5%AE%A2%E6%88%B7%E3%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%E3%80%81%E5%AE%A2%E6%88%B7-%E6%9C%8D%E5%8A%A1%E5%99%A8%E6%96%B9%E5%BC%8F"><span class="nav-text">试解释一下名词：协议栈、实体、对等层、协议数据单元、服务访问点、客户、服务器、客户-服务器方式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AF%95%E8%A7%A3%E9%87%8A-everything-over-IP-%E5%92%8C-IP-over-everything-%E7%9A%84%E5%90%AB%E4%B9%89"><span class="nav-text">试解释 everything over IP 和 IP over everything 的含义</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="niracler"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">niracler</p>
+  <div class="site-description" itemprop="description">What are you doing?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/niracler" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;niracler" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:niracler@gmail.com" title="E-Mail → mailto:niracler@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/niracler" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;niracler" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://t.me/niracler_channel" title="Telegram → https:&#x2F;&#x2F;t.me&#x2F;niracler_channel" rel="noopener" target="_blank"><i class=" fa-fw"></i>Telegram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/4e3cc9bb3aa1" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;4e3cc9bb3aa1" rel="noopener" target="_blank"><i class=" fa-fw"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fas fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zhouyimian.github.io/" title="https:&#x2F;&#x2F;zhouyimian.github.io&#x2F;" rel="noopener" target="_blank">周同学的博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17146846号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niracler</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'd2492e40e7428634adb4',
+      clientSecret: '9a9c088a73eac548059694f5e074f5ba1fcad3bd',
+      repo        : 'niracler.github.io',
+      owner       : 'niracler',
+      admin       : ['niracler'],
+      id          : '218421e5d593c4fca082f2ad3c666110',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

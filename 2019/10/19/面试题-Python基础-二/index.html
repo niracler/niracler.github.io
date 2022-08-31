@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.niracler.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="36 什么是断言(assert)，有什么应用场景我没有用过断言(assert)，应该是用来测试或者是抓取错误的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="面试题|Python基础(二)">
+<meta property="og:url" content="https://www.niracler.com/2019/10/19/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%BA%8C/index.html">
+<meta property="og:site_name" content="Niracler&#39;Blog">
+<meta property="og:description" content="36 什么是断言(assert)，有什么应用场景我没有用过断言(assert)，应该是用来测试或者是抓取错误的">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-10-19T07:16:24.000Z">
+<meta property="article:modified_time" content="2022-04-29T08:02:02.441Z">
+<meta property="article:author" content="niracler">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="面试题">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.niracler.com/2019/10/19/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%BA%8C/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>面试题|Python基础(二) | Niracler'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Niracler'Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Niracler'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">What are you doing?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/niracler" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.niracler.com/2019/10/19/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%BA%8C/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="niracler">
+      <meta itemprop="description" content="What are you doing?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Niracler'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          面试题|Python基础(二)
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-10-19 15:16:24" itemprop="dateCreated datePublished" datetime="2019-10-19T15:16:24+08:00">2019-10-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-29 16:02:02" itemprop="dateModified" datetime="2022-04-29T16:02:02+08:00">2022-04-29</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h3 id="36-什么是断言-assert-，有什么应用场景"><a href="#36-什么是断言-assert-，有什么应用场景" class="headerlink" title="36 什么是断言(assert)，有什么应用场景"></a>36 什么是断言(assert)，有什么应用场景</h3><p>我没有用过断言(assert)，应该是用来测试或者是抓取错误的</p>
+<span id="more"></span>
+
+<h3 id="37-如下-按每个字符串的第一个值-合并-a-和-b-到-c"><a href="#37-如下-按每个字符串的第一个值-合并-a-和-b-到-c" class="headerlink" title="37 如下 按每个字符串的第一个值,合并 a 和 b 到 c"></a>37 如下 按每个字符串的第一个值,合并 a 和 b 到 c</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">a = [</span><br><span class="line">    <span class="string">&#x27;a,1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;b,3,22&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;c,3,4&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">b = [</span><br><span class="line">    <span class="string">&#x27;a,2&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;b,1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;d,2&#x27;</span>,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="comment"># 按每个字符串的第一个值,合并 a 和 b 到 c</span></span><br><span class="line">c = [</span><br><span class="line">    <span class="string">&#x27;a,1,2&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;b,3,22,1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;c,3,4&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;d,2&#x27;</span></span><br><span class="line">]</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>我的结果</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="38-有一个多层嵌套的列表-A-x3D-1-2-3-4-“434”-…-请写一段代码遍历-A-中的每一个元素并打印出来"><a href="#38-有一个多层嵌套的列表-A-x3D-1-2-3-4-“434”-…-请写一段代码遍历-A-中的每一个元素并打印出来" class="headerlink" title="38 有一个多层嵌套的列表 A&#x3D;[1,2,[3,4,[“434”,…]]], 请写一段代码遍历 A 中的每一个元素并打印出来"></a>38 有一个多层嵌套的列表 A&#x3D;[1,2,[3,4,[“434”,…]]], 请写一段代码遍历 A 中的每一个元素并打印出来</h3><h3 id="39-a-x3D-range-10-a-3-的结果"><a href="#39-a-x3D-range-10-a-3-的结果" class="headerlink" title="39 a &#x3D; range(10),a[::-3] 的结果"></a>39 a &#x3D; range(10),a[::-3] 的结果</h3><p>range(9, -1, -3),为什么是这个？简直莫名奇妙。。</p>
+<h3 id="40-下面那个命令可以从虚拟环境中退出"><a href="#40-下面那个命令可以从虚拟环境中退出" class="headerlink" title="40 下面那个命令可以从虚拟环境中退出"></a>40 下面那个命令可以从虚拟环境中退出</h3><p>A. deactivate<br>B. exit<br>C. quit<br>D. 以上均可  </p>
+<p>那肯定是 A 啊，后面那两个是 Python Shell 的退出</p>
+<h3 id="41-def-func-a-b-x3D-这种写法有什什么坑"><a href="#41-def-func-a-b-x3D-这种写法有什什么坑" class="headerlink" title="41 def func(a,b&#x3D;[]) 这种写法有什什么坑"></a>41 def func(a,b&#x3D;[]) 这种写法有什什么坑</h3><h3 id="42-如何实现-“1-2-3”-变成-‘1’-’2’-’3’"><a href="#42-如何实现-“1-2-3”-变成-‘1’-’2’-’3’" class="headerlink" title="42 如何实现 “1,2,3” 变成 [‘1’,’2’,’3’]"></a>42 如何实现 “1,2,3” 变成 [‘1’,’2’,’3’]</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="43-如何实现-‘1’-’2’-’3’-变成-1-2-3"><a href="#43-如何实现-‘1’-’2’-’3’-变成-1-2-3" class="headerlink" title="43 如何实现[‘1’,’2’,’3’]变成[1,2,3]"></a>43 如何实现[‘1’,’2’,’3’]变成[1,2,3]</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[<span class="built_in">int</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> [<span class="string">&#x27;1&#x27;</span>,<span class="string">&#x27;2&#x27;</span>,<span class="string">&#x27;3&#x27;</span>]]</span><br></pre></td></tr></table></figure>
+
+<h3 id="44-a-x3D-1-2-3-和-b-x3D-1-2-3-以及-b-x3D-1-2-3-的区别"><a href="#44-a-x3D-1-2-3-和-b-x3D-1-2-3-以及-b-x3D-1-2-3-的区别" class="headerlink" title="44 a &#x3D; [1,2,3] 和 b &#x3D; [(1),(2),(3) ] 以及 b &#x3D; [(1,),(2,),(3,) ] 的区别"></a>44 a &#x3D; [1,2,3] 和 b &#x3D; [(1),(2),(3) ] 以及 b &#x3D; [(1,),(2,),(3,) ] 的区别</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h3 id="45-如何用一行代码生成-1-4-9-16-25-36-49-64-81-100"><a href="#45-如何用一行代码生成-1-4-9-16-25-36-49-64-81-100" class="headerlink" title="45 如何用一行代码生成[1,4,9,16,25,36,49,64,81,100]"></a>45 如何用一行代码生成[1,4,9,16,25,36,49,64,81,100]</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[i*i <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">1</span>,<span class="number">11</span>)]</span><br></pre></td></tr></table></figure>
+
+<h3 id="46-通过代码实现如下进制转换"><a href="#46-通过代码实现如下进制转换" class="headerlink" title="46 通过代码实现如下进制转换"></a>46 通过代码实现如下进制转换</h3><p>二进制转换为十进制</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v1 = <span class="string">&#x27;0b10010&#x27;</span></span><br><span class="line">res = <span class="built_in">int</span>(v1, <span class="number">2</span>)</span><br><span class="line"><span class="built_in">print</span>(res) <span class="comment"># 123</span></span><br></pre></td></tr></table></figure>
+
+<p>十进制转换为二进制</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v2 = <span class="number">18</span></span><br><span class="line">res = <span class="built_in">bin</span>(v2)</span><br><span class="line"><span class="built_in">print</span>(res) <span class="comment"># &#x27;0b10010&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>八进制转换为十进制</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v3 = <span class="string">&#x27;0o22&#x27;</span></span><br><span class="line">res = <span class="built_in">int</span>(v3, <span class="number">8</span>)</span><br><span class="line"><span class="built_in">print</span>(res) <span class="comment"># 18</span></span><br></pre></td></tr></table></figure>
+
+<p>十进制转换为八进制</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v4 = <span class="number">18</span></span><br><span class="line">res = <span class="built_in">oct</span>(v4)</span><br><span class="line"><span class="built_in">print</span>(res) <span class="comment"># &#x27;0o22&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<p>十六进制转换为十进制</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v5 = <span class="string">&#x27;0x12&#x27;</span></span><br><span class="line">res = <span class="built_in">int</span>(v5, <span class="number">16</span>)</span><br><span class="line"><span class="built_in">print</span>(res) <span class="comment"># 18</span></span><br></pre></td></tr></table></figure>
+
+<p>十进制转换为十六进制</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">v6 = <span class="number">18</span></span><br><span class="line">res = <span class="built_in">hex</span>(v6)</span><br><span class="line"><span class="built_in">print</span>(res) <span class="comment"># &#x27;0x12&#x27;</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="47-请写一个函数将IP地址转换为一个整数"><a href="#47-请写一个函数将IP地址转换为一个整数" class="headerlink" title="47 请写一个函数将IP地址转换为一个整数"></a>47 请写一个函数将IP地址转换为一个整数</h3><p>如 10.3.9.12 转换规则为:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10</td>
+<td>00001010</td>
+</tr>
+<tr>
+<td>3</td>
+<td>00000011</td>
+</tr>
+<tr>
+<td>9</td>
+<td>00001001</td>
+</tr>
+<tr>
+<td>12</td>
+<td>00001100</td>
+</tr>
+</tbody></table>
+<p>再将以上二进制拼接起来计算十进制结果:00001010 00000011 00001001 00001100 &#x3D; ?</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_ip_sum</span>(<span class="params">addr</span>):</span></span><br><span class="line">    res = [<span class="built_in">int</span>(x) <span class="keyword">for</span> x <span class="keyword">in</span> addr.split(<span class="string">&quot;.&quot;</span>)]</span><br><span class="line">    <span class="keyword">return</span> <span class="built_in">sum</span>(res[i] &lt;&lt; [<span class="number">24</span>, <span class="number">16</span>, <span class="number">8</span>, <span class="number">0</span>][i] <span class="keyword">for</span> i <span class="keyword">in</span> <span class="built_in">range</span>(<span class="number">4</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># get_ip_sum(&quot;127.0.0.1&quot;)</span></span><br><span class="line"><span class="comment"># 2130706433</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>位运算这个神器，我真是到最后都用不好</p>
+<h3 id="48-Python递归的最大层数"><a href="#48-Python递归的最大层数" class="headerlink" title="48 Python递归的最大层数"></a>48 Python递归的最大层数</h3><p>998 究竟是为什么，为什么不是九九六</p>
+<h3 id="49-按位与，按位或"><a href="#49-按位与，按位或" class="headerlink" title="49 按位与，按位或"></a>49 按位与，按位或</h3><p>求2^5</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res = <span class="number">2</span> ^ <span class="number">5</span> <span class="comment"># 10 ^ 101 = 111</span></span><br><span class="line"><span class="built_in">print</span>(res) <span class="comment"># 7</span></span><br></pre></td></tr></table></figure>
+
+<p>求2&amp;5</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">res = <span class="number">2</span> &amp; <span class="number">5</span> <span class="comment"># 10 &amp; 101 = 000</span></span><br><span class="line"><span class="built_in">print</span>(res) <span class="comment"># 0</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="50-lambda表达式格式以及应用场景"><a href="#50-lambda表达式格式以及应用场景" class="headerlink" title="50 lambda表达式格式以及应用场景"></a>50 lambda表达式格式以及应用场景</h3><p>lambda函数也叫匿名函数：为了解决那些功能很简单的需求而设计的一句话函数</p>
+<p>lambda的格式为： lambda 输入： 结果  </p>
+<ol>
+<li>参数可以有多个，用逗号隔开</li>
+<li>匿名函数不管逻辑有多复杂，只能写一行，且逻辑执行结束后的内容就是返回值</li>
+<li>返回值和正常函数一样，可以是任意数据类型</li>
+</ol>
+<h3 id="51-pass的作用"><a href="#51-pass的作用" class="headerlink" title="51 pass的作用"></a>51 pass的作用</h3><p>pass是空语句，是为了保持程序结构的完整性。pass不做任何事情，一般用作占位符。</p>
+<h3 id="52-arg和-kwarg作用"><a href="#52-arg和-kwarg作用" class="headerlink" title="52 *arg和**kwarg作用"></a>52 *arg和**kwarg作用</h3><ul>
+<li>*args 代表位置参数，他会接收任意多个参数并把这些参数作为元组传递给函数。</li>
+<li>**kwarg 代表的关键字参数,返回的是字典,位置参数一定要放在关键字前面</li>
+</ul>
+<h3 id="53-列举常见的内置函数及其功能"><a href="#53-列举常见的内置函数及其功能" class="headerlink" title="53 列举常见的内置函数及其功能"></a>53 列举常见的内置函数及其功能</h3><p>abs()</p>
+<p>返回数字的绝对值</p>
+<p>map()</p>
+<p>根据函数对指定序列做映射，map()函数接收两个参数,一个是函数，一个是可迭代对象,map将传入的函数依次作用到序列的每个元素，并把结果作为新的list返回。Py2是返回list，而Py3是返回迭代器</p>
+<p>filter()</p>
+<p>该函数hi接收一个函数和一个list(可迭代对象)，这个函数的作用是对每个元素进行判断，返回True 或者 False。能根据判断结果过滤掉不符合条件的元素，返回由符合条件的元素组成的新list</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">res = <span class="built_in">list</span>(<span class="built_in">filter</span>(<span class="keyword">lambda</span> x : x % <span class="number">2</span> == <span class="number">0</span> , [<span class="number">6</span>,<span class="number">84</span>,<span class="number">15</span>,<span class="number">34</span>,<span class="number">3</span>,<span class="number">8</span>,<span class="number">4</span>,<span class="number">36</span>,<span class="number">84</span>,<span class="number">8</span>]))</span><br><span class="line"><span class="built_in">print</span>(res)</span><br><span class="line"><span class="comment"># [6, 84, 34, 8, 4, 36, 84, 8]</span></span><br></pre></td></tr></table></figure>
+
+<p>map()与filter()</p>
+<p>参数以及返回值的类型都一样，filter是做筛选的，而map是对可迭代对象做操作的</p>
+<p>isinstance()与type()</p>
+<p>isinstance函数判断一个对象是否是一个已知的类型，类似与type，而区别是type不会认为子类是一个父类类型，不考虑继承关系，而isinstacne考虑继承关系，所以推荐使用isintance??</p>
+<p>zip() 拉链函数</p>
+<p>将对象中对应的元素打包成一个个元组，然后返回由这些元组组成的迭代器，如果各个迭代器的元素个数不一致，则返回列表长度与最短对象相同</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span>(<span class="built_in">list</span>(<span class="built_in">zip</span>([<span class="number">0</span>,<span class="number">1</span>,<span class="number">3</span>], [<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>], [<span class="string">&#x27;a&#x27;</span>,<span class="string">&#x27;b&#x27;</span>])))</span><br><span class="line"></span><br><span class="line"><span class="comment"># [(0, 5, &#x27;a&#x27;), (1, 6, &#x27;b&#x27;)]</span></span><br></pre></td></tr></table></figure>
+
+<p>reduce()</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="keyword">from</span> functools <span class="keyword">import</span> reduce</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span><span class="built_in">print</span>(reduce(<span class="keyword">lambda</span> x,y: x+y, [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>]))</span><br><span class="line"><span class="number">21</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="54-如何安装第三方模块，以及用过哪些第三方模块"><a href="#54-如何安装第三方模块，以及用过哪些第三方模块" class="headerlink" title="54 如何安装第三方模块，以及用过哪些第三方模块"></a>54 如何安装第三方模块，以及用过哪些第三方模块</h3><ol>
+<li>pip安装</li>
+<li>源码安装</li>
+</ol>
+<p>用过的第三方模块，太多了，我不想列举</p>
+<h3 id="55-常用模块都有哪些"><a href="#55-常用模块都有哪些" class="headerlink" title="55 常用模块都有哪些"></a>55 常用模块都有哪些</h3><p>re, os, json, time, 爬虫里面的requests&#x2F;beautifulsoup4</p>
+<h3 id="56-re的match和search的区别"><a href="#56-re的match和search的区别" class="headerlink" title="56 re的match和search的区别"></a>56 re的match和search的区别</h3><ul>
+<li>match 尝试从字符串的起始位置匹配一个模式，如果不是起始位置匹配成功的话，match就返回None</li>
+<li>search 是扫描整个字符串并返回第一个成功的匹配</li>
+</ul>
+<h3 id="57-什么是正则的贪婪匹配"><a href="#57-什么是正则的贪婪匹配" class="headerlink" title="57 什么是正则的贪婪匹配"></a>57 什么是正则的贪婪匹配</h3><p>匹配一个字符串没有节制，能匹配多少就去匹配多少，知道没有匹配的为止。</p>
+<h3 id="58-def-func-a-b-x3D-这种写法有什么坑"><a href="#58-def-func-a-b-x3D-这种写法有什么坑" class="headerlink" title="58 def func(a,b&#x3D;[])这种写法有什么坑"></a>58 def func(a,b&#x3D;[])这种写法有什么坑</h3><p>例子：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">func</span>(<span class="params">a, b = []</span>):</span></span><br><span class="line">    b.append(<span class="number">1</span>)</span><br><span class="line">    <span class="built_in">print</span>(a, b)</span><br><span class="line"></span><br><span class="line">func(<span class="number">2</span>)</span><br><span class="line">func(<span class="number">2</span>)</span><br><span class="line">func(<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2[1]</span></span><br><span class="line"><span class="comment"># 2[1,1]</span></span><br><span class="line"><span class="comment"># 2[1,1,1]</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>那个默认参数经过多次执行还是第一次实例化的那个地址</p>
+<h3 id="59-下面这两种操作有什么区别"><a href="#59-下面这两种操作有什么区别" class="headerlink" title="59 下面这两种操作有什么区别"></a>59 下面这两种操作有什么区别</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">a = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>]</span><br><span class="line">b = a</span><br><span class="line">c = a[:]</span><br></pre></td></tr></table></figure>
+
+<p>一个是指针指向原来数组的那片内存空间，一个是拷贝，重新申请一片内存空间再拷贝进去</p>
+<h3 id="60-如何在函数中设置一个全局变量"><a href="#60-如何在函数中设置一个全局变量" class="headerlink" title="60 如何在函数中设置一个全局变量"></a>60 如何在函数中设置一个全局变量</h3><p>使用 global 语句啊</p>
+<h3 id="61-logging-模块的作用，以及应用场景"><a href="#61-logging-模块的作用，以及应用场景" class="headerlink" title="61 logging 模块的作用，以及应用场景"></a>61 logging 模块的作用，以及应用场景</h3><p>logging模块定义的函数和类为应用程序和库的开发实现了一个灵活的事件日志系统</p>
+<p>作用 可以了解程序运行情况是否正常，在程序出现故障时快速定位出错地方以及故障分析</p>
+<h3 id="62-请用代码解答实现stack"><a href="#62-请用代码解答实现stack" class="headerlink" title="62 请用代码解答实现stack"></a>62 请用代码解答实现stack</h3><ul>
+<li>Stack()创建一个新的空栈</li>
+<li>push()添加一个新元素item到栈顶</li>
+<li>pop()弹出栈顶元素</li>
+<li>is_empty()判断栈顶是否为空</li>
+<li>size()返回栈顶元素个数</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Stack</span>():</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span>(<span class="params">self</span>):</span></span><br><span class="line">        self.items = []</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">push</span>(<span class="params">self, item</span>):</span></span><br><span class="line">        self.items.append(item)</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">pop</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.items.pop()</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">peek</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> self.items[<span class="built_in">len</span>(self.items)-<span class="number">1</span>]</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">is_empty</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">not</span> self.items</span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">size</span>(<span class="params">self</span>):</span></span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">len</span>(self.items)</span><br><span class="line"></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>stack = Stack()</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>stack.push(<span class="string">&#x27;H&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>stack.push(<span class="string">&#x27;E&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>stack.push(<span class="string">&#x27;L&#x27;</span>)</span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>stack.pop()</span><br><span class="line"><span class="string">&#x27;L&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>stack.peek()</span><br><span class="line"><span class="string">&#x27;E&#x27;</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>stack.is_empty()</span><br><span class="line"><span class="literal">False</span></span><br><span class="line"><span class="meta">&gt;&gt;&gt; </span>stack.size()</span><br><span class="line"><span class="number">2</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="63-简述生成器，迭代器，可迭代对象，以及应用场景"><a href="#63-简述生成器，迭代器，可迭代对象，以及应用场景" class="headerlink" title="63 简述生成器，迭代器，可迭代对象，以及应用场景"></a>63 简述生成器，迭代器，可迭代对象，以及应用场景</h3><p>迭代器：含有 <strong>iter</strong> 和 <strong>next</strong> (包含__next__方法的可迭代对象就是迭代器)</p>
+<p>生成器：包含有yield这个关键字，生成器也是迭代器，调用next将函数变成迭代器</p>
+<p>可迭代对象：一个类内部实现__iter__方法且返回一个迭代器</p>
+<p>装饰器：能够在不修改原函数代码的基础上，在执行前后进行定制的操作，闭包函数的一种应用。调用装饰器其实是一个闭包函数，为其他函数添加附加功能，不修改被修改的源代码和不修改被修饰的方式，装饰器的返回值也是一个函数对象。比如：插入日志、性能测试、事务处理、缓存、权限验证等、有了装饰器，就可以抽离出大量与函数功能本身无关的雷同代码并继续重用。</p>
+<h3 id="64-用Python实现一个二分查找的函数"><a href="#64-用Python实现一个二分查找的函数" class="headerlink" title="64 用Python实现一个二分查找的函数"></a>64 用Python实现一个二分查找的函数</h3><p>二分查找算法：简单的说，就是将一个列表先排序好，比如按照从小到大的顺序排列好，给定一个数据，比如3，查找3在列表中的位置时，可以先找到列表中间的数 li[middle] 和3进行比较，当它比3小时，那么3一定是在列表右边，反之，则3在列表左边，则下次就可以只比较 [middle+1, end] 的数， 继续使用二分查找，将它一分为二，直到3这个数返回或者列表全部遍历完成(即不在列表中)</p>
+<p>优点：效率高，时间复杂度O(logN)<br>缺点：数据要是有序的，顺序存储  </p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">li = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">8</span>, <span class="number">9</span>, <span class="number">78</span>, <span class="number">945</span>]</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">search</span>(<span class="params">someone, li</span>):</span></span><br><span class="line">    l = -<span class="number">1</span></span><br><span class="line">    h = <span class="built_in">len</span>(li)</span><br><span class="line">    <span class="keyword">while</span> (l + <span class="number">1</span> != h):</span><br><span class="line">        m = <span class="built_in">int</span>((<span class="number">1</span> + h) / <span class="number">2</span>)</span><br><span class="line">        <span class="keyword">if</span> li[m] &lt; someone:</span><br><span class="line">            l = m</span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            h = m</span><br><span class="line">    p = h</span><br><span class="line">    <span class="keyword">if</span> p &gt;= <span class="built_in">len</span>(li) <span class="keyword">or</span> li[p] != someone:</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> p</span><br></pre></td></tr></table></figure>
+
+<h3 id="65-谈谈你对闭包的理解"><a href="#65-谈谈你对闭包的理解" class="headerlink" title="65 谈谈你对闭包的理解"></a>65 谈谈你对闭包的理解</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">foo</span>():</span></span><br><span class="line">    m = <span class="number">1</span></span><br><span class="line">    n = <span class="number">2</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">bar</span>():</span></span><br><span class="line">        a = <span class="number">4</span></span><br><span class="line">        <span class="keyword">return</span> m + n + a</span><br><span class="line">    <span class="keyword">return</span> bar</span><br><span class="line"></span><br><span class="line">bar = foo()</span><br><span class="line">bar()</span><br></pre></td></tr></table></figure>
+
+<p>bar 在 foo 函数的代码块中定义。我们称bar是foo的内部函数。在bar的局部作用域中可以直接访问foo局部作用域中定义的m、n变量。简单的说，这种内部函数可以使用外部函数变量的行为，就叫闭包。</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/%E9%9D%A2%E8%AF%95%E9%A2%98/" rel="tag"><i class="fa fa-tag"></i> 面试题</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/10/13/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%B8%80/" rel="prev" title="面试题|Python基础(一)">
+      <i class="fa fa-chevron-left"></i> 面试题|Python基础(一)
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/11/10/%E9%9D%A2%E8%AF%95%E9%A2%98-Python%E5%9F%BA%E7%A1%80-%E4%B8%89/" rel="next" title="面试题|Python基础(三)">
+      面试题|Python基础(三) <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#36-%E4%BB%80%E4%B9%88%E6%98%AF%E6%96%AD%E8%A8%80-assert-%EF%BC%8C%E6%9C%89%E4%BB%80%E4%B9%88%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">36 什么是断言(assert)，有什么应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#37-%E5%A6%82%E4%B8%8B-%E6%8C%89%E6%AF%8F%E4%B8%AA%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%80%BC-%E5%90%88%E5%B9%B6-a-%E5%92%8C-b-%E5%88%B0-c"><span class="nav-text">37 如下 按每个字符串的第一个值,合并 a 和 b 到 c</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#38-%E6%9C%89%E4%B8%80%E4%B8%AA%E5%A4%9A%E5%B1%82%E5%B5%8C%E5%A5%97%E7%9A%84%E5%88%97%E8%A1%A8-A-x3D-1-2-3-4-%E2%80%9C434%E2%80%9D-%E2%80%A6-%E8%AF%B7%E5%86%99%E4%B8%80%E6%AE%B5%E4%BB%A3%E7%A0%81%E9%81%8D%E5%8E%86-A-%E4%B8%AD%E7%9A%84%E6%AF%8F%E4%B8%80%E4%B8%AA%E5%85%83%E7%B4%A0%E5%B9%B6%E6%89%93%E5%8D%B0%E5%87%BA%E6%9D%A5"><span class="nav-text">38 有一个多层嵌套的列表 A&#x3D;[1,2,[3,4,[“434”,…]]], 请写一段代码遍历 A 中的每一个元素并打印出来</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#39-a-x3D-range-10-a-3-%E7%9A%84%E7%BB%93%E6%9E%9C"><span class="nav-text">39 a &#x3D; range(10),a[::-3] 的结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#40-%E4%B8%8B%E9%9D%A2%E9%82%A3%E4%B8%AA%E5%91%BD%E4%BB%A4%E5%8F%AF%E4%BB%A5%E4%BB%8E%E8%99%9A%E6%8B%9F%E7%8E%AF%E5%A2%83%E4%B8%AD%E9%80%80%E5%87%BA"><span class="nav-text">40 下面那个命令可以从虚拟环境中退出</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#41-def-func-a-b-x3D-%E8%BF%99%E7%A7%8D%E5%86%99%E6%B3%95%E6%9C%89%E4%BB%80%E4%BB%80%E4%B9%88%E5%9D%91"><span class="nav-text">41 def func(a,b&#x3D;[]) 这种写法有什什么坑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#42-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0-%E2%80%9C1-2-3%E2%80%9D-%E5%8F%98%E6%88%90-%E2%80%981%E2%80%99-%E2%80%992%E2%80%99-%E2%80%993%E2%80%99"><span class="nav-text">42 如何实现 “1,2,3” 变成 [‘1’,’2’,’3’]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#43-%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0-%E2%80%981%E2%80%99-%E2%80%992%E2%80%99-%E2%80%993%E2%80%99-%E5%8F%98%E6%88%90-1-2-3"><span class="nav-text">43 如何实现[‘1’,’2’,’3’]变成[1,2,3]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#44-a-x3D-1-2-3-%E5%92%8C-b-x3D-1-2-3-%E4%BB%A5%E5%8F%8A-b-x3D-1-2-3-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">44 a &#x3D; [1,2,3] 和 b &#x3D; [(1),(2),(3) ] 以及 b &#x3D; [(1,),(2,),(3,) ] 的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#45-%E5%A6%82%E4%BD%95%E7%94%A8%E4%B8%80%E8%A1%8C%E4%BB%A3%E7%A0%81%E7%94%9F%E6%88%90-1-4-9-16-25-36-49-64-81-100"><span class="nav-text">45 如何用一行代码生成[1,4,9,16,25,36,49,64,81,100]</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#46-%E9%80%9A%E8%BF%87%E4%BB%A3%E7%A0%81%E5%AE%9E%E7%8E%B0%E5%A6%82%E4%B8%8B%E8%BF%9B%E5%88%B6%E8%BD%AC%E6%8D%A2"><span class="nav-text">46 通过代码实现如下进制转换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#47-%E8%AF%B7%E5%86%99%E4%B8%80%E4%B8%AA%E5%87%BD%E6%95%B0%E5%B0%86IP%E5%9C%B0%E5%9D%80%E8%BD%AC%E6%8D%A2%E4%B8%BA%E4%B8%80%E4%B8%AA%E6%95%B4%E6%95%B0"><span class="nav-text">47 请写一个函数将IP地址转换为一个整数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#48-Python%E9%80%92%E5%BD%92%E7%9A%84%E6%9C%80%E5%A4%A7%E5%B1%82%E6%95%B0"><span class="nav-text">48 Python递归的最大层数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#49-%E6%8C%89%E4%BD%8D%E4%B8%8E%EF%BC%8C%E6%8C%89%E4%BD%8D%E6%88%96"><span class="nav-text">49 按位与，按位或</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#50-lambda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E6%A0%BC%E5%BC%8F%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">50 lambda表达式格式以及应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#51-pass%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="nav-text">51 pass的作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#52-arg%E5%92%8C-kwarg%E4%BD%9C%E7%94%A8"><span class="nav-text">52 *arg和**kwarg作用</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#53-%E5%88%97%E4%B8%BE%E5%B8%B8%E8%A7%81%E7%9A%84%E5%86%85%E7%BD%AE%E5%87%BD%E6%95%B0%E5%8F%8A%E5%85%B6%E5%8A%9F%E8%83%BD"><span class="nav-text">53 列举常见的内置函数及其功能</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#54-%E5%A6%82%E4%BD%95%E5%AE%89%E8%A3%85%E7%AC%AC%E4%B8%89%E6%96%B9%E6%A8%A1%E5%9D%97%EF%BC%8C%E4%BB%A5%E5%8F%8A%E7%94%A8%E8%BF%87%E5%93%AA%E4%BA%9B%E7%AC%AC%E4%B8%89%E6%96%B9%E6%A8%A1%E5%9D%97"><span class="nav-text">54 如何安装第三方模块，以及用过哪些第三方模块</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#55-%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97%E9%83%BD%E6%9C%89%E5%93%AA%E4%BA%9B"><span class="nav-text">55 常用模块都有哪些</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#56-re%E7%9A%84match%E5%92%8Csearch%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-text">56 re的match和search的区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#57-%E4%BB%80%E4%B9%88%E6%98%AF%E6%AD%A3%E5%88%99%E7%9A%84%E8%B4%AA%E5%A9%AA%E5%8C%B9%E9%85%8D"><span class="nav-text">57 什么是正则的贪婪匹配</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#58-def-func-a-b-x3D-%E8%BF%99%E7%A7%8D%E5%86%99%E6%B3%95%E6%9C%89%E4%BB%80%E4%B9%88%E5%9D%91"><span class="nav-text">58 def func(a,b&#x3D;[])这种写法有什么坑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#59-%E4%B8%8B%E9%9D%A2%E8%BF%99%E4%B8%A4%E7%A7%8D%E6%93%8D%E4%BD%9C%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="nav-text">59 下面这两种操作有什么区别</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#60-%E5%A6%82%E4%BD%95%E5%9C%A8%E5%87%BD%E6%95%B0%E4%B8%AD%E8%AE%BE%E7%BD%AE%E4%B8%80%E4%B8%AA%E5%85%A8%E5%B1%80%E5%8F%98%E9%87%8F"><span class="nav-text">60 如何在函数中设置一个全局变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#61-logging-%E6%A8%A1%E5%9D%97%E7%9A%84%E4%BD%9C%E7%94%A8%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">61 logging 模块的作用，以及应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#62-%E8%AF%B7%E7%94%A8%E4%BB%A3%E7%A0%81%E8%A7%A3%E7%AD%94%E5%AE%9E%E7%8E%B0stack"><span class="nav-text">62 请用代码解答实现stack</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#63-%E7%AE%80%E8%BF%B0%E7%94%9F%E6%88%90%E5%99%A8%EF%BC%8C%E8%BF%AD%E4%BB%A3%E5%99%A8%EF%BC%8C%E5%8F%AF%E8%BF%AD%E4%BB%A3%E5%AF%B9%E8%B1%A1%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%BA%94%E7%94%A8%E5%9C%BA%E6%99%AF"><span class="nav-text">63 简述生成器，迭代器，可迭代对象，以及应用场景</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#64-%E7%94%A8Python%E5%AE%9E%E7%8E%B0%E4%B8%80%E4%B8%AA%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE%E7%9A%84%E5%87%BD%E6%95%B0"><span class="nav-text">64 用Python实现一个二分查找的函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#65-%E8%B0%88%E8%B0%88%E4%BD%A0%E5%AF%B9%E9%97%AD%E5%8C%85%E7%9A%84%E7%90%86%E8%A7%A3"><span class="nav-text">65 谈谈你对闭包的理解</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="niracler"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">niracler</p>
+  <div class="site-description" itemprop="description">What are you doing?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/niracler" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;niracler" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:niracler@gmail.com" title="E-Mail → mailto:niracler@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/niracler" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;niracler" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://t.me/niracler_channel" title="Telegram → https:&#x2F;&#x2F;t.me&#x2F;niracler_channel" rel="noopener" target="_blank"><i class=" fa-fw"></i>Telegram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/4e3cc9bb3aa1" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;4e3cc9bb3aa1" rel="noopener" target="_blank"><i class=" fa-fw"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fas fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zhouyimian.github.io/" title="https:&#x2F;&#x2F;zhouyimian.github.io&#x2F;" rel="noopener" target="_blank">周同学的博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17146846号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niracler</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'd2492e40e7428634adb4',
+      clientSecret: '9a9c088a73eac548059694f5e074f5ba1fcad3bd',
+      repo        : 'niracler.github.io',
+      owner       : 'niracler',
+      admin       : ['niracler'],
+      id          : 'afc5ef5c847db2ec565d88f521d6055c',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>

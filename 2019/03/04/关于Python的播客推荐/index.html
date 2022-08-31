@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/avatar.jpg">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/avatar.jpg">
+  <link rel="mask-icon" href="/images/avatar.jpg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"www.niracler.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"always","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":"gitalk","storage":true,"lazyload":false,"nav":null,"activeClass":"gitalk"},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="最好的Python播客 请注意， 是播客而不是博客  该文章包括活跃的Python相关和软件工程相关的高质量播客介绍。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于python的播客推荐">
+<meta property="og:url" content="https://www.niracler.com/2019/03/04/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E6%92%AD%E5%AE%A2%E6%8E%A8%E8%8D%90/index.html">
+<meta property="og:site_name" content="Niracler&#39;Blog">
+<meta property="og:description" content="最好的Python播客 请注意， 是播客而不是博客  该文章包括活跃的Python相关和软件工程相关的高质量播客介绍。">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-03-04T00:40:44.000Z">
+<meta property="article:modified_time" content="2022-04-29T08:02:02.438Z">
+<meta property="article:author" content="niracler">
+<meta property="article:tag" content="python">
+<meta property="article:tag" content="翻译">
+<meta property="article:tag" content="fullstackpython">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="https://www.niracler.com/2019/03/04/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E6%92%AD%E5%AE%A2%E6%8E%A8%E8%8D%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+
+  <title>关于python的播客推荐 | Niracler'Blog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Niracler'Blog" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Niracler'Blog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">What are you doing?</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div id="search-result">
+  <div id="no-result">
+    <i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+  <a href="https://github.com/niracler" class="github-corner" title="Follow me on GitHub" aria-label="Follow me on GitHub" rel="noopener" target="_blank"><svg width="80" height="80" viewBox="0 0 250 250" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://www.niracler.com/2019/03/04/%E5%85%B3%E4%BA%8EPython%E7%9A%84%E6%92%AD%E5%AE%A2%E6%8E%A8%E8%8D%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpg">
+      <meta itemprop="name" content="niracler">
+      <meta itemprop="description" content="What are you doing?">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Niracler'Blog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          关于python的播客推荐
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2019-03-04 08:40:44" itemprop="dateCreated datePublished" datetime="2019-03-04T08:40:44+08:00">2019-03-04</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2022-04-29 16:02:02" itemprop="dateModified" datetime="2022-04-29T16:02:02+08:00">2022-04-29</time>
+              </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="最好的Python播客"><a href="#最好的Python播客" class="headerlink" title="最好的Python播客"></a>最好的Python播客</h1><blockquote>
+<p>请注意， 是播客而不是博客</p>
+</blockquote>
+<p>该文章包括活跃的Python相关和软件工程相关的高质量播客介绍。</p>
+<span id="more"></span>
+
+<h2 id="Python相关的播客"><a href="#Python相关的播客" class="headerlink" title="Python相关的播客"></a>Python相关的播客</h2><p>这些播客大多都是Python开发人员，他们聊的内容大多都是我们领域一些很重要的话题。这里的大多数播客都有一个很长的系列。虽然有一些内容已经是好几年前的，不过对现在的开发也很有参考价值。</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://talkpython.fm/">Talk Python to Me</a> 专注于编写Python的人员和组织，每一集都会有不同的嘉宾来谈论他的工作</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://podcastinit.com/">Podcast.<strong>init</strong></a> 提供有关Python的故事，以及“与那些让它变得更棒的人们的访谈”</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://pythonbytes.fm/">Python Bytes</a> 是来自“Talk Python to Me”和“Test and Code Podcast”创作者的新播客。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://pythontesting.net/test-podcast/">Test and Code Podcast</a>  侧重于测试和相关主题，如模拟和代码度量</p>
+</li>
+<li><p>Philip Guo教授有一个名为<a target="_blank" rel="noopener" href="http://pgbovine.net/PG-Podcast.htm">PG Podcast</a>的视频播客，通常是关于Python主题的。 所有剧集都列在单独的页面上。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.kennethreitz.org/import-this/">Import This</a> 是来自Kenneth Reitz和Alex Gaynor的偶尔播客，对有影响力的Python社区成员进行了非常深入的采访。</p>
+</li>
+</ul>
+<h2 id="最喜欢的播客剧集"><a href="#最喜欢的播客剧集" class="headerlink" title="最喜欢的播客剧集"></a>最喜欢的播客剧集</h2><p>下面这些是我在听各大播客系列的过程中，我最喜欢的部分，你也可以听一下，顺带了解各个系列的播客的风格有什么区别。</p>
+<p>以下是我们在下一节中深入研究整个播客建议之前从各种Python播客中收集的最喜欢的剧集列表。深入了解这些剧集，以了解播客演示中的各种个性和风格。</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://talkpython.fm/episodes/show/5/sqlalchemy-and-data-access-in-python">SQLAlchemy and data access in Python</a>  这一集采访了SQLAlchemy的创作者，让我理解了对象关系映射库SQLAlchemy如何演变。节目主持人Michael Kennedy根据他对SQLAlchemy的深入研究和先前使用情况提出了很多问题。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://talkpython.fm/episodes/show/100/python-past-present-and-future-with-guido-van-rossum">Python past, present, and future with Guido van Rossum</a> 涵盖了Python的历史，Guido创造语言的动机，并通过近三十年的发布来引导它。有趣的事实：当播客主持人迈克尔·肯尼迪问我应该谈什么话题时，关于Python是否是开源的问题促成了它的成功。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://talkpython.fm/episodes/show/26/deploying-python-web-applications-updated">Deploying Python Web Applications</a>剧透警报：这是我在Talk Python上的一集，解释了Python Web应用程序部署的工作原理。</p>
+</li>
+<li><p>Python Bytes在第39集中广泛讨论了 <a target="_blank" rel="noopener" href="https://www.fullstackpython.com/object-relational-mappers-orms.html">object-relational mappers (ORMs)</a> ，其中很多讨论基于Full Stack Python ORM页面。谢谢大家，很高兴听到关于哪些有用，哪些对你的解释不起作用的反馈！</p>
+</li>
+<li><p>The <a target="_blank" rel="noopener" href="https://talkpython.fm/episodes/show/16/python-at-netflix">Python at Netflix</a> 对我来说，通过带宽以及Python如何适应他们的多语言组织，在最大的互联网站点内提供了一个很棒的视图。</p>
+</li>
+<li><p>另一个很棒的Talk Python to Me剧集， <a target="_blank" rel="noopener" href="https://talkpython.fm/episodes/show/120/python-in-finance">Python in Finance</a>，解释了Python如何在广泛的金融行业中用于股票交易，定量分析和数据分析。</p>
+</li>
+</ul>
+<h2 id="一般软件开发的播客"><a href="#一般软件开发的播客" class="headerlink" title="一般软件开发的播客"></a>一般软件开发的播客</h2><p>这些播客并非特定于Python，而是涵盖相关的软件工程主题，并且通常包含Python主题的剧集。至少，通过倾听和学习，您将成为更好的通用软件开发人员。</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://softwareengineeringdaily.com/">Software Engineering Daily</a> 每天都会与一个不同的开发人员在一系列相关的开发主题上进行播客。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.allthingsgit.com/">All things Git</a> 讨论使用和构建Git的内容。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.codenewbie.org/podcast">CodeNewbie</a> 采访了早期软件开发历程中的开发人员，以了解他们编程原因及其工作原理。还有经验丰富的开发人员建立知名项目的采访。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://developeronfire.com/">Developer on Fire</a> 采访程序员，建筑师和测试人员，讲述他们成功，失败和卓越的故事。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.redhat.com/en/command-line-heroes">Command_line Heroes</a> 涵盖操作系统级主题以及DevOps。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://embedded.fm/">Embedded.fm</a> 进入嵌入式系统和硬件黑客攻击。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://changelog.com/">The Changelog</a>是关于一般软件开发事宜的每周播客。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.fullstackradio.com/">Full Stack Radio</a>。与Full Stack Python无关，但另一个要检查！</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://exponent.fm/">Exponent</a> 不是一个软件开发播客，但它以深入的方式涵盖了企业战略和技术的交叉，使我能够更好地理解企业在构建和发布软件时所做出的决策。我听每一集（以1.5倍的速度），非常值得花费45到60分钟听Ben Thompson和James Allworth深入了解每周话题。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://joecolantonio.com/testtalks/">Test Talks</a> 每周检查一次软件测试主题，通常是一位专注于被检查区域的特邀嘉宾。</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://www.thecloudcast.net/">The Cloudcast</a> 专注于云计算和DevOps相关主题的播客</p>
+</li>
+</ul>
+<h2 id="数据科学以及数据分析相关的播客"><a href="#数据科学以及数据分析相关的播客" class="headerlink" title="数据科学以及数据分析相关的播客"></a>数据科学以及数据分析相关的播客</h2><p>数据科学社区不仅使用Python作为其核心编程语言，而且在几乎每个执行数据分析的组织中都发挥着重要作用。 以下播客广泛涵盖数据科学，并且具体到相应工具的使用。</p>
+<ul>
+<li><p><a target="_blank" rel="noopener" href="https://www.datacamp.com/community/podcast">DataFramed</a> 是一个数据科学博客，涵盖的内容包括数据科学相关Python库的使用</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="https://www.dataskeptic.com/">Data Skeptic</a> 涵盖数据科学，统计，机器学习，人工智能，以及“科学怀疑论”等内容</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://datastori.es/">Data stories</a> 是一个关于数据可视化的播客</p>
+</li>
+<li><p><a target="_blank" rel="noopener" href="http://partiallyderivative.com/">Partially Derivative</a> 是一个机器学习，人工智能和数据社区的播客。 他们在2017年末完成了他们的最后一集，但剧集列表包含大量现有内容。</p>
+</li>
+</ul>
+<h2 id="译者的话"><a href="#译者的话" class="headerlink" title="译者的话"></a>译者的话</h2><p>因为我通常会在路上听音频，我昨天翻译目录的时候偶然发现这个播客的列表， 然后我今天就饶有兴趣地来翻译了(虽然只是google translate)。不过仅仅是用Google翻译的话， 实在是什么都学不了。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.fullstackpython.com/best-python-podcasts.html">Best Python Podcasts</a> 原文</p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          
+          <div class="post-tags">
+              <a href="/tags/python/" rel="tag"><i class="fa fa-tag"></i> python</a>
+              <a href="/tags/%E7%BF%BB%E8%AF%91/" rel="tag"><i class="fa fa-tag"></i> 翻译</a>
+              <a href="/tags/fullstackpython/" rel="tag"><i class="fa fa-tag"></i> fullstackpython</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2019/03/02/%E5%8E%9F%E6%9D%A5%E8%BF%99%E6%89%8D%E6%98%AF%E7%A7%91%E5%B9%BB/" rel="prev" title="原来这才是科幻">
+      <i class="fa fa-chevron-left"></i> 原来这才是科幻
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2019/03/06/Python%E5%A6%82%E4%BD%95%E5%9C%A8%E9%81%8D%E5%8E%86%E5%88%97%E8%A1%A8%E6%97%B6%E5%88%A0%E9%99%A4%E5%85%83%E7%B4%A0/" rel="next" title="Python如何在遍历列表时删除元素">
+      Python如何在遍历列表时删除元素 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+    <div class="comments" id="gitalk-container"></div>
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9C%80%E5%A5%BD%E7%9A%84Python%E6%92%AD%E5%AE%A2"><span class="nav-text">最好的Python播客</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Python%E7%9B%B8%E5%85%B3%E7%9A%84%E6%92%AD%E5%AE%A2"><span class="nav-text">Python相关的播客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9C%80%E5%96%9C%E6%AC%A2%E7%9A%84%E6%92%AD%E5%AE%A2%E5%89%A7%E9%9B%86"><span class="nav-text">最喜欢的播客剧集</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E8%88%AC%E8%BD%AF%E4%BB%B6%E5%BC%80%E5%8F%91%E7%9A%84%E6%92%AD%E5%AE%A2"><span class="nav-text">一般软件开发的播客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E7%A7%91%E5%AD%A6%E4%BB%A5%E5%8F%8A%E6%95%B0%E6%8D%AE%E5%88%86%E6%9E%90%E7%9B%B8%E5%85%B3%E7%9A%84%E6%92%AD%E5%AE%A2"><span class="nav-text">数据科学以及数据分析相关的播客</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%AF%91%E8%80%85%E7%9A%84%E8%AF%9D"><span class="nav-text">译者的话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="niracler"
+      src="/images/avatar.jpg">
+  <p class="site-author-name" itemprop="name">niracler</p>
+  <div class="site-description" itemprop="description">What are you doing?</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">28</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">22</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/niracler" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;niracler" rel="noopener" target="_blank"><i class="github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:niracler@gmail.com" title="E-Mail → mailto:niracler@gmail.com" rel="noopener" target="_blank"><i class="envelope fa-fw"></i>E-Mail</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://twitter.com/niracler" title="Twitter → https:&#x2F;&#x2F;twitter.com&#x2F;niracler" rel="noopener" target="_blank"><i class="twitter fa-fw"></i>Twitter</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://t.me/niracler_channel" title="Telegram → https:&#x2F;&#x2F;t.me&#x2F;niracler_channel" rel="noopener" target="_blank"><i class=" fa-fw"></i>Telegram</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://www.jianshu.com/u/4e3cc9bb3aa1" title="简书 → https:&#x2F;&#x2F;www.jianshu.com&#x2F;u&#x2F;4e3cc9bb3aa1" rel="noopener" target="_blank"><i class=" fa-fw"></i>简书</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="/atom.xml" title="RSS → &#x2F;atom.xml"><i class="fas fa-rss fa-fw"></i>RSS</a>
+      </span>
+  </div>
+
+
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="https://zhouyimian.github.io/" title="https:&#x2F;&#x2F;zhouyimian.github.io&#x2F;" rel="noopener" target="_blank">周同学的博客</a>
+        </li>
+    </ul>
+  </div>
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+  <div class="beian"><a href="https://beian.miit.gov.cn/" rel="noopener" target="_blank">粤ICP备17146846号 </a>
+  </div>
+
+<div class="copyright">
+  
+  &copy; 2018 – 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">niracler</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="/js/local-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+<link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.css">
+
+<script>
+NexT.utils.loadComments(document.querySelector('#gitalk-container'), () => {
+  NexT.utils.getScript('//cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js', () => {
+    var gitalk = new Gitalk({
+      clientID    : 'd2492e40e7428634adb4',
+      clientSecret: '9a9c088a73eac548059694f5e074f5ba1fcad3bd',
+      repo        : 'niracler.github.io',
+      owner       : 'niracler',
+      admin       : ['niracler'],
+      id          : '3d72e037cff61052a4e98543697c8af9',
+        language: '',
+      distractionFreeMode: true
+    });
+    gitalk.render('gitalk-container');
+  }, window.Gitalk);
+});
+</script>
+
+</body>
+</html>
