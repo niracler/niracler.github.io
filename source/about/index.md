@@ -7,16 +7,14 @@ date: 2019-03-03 19:53:46
 
 ## 联系方式
 
-- 手机：13427498660
-- Email：niracler@gmail.com
-- 微信号：KK1026037967
+...
 
 ## 个人信息
 
 - 男/1997
 - 本科/东莞理工学院软件工程(卓越计划班)
 - 工作年限：应届毕业生
-- 技术博客：https://www.niracler.com
+- 技术博客：https://niracler.com
 - Github：https://github.com/niracler
 - 期望职位：后端工程师
 - 期望薪资：税前月薪8k~10k，特别喜欢的公司可例外
